@@ -41,8 +41,9 @@ export default function App() {
 
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
+    <View style={styles.bg}>
+    <NavigationContainer >
+      <Stack.Navigator >
         <Stack.Screen
           name="TabNav"
           component={TabNav}
@@ -52,6 +53,7 @@ export default function App() {
         <Stack.Screen name="Example Screen" component={ExampleScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+    </View>
   );
 }
 
@@ -64,4 +66,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     color: "red",
   },
+  bg: {
+    flex: 1,
+    backgroundColor: "red",
+  },
+  
 });
