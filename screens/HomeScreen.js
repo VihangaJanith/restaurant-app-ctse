@@ -97,7 +97,7 @@ const HomeScreen = ({ navigation }) => {
     useEffect(() => {
         try {
 
-           fetch('http://192.168.8.113:5000/table/')
+           fetch('http://192.168.83.175:5000/table/')
            .then(response => response.json())
            .then(data => setTables(data))
            .catch(error => console.error(error))
@@ -118,7 +118,7 @@ const HomeScreen = ({ navigation }) => {
         setIsLoading(true);
         console.log(searchkey);
     
-        const response = axios.get('http://192.168.8.113:5000/table/');
+        const response = axios.get('http://192.168.83.175:5000/table/');
         console.log({response});
         const filteredPackages = response.data.filter((tables) =>
           tables.name.toLowerCase().includes(searchkey)
