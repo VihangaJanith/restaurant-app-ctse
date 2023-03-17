@@ -2,21 +2,23 @@ const express = require('express');
 const router = express.Router();
 const Inquiry = require('../models/inquiryModel')
 
-router.post('/add', async (req, res) => {
-  try {
-    const userinquiry = {
-        name : req.body.name,
-        phone : req.body.phone,
-        email : req.body.email,
-        inq : req.body.inq,
-        userid : req.body.userid
+router.post("/add", async(req, res) => {
+    try{
+        const userinquiry = {
+            name : req.body.name, 
+            phone : req.body.phone,
+            email : req.body.email,
+            inq : req.body.inq,
+            userid : req.body.userid
+        }
+        
+        const newInquiry = new Inquiry(userinquiry);
+        await newInquiry.save()
+        res.send(newInquiry);
+
+    }catch(err){
+        res.send(err)
     }
-    const newInquiry = new Inquiry(userinquiry)
-    await newInquiry.save()
-    res.send(newInquiry)
-}catch (err) {
-    res.send(err)
-}
 })
 
 router.get("/", async(req, res) =>{

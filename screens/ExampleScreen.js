@@ -10,6 +10,10 @@ const ExampleScreen = ({ navigation }) => {
         title="Go to Home... again"
         onPress={() => navigation.navigate('Home Screen')}
       />
+      <Button
+        title="Go to Alluserinquiries... again"
+        onPress={() => navigation.navigate('AllUserInquiry Screen')}
+      />
     </View>
   )
 }
