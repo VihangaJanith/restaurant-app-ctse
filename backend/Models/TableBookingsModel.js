@@ -7,6 +7,10 @@ const TableBookingSchema = new Schema({
         type:String,
         required:false
     },
+    tableId:{
+        type:String,
+        required:false
+    },
     tabletype:{
         type:String,
         required:false
@@ -26,7 +30,13 @@ const TableBookingSchema = new Schema({
     phone:{
         type:String,
         required:false
+    },
+    status:{
+        type:String,
+        required:false,
+        default:"Pending"
     }
+
 
 },{
     timestamps:true

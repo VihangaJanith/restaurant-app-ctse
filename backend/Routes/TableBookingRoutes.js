@@ -7,11 +7,13 @@ router.post("/add", async(req, res) => {
     try{
         const user = {
             name : req.body.name, 
+            tableId : req.body.tableId,
             tabletype : req.body.tabletype,
             userid : req.body.userid,
             date : req.body.date,
             time : req.body.time,
             phone : req.body.phone
+            
         }
         
         const newBooking = new Booking(user);
