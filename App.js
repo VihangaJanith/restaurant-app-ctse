@@ -13,6 +13,8 @@ import AddInquiryScreen from "./screens/Inquiry/AddInquiryScreen";
 import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
 
+import FoodList from "./screens/FoodManagment/FoodList";
+
 //import Card from "./screens/Inquiry/Card";
 
 const Stack = createNativeStackNavigator();
@@ -46,6 +48,7 @@ export default function App() {
         />
         <Tab.Screen name="Example" component={ExampleScreen} />
         <Tab.Screen name="Inquiries" component={AddInquiryScreen} />
+        <Tab.Screen name="Foods" component={FoodList} />
       </Tab.Navigator>
     );
   }
