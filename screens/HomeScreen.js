@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
 import { Alert, ScrollView, StyleSheet, RefreshControl } from "react-native";
-=======
-import { ScrollView, StyleSheet } from "react-native";
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
 import {
   Box,
   Heading,
@@ -21,7 +17,6 @@ import {
   Input,
   WarningOutlineIcon,
   Divider,
-<<<<<<< HEAD
   VStack,
   IconButton,
   CloseIcon,
@@ -45,15 +40,6 @@ const TableData = (props) => {
 
   const cancelRef = React.useRef(null);
 
-=======
-} from "native-base";
-import { Ionicons } from "@expo/vector-icons";
-import axios from "axios";
-
-const Example = (props) => {
-  const { table } = props;
-
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
   return (
     <Box alignItems="center" style={styles.aaaaa}>
       <Box
@@ -83,7 +69,6 @@ const Example = (props) => {
               alt="image"
             />
           </AspectRatio>
-<<<<<<< HEAD
 
           <Pressable
             onPress={() => setIsOpen(!isOpen)}
@@ -174,8 +159,6 @@ const Example = (props) => {
             </AlertDialog.Content>
           </AlertDialog>
 
-=======
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
           <Center
             bg="violet.500"
             _dark={{
@@ -224,14 +207,11 @@ const Example = (props) => {
             variant="solid"
             colorScheme="red"
             startIcon={<Icon as={Ionicons} name="book-outline" size="sm" />}
-<<<<<<< HEAD
             onPress={() =>
               navigation.navigate("Booking Screen", {
                 id: table._id,
               })
             }
-=======
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
           >
             Book Table
           </Button>
@@ -255,10 +235,6 @@ const Example = (props) => {
 const HomeScreen = ({ navigation }) => {
   const [tables, setTables] = useState();
   const [searchkey, setsearchkey] = useState("");
-<<<<<<< HEAD
-=======
-
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
   const [isLoading, setIsLoading] = useState(false);
   const [notab, setNotab] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -266,7 +242,6 @@ const HomeScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-<<<<<<< HEAD
     if (isFocused) {
       onRefresh();
     }
@@ -349,42 +324,6 @@ const HomeScreen = ({ navigation }) => {
           }, 3000);
         }
       });
-=======
-    try {
-      fetch("http://172.28.8.27:5000/table/")
-        .then((response) => response.json())
-        .then((data) => setTables(data))
-        .catch((error) => console.error(error));
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
-  const filterPackages = (searchkey) => {
-    try {
-      setIsLoading(true);
-      console.log(searchkey);
-
-      const response = axios.get("http://172.28.8.27:5000/table/");
-      console.log({ response });
-      const filteredPackages = response.data.filter((tables) =>
-        tables.name.toLowerCase().includes(searchkey)
-      );
-      if (filteredPackages.length > 0) {
-        setTables(filteredPackages);
-        setIsLoading(false);
-      } else {
-        setIsLoading(true);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 300);
-
-        setNotab(true);
-        setTimeout(() => {
-          setNotab(false);
-        }, 3000);
-      }
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
     } catch (error) {
       console.log(error);
     }
@@ -401,7 +340,6 @@ const HomeScreen = ({ navigation }) => {
           onChangeText={(newText) => setsearchkey(newText)}
           flex={1}
           margin={2}
-<<<<<<< HEAD
           rounded="full"
         />
 
@@ -511,24 +449,6 @@ const HomeScreen = ({ navigation }) => {
           </PresenceTransition>
         </ScrollView>
       )}
-=======
-        />
-
-        <Button
-          variant="solid"
-          colorScheme="red"
-          startIcon={<Icon as={Ionicons} name="search-outline" size="sm" />}
-          onPress={() => filterPackages(searchkey)}
-        ></Button>
-      </View>
-
-      <ScrollView>
-        <Center flex={1} px="3">
-          {tables &&
-            tables.map((table, index) => <Example table={table} key={index} />)}
-        </Center>
-      </ScrollView>
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
     </NativeBaseProvider>
   );
 };
@@ -540,11 +460,7 @@ const styles = StyleSheet.create({
     boxShadow: "1px 1px 1px 1px #ccc",
     border: "1px solid red",
 
-<<<<<<< HEAD
     marginTop: 5,
     marginBottom: 5,
-=======
-    marginTop: 10,
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
   },
 });
