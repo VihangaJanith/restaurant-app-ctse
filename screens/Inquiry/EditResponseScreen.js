@@ -17,7 +17,11 @@ const EditResponseScreen = ({ navigation, route }) => {
   const [adreply, setAdreply] = useState("");
 
   useEffect(() => {
+<<<<<<< HEAD
     axios.get(`inquiry/${id}`).then((res) => {
+=======
+    axios.get(`http://172.28.8.27:5000/inquiry/${id}`).then((res) => {
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
       console.log(res.data);
       setAdreply(res.data.adreply);
     });
@@ -29,14 +33,22 @@ const EditResponseScreen = ({ navigation, route }) => {
         adreply: adreply,
       };
       await axios
+<<<<<<< HEAD
         .put(`inquiry/${id}`, updatedResponse)
+=======
+        .put(`http://172.28.8.27:5000/inquiry/${id}`, updatedResponse)
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
         .then((res) => {
           console.log(res.updatedResponse);
         });
       console.log(updatedResponse);
       alert("Response Updated Successfully");
 
+<<<<<<< HEAD
       await axios.get("inquiry/");
+=======
+      await axios.get("http://172.28.8.27:5000/inquiry/");
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
 
       navigation.navigate("AllUserInquiry Screen");
     } catch (error) {

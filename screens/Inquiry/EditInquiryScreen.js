@@ -20,7 +20,11 @@ const EditInquiryScreen = ({ navigation, route }) => {
   const [inq, setInq] = useState("");
 
   useEffect(() => {
+<<<<<<< HEAD
     axios.get(`inquiry/${id}`).then((res) => {
+=======
+    axios.get(`http://172.28.8.27:5000/inquiry/${id}`).then((res) => {
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
       console.log(res.data);
       setName(res.data.name);
       setPhone(res.data.phone);
@@ -38,14 +42,22 @@ const EditInquiryScreen = ({ navigation, route }) => {
         inq: inq,
       };
       await axios
+<<<<<<< HEAD
         .put(`inquiry/${id}`, updatedInquiry)
+=======
+        .put(`http://172.28.8.27:5000/inquiry/${id}`, updatedInquiry)
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
         .then((res) => {
           console.log(res.updatedInquiry);
         });
       console.log(updatedInquiry);
       alert("Inquiry Updated Successfully");
 
+<<<<<<< HEAD
       await axios.get("inquiry/");
+=======
+      await axios.get("http://172.28.8.27:5000/inquiry/");
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
 
       navigation.navigate("MyInquiry Screen");
     } catch (error) {

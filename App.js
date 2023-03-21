@@ -17,6 +17,7 @@ import Eg from "./screens/Eg";
 
 
 import Ionicons from "react-native-vector-icons/Ionicons";
+<<<<<<< HEAD
 import AppBars from "./components/AppBar";
 import { TouchableOpacity } from "react-native";
 import axios from "axios";
@@ -28,16 +29,22 @@ import AllBookings from "./screens/tableBooking/admin/AllBookings";
 
 
 
+=======
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
 import AllUserInquiryScreen from "./screens/Inquiry/AllUserInquiryScreen";
 import EditResponseScreen from "./screens/Inquiry/EditResponseScreen";
 import AddInquiryScreen from "./screens/Inquiry/AddInquiryScreen";
 import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
 
+<<<<<<< HEAD
  axios.defaults.baseURL = 'http://192.168.8.113:5000/';
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
 
 
+=======
+//import Card from "./screens/Inquiry/Card";
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,11 +102,11 @@ export default function App() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === "Home") {
-              iconName = focused
-                ? "ios-home"
-                : "ios-home-outline";
+              iconName = focused ? "ios-home" : "ios-home-outline";
             } else if (route.name === "Example") {
               iconName = focused ? "ios-list" : "ios-list-outline";
+            } else if (route.name === "Inquiries") {
+              iconName = focused ? "create" : "create-outline";
             }
             else if (route.name === "Inquiries") {
               iconName = focused ? "create" : "create-outline";
@@ -109,17 +116,28 @@ export default function App() {
           },
           tabBarActiveTintColor: "tomato",
           tabBarInactiveTintColor: "gray",
+<<<<<<< HEAD
         
           
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen}  options={{ tabBarBadge: 3, headerShown: false }}/>
+=======
+        })}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ tabBarBadge: 3 }}
+        />
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
         <Tab.Screen name="Example" component={ExampleScreen} />
         <Tab.Screen name="Inquiries" component={AddInquiryScreen} />
       </Tab.Navigator>
     );
   }
 
+<<<<<<< HEAD
 
 
 
@@ -221,6 +239,21 @@ export default function App() {
 
 
         <Stack.Screen
+=======
+  return (
+    <View style={styles.bg}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="TabNav"
+            component={TabNav}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Home Screen" component={HomeScreen} />
+          <Stack.Screen name="Example Screen" component={ExampleScreen} />
+
+          <Stack.Screen
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
             name="AllUserInquiry Screen"
             component={AllUserInquiryScreen}
           />
@@ -228,17 +261,28 @@ export default function App() {
             name="EditResponse Screen"
             component={EditResponseScreen}
           />
+<<<<<<< HEAD
            <Stack.Screen name="AddInquiry Screen" component={AddInquiryScreen} />
+=======
+          <Stack.Screen name="AddInquiry Screen" component={AddInquiryScreen} />
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
           <Stack.Screen
             name="EditInquiry Screen"
             component={EditInquiryScreen}
           />
+<<<<<<< HEAD
             <Stack.Screen name="MyInquiry Screen" component={MyInquiryScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
  
     </NativeBaseProvider>
+=======
+          <Stack.Screen name="MyInquiry Screen" component={MyInquiryScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
+>>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
   );
 }
 
@@ -255,5 +299,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "red",
   },
-  
 });
