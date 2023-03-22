@@ -57,9 +57,9 @@ const AddInquiryScreen = ({ navigation }) => {
         mb="2.5"
         mt="1.5"
         space={5}
-        width={350}
-        marginLeft={30}
-        marginTop={60}
+        p={4}
+        
+        marginTop={40}
       >
         <Text style={{ fontWeight: "bold" }}>Enter Your Name</Text>
         <Input

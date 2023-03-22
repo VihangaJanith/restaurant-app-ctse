@@ -34,7 +34,9 @@ import AddInquiryScreen from "./screens/Inquiry/AddInquiryScreen";
 import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
 
- axios.defaults.baseURL = 'http://192.168.8.113:5000/';
+ //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
+ axios.defaults.baseURL = 'http://192.168.1.6:5000/';
+ 
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
 
 

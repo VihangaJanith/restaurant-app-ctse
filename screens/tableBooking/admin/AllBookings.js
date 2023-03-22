@@ -32,6 +32,7 @@ import {
   Pressable,
   AlertDialog,
   useToast,
+  Badge,
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import LandscapeLoader from "../../../components/LandscapeLoader";
@@ -41,7 +42,7 @@ import DetailsLoader from "../../../components/DetailsLoader";
 // import { Container } from './styles';
 
 const GG = (props) => {
-  const { table, setTables, navigation, ids } = props;
+  const { table, setTables, navigation, ids , onRefresh} = props;
   const [isOpen, setIsOpen] = React.useState(false);
   const [isDeletOpen, setIsDeletOpen] = React.useState(false);
 
@@ -51,6 +52,7 @@ const GG = (props) => {
   const cancelRef = React.useRef(null);
   const deleteRef = React.useRef(null);
   const toast = useToast();
+  
 
   const deleteTeam = async (id) => {
     try {
@@ -58,7 +60,7 @@ const GG = (props) => {
         // setTeams(res.data)
         console.log(res.data);
       });
-
+      onRefresh();
       await axios.get("tablebooking/").then((res) => {
         // setTeams(res.data)
         setTables(res.data);
@@ -76,6 +78,7 @@ const GG = (props) => {
       await axios.put(`tablebooking/${id}`, data).then((res) => {
         console.log(res.data);
       });
+      onRefresh();
       await axios.get("tablebooking/").then((res) => {
         // setTeams(res.data)
         setTables(res.data);
@@ -128,9 +131,28 @@ const GG = (props) => {
             </Text>
             <Text>Booked By : {table.name}</Text>
 
-            {table.status == "Cancelled" ? null : (
-              <HStack space={3} mt={1}>
-                <Pressable
+            {table.status == "Cancelled" ? 
+            
+            <Pressable onPress={() => deleteTeam(table._id) }>
+                  <Center h="12" p="2" bg="red.500" rounded="md">
+                    <HStack>
+                      <Text color="white" fontSize="lg">
+                        {" "}
+                        Delete Booking
+                      </Text>
+                      <Icon
+                        mt={1}
+                        as={<Ionicons name="trash-outline" />}
+                        size="sm"
+                        color="white"
+                      />
+                    </HStack>
+                  </Center>
+                </Pressable>
+            
+            : (
+              <HStack  mt={1}>
+                {/* <Pressable
                   onPress={() =>
                     navigation.navigate("Update Booking", {
                       id: table._id,
@@ -151,7 +173,7 @@ const GG = (props) => {
                       />
                     </HStack>
                   </Center>
-                </Pressable>
+                </Pressable> */}
 
                 <Pressable onPress={() => setIsDeletOpen(!isOpen)}>
                   <Center h="12" p="2" bg="red.500" rounded="md">
@@ -260,7 +282,7 @@ const GG = (props) => {
   );
 };
 
-const FirstRoute = ({ index, navigation }) => {
+const FirstRoute = ({  navigation }) => {
   const [tables, setTables] = useState([]);
 
   const [img, setImg] = useState("");
@@ -286,7 +308,7 @@ const FirstRoute = ({ index, navigation }) => {
         const tableIds = res.data.map((table) => table.tableId);
         setId(tableIds);
 
-        console.log(res.data);
+        // console.log(res.data);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -303,7 +325,7 @@ const FirstRoute = ({ index, navigation }) => {
         const tableIds = res.data.map((table) => table.tableId);
         setId(tableIds);
         setIsLoading(false);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -332,6 +354,7 @@ const FirstRoute = ({ index, navigation }) => {
                     setTables={setTables}
                     navigation={navigation}
                     ids={ids}
+                    onRefresh={onRefresh}
                   />
                 ) : null}
               </>
@@ -368,7 +391,7 @@ const SecondRoute = ({ index, navigation }) => {
         const tableIds = res.data.map((table) => table.tableId);
         setId(tableIds);
 
-        console.log(res.data);
+        // console.log(res.data);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -385,7 +408,7 @@ const SecondRoute = ({ index, navigation }) => {
         const tableIds = res.data.map((table) => table.tableId);
         setId(tableIds);
         setIsLoading(false);
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -429,21 +452,54 @@ const initialRoutes = [
   { key: "second", title: "Canceled Reservations" },
 ];
 const renderScene = SceneMap({
+
+
+
   first: FirstRoute,
-  second: SecondRoute,
+  second: () => <View>
+    <Text>Second</Text>
+  <SecondRoute/>
+  </View>
+
 });
-const renderTabBar = (props) => (
+const renderTabBar = (props) => {
+  const { itemLength } = props;
+
+return (
   <TabBar
     {...props}
     style={{ backgroundColor: "#f4511e" }}
     activeColor={"white"}
     inactiveColor={"gray"}
     fontWeight={"bold"}
+   
+    renderLabel={({ route, focused }) => (
+      <View style={{ flexDirection: "row" }}>
+      
+        <Text fontSize="md" style={{ color: focused ? "white" : "gray"  }}>
+          {route.title}{' '}
+        </Text>
+        {route.key === "second" && (
+          <Badge // bg="red.400"
+          colorScheme="danger" rounded="full"  zIndex={1} variant="solid" alignSelf="flex-end" _text={{
+            fontSize: 12
+          }}>
+            {itemLength}
+            </Badge>
+        )}
+      </View>
+    )}
+
   />
 );
+        }
 
 const AllBookings = ({ navigation }) => {
   const [index, setIndex] = useState(0);
+
+  const [items, itemsSet] = useState('');
+
+  const [itemLength, setItemLength] = useState('');
 
   const newff = () => {
     console.log("neww");
@@ -463,6 +519,43 @@ const AllBookings = ({ navigation }) => {
     }
   };
 
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      console.log("useEffect");
+      axios.get("tablebooking/").then((res) => {
+        itemsSet(res.data);
+        // console.log(res.data, "res");
+  
+    
+        const cancelledItems = res.data.filter(item => item.status === "Cancelled");
+        console.log(cancelledItems, 'cannn');
+        setItemLength(cancelledItems.length);
+        console.log(itemLength, 'itemLength');
+    
+      });
+   
+    }
+  }, [isFocused, index]);
+
+  // useEffect(() => {
+  //   console.log("useEffect");
+  //   axios.get("tablebooking/").then((res) => {
+  //     itemsSet(res.data);
+  //     // console.log(res.data, "res");
+
+  
+  //     const cancelledItems = res.data.filter(item => item.status === "Cancelled");
+  //     console.log(cancelledItems, 'cannn');
+  //     setItemLength(cancelledItems.length);
+  //     console.log(itemLength, 'itemLength');
+  
+  //   });
+  // }, [index]);
+
+
+
   return (
     <TabView
       index={index}
@@ -470,7 +563,7 @@ const AllBookings = ({ navigation }) => {
       navigationState={{ index, routes: initialRoutes }}
       renderScene={renderScene}
       onIndexChange={handleIndexChange}
-      renderTabBar={renderTabBar}
+      renderTabBar={(props) => renderTabBar({...props, itemLength})}
     />
   );
 };

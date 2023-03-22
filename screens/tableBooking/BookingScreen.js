@@ -11,13 +11,15 @@ import {
   Alert,
   VStack,
   HStack,
+  Heading,
 } from "native-base";
-import { View, Text, Pressable } from "react-native";
+import {  Pressable } from "react-native";
 import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import AlertBox from "../../components/AlertBox";
+import { Text, View } from "native-base";
 
 const BookingScreen = ({ navigation, route }) => {
   const id = route.params.id;
@@ -174,30 +176,30 @@ const BookingScreen = ({ navigation, route }) => {
 
   return (
     <Stack space={4} w="75%" maxW="300px" mx="auto" mt={3}>
-      <Text style={{ fontSize: 20, fontWeight: "bold" }}>Book {tabletype}</Text>
+      <Heading>Book {tabletype}</Heading>
+
+
+    <View mt={3}>
+      <Text style={{ fontSize: 15, fontWeight: "bold" }}>Table Type</Text>
 
       <Input
         variant="outline"
         placeholder="Table Type"
         value={tabletype}
         disabled={true}
-        mb={4}
-        mt={4}
+        mt={2}
         size="lg"
       />
+    </View>
 
-      {/* <Input
-        variant="outline"
-        placeholder="User ID"
-        value={userid}
-        disabled={true}
-      /> */}
-
+    <View>
+      <Text style={{ fontSize: 15, fontWeight: "bold" }}>Date</Text>
       <Input
         variant="outline"
         placeholder="Date"
         value={date}
         size="lg"
+        mt={2}
         InputRightElement={
           <Button
             rounded="xs"
@@ -212,16 +214,26 @@ const BookingScreen = ({ navigation, route }) => {
       />
 
       {errorDate && (
+        <View mt={2}>
+          <HStack 
+          >
         <Text style={{ color: "red" }}>
           Please Select a Date{" "}
-          <Icon
+        </Text>
+        <Icon
             style={{ color: "red" }}
             as={Ionicons}
             name="alert-circle-outline"
             size="sm"
           />
-        </Text>
+          </HStack>
+      </View>
       )}
+
+
+
+      
+
 
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -232,12 +244,19 @@ const BookingScreen = ({ navigation, route }) => {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
+      
+      </View>
+
+
+      <View >
+      <Text style={{ fontSize: 15, fontWeight: "bold" }}>Time</Text>
 
       <Input
         variant="outline"
         placeholder="Time"
         value={time}
         size="lg"
+        mt={2}
         InputRightElement={
           <Button
             rounded="xs"
@@ -251,16 +270,21 @@ const BookingScreen = ({ navigation, route }) => {
         }
       />
 
-      {errorTime && (
+{errorTime && (
+        <View mt={2}>
+          <HStack 
+          >
         <Text style={{ color: "red" }}>
           Please Select a Time{" "}
-          <Icon
+        </Text>
+        <Icon
             style={{ color: "red" }}
             as={Ionicons}
             name="alert-circle-outline"
             size="sm"
           />
-        </Text>
+          </HStack>
+      </View>
       )}
 
       <DateTimePickerModal
@@ -271,28 +295,40 @@ const BookingScreen = ({ navigation, route }) => {
         minimumDate={minimumTime}
         maximumDate={maximumTime}
       />
+      </View>
+
+      <View>
+
+      <Text style={{ fontSize: 15, fontWeight: "bold" }}>Phone Number</Text>
 
       <Input
         variant="outline"
         placeholder="Phone"
         value={phone}
         size="lg"
+        mt={2}
         onChangeText={handlePhoneChange}
         keyboardType="numeric"
       />
-      {errorPhone && (
+     {errorPhone && (
+        <View mt={2}>
+          <HStack 
+          >
         <Text style={{ color: "red" }}>
           Please Enter a valid Phone Number{" "}
-          <Icon
+        </Text>
+        <Icon
             style={{ color: "red" }}
             as={Ionicons}
             name="alert-circle-outline"
             size="sm"
           />
-        </Text>
+          </HStack>
+      </View>
       )}
+      </View>
 
-      <Button colorScheme="orange" size="sm" onPress={() => bookTable()}>
+      <Button colorScheme="orange" size="lg" onPress={() => bookTable()}>
         Add Table
       </Button>
     </Stack>
