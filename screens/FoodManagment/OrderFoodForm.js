@@ -1,11 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
-import { Button, Heading, HStack, Icon, Input, Stack, Text, useToast, View } from "native-base";
+import {
+    useToast, Box, Heading, View, FormControl, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider, Button, Icon, Input, WarningOutlineIcon, Divider, VStack, IconButton, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge,
+} from "native-base";
 import React, { useEffect, useState } from "react";
 import AlertBox from "../../components/AlertBox";
+import { TextInput } from 'react-native';
 
 const FoodOrderScreen = ({ navigation, route }) => {
-    const id = route.params.id;
+    const { id, qty, foodImage } = route.params;
 
     const [userid, setUserid] = useState("");
 
@@ -13,7 +16,7 @@ const FoodOrderScreen = ({ navigation, route }) => {
     const [cusname, setCusname] = useState("");
     const [address, setAddress] = useState("");
     const [foodname, setFoodname] = useState("");
-    const [foodPrice, setFoodPrice] = useState("");
+    const [foodPrice, setFoodPrice] = useState("0");
     const [quantity, setQuantity] = useState("");
     const [total, setTotal] = useState("");
 
@@ -31,6 +34,7 @@ const FoodOrderScreen = ({ navigation, route }) => {
         axios.get(`food/${id}`).then((res) => {
             setFoodname(res.data.foodName);
             setFoodPrice(res.data.price)
+            setQuantity(`${qty}`)
         });
     };
 
@@ -53,12 +57,19 @@ const FoodOrderScreen = ({ navigation, route }) => {
         setTotal(value);
     };
 
+    //calculate total
+    useEffect(() => {
+        let subtotal = parseInt(foodPrice) * parseInt(qty)
+
+        setTotal(`Rs.${subtotal}.00`);
+    }, [foodPrice]);
+
     //On Submit
-    const bookTable = () => {
+    const orderFood = () => {
 
         if (phone === "" || phone.length < 10) {
             setErrorPhone("Please Enter a Valid Phone Number");
-          } else {
+        } else {
             const data = {
                 cusname,
                 address,
@@ -66,45 +77,76 @@ const FoodOrderScreen = ({ navigation, route }) => {
                 foodname,
                 quantity,
                 total,
-                userid:"111"
+                userid: "111"
             };
             console.log(data);
             axios.post("food-order/add", data).then((res) => {
-              console.log(res.data);
+                console.log(res.data);
             });
             toast.show({
-              placement: "top",
-      
-              render: () => (
-                <AlertBox
-                  status="success"
-                  title="Order Success"
-                  description="Your Order Success !!!"
-                />
-              ),
+                placement: "top",
+
+                render: () => (
+                    <AlertBox
+                        status="success"
+                        title="Order Success"
+                        description="Your Order Success !!!"
+                    />
+                ),
             });
             navigation.navigate("Home");
-          }
+        }
 
     };
 
     return (
-        <Stack space={4} w="75%" maxW="300px" mx="auto" mt={3}>
-            <Heading>Order Food - {foodname}</Heading>
+        <Stack space={4} w="95%" maxW="350px" mx="auto" minH={"90%"} mt={3}>
+            <Heading>{foodname}</Heading>
+            <AspectRatio w="100%" ratio={16 / 9}>
+                <Image
+                    source={{
+                        uri: foodImage,
+                    }}
+                    alt="image"
+                />
+            </AspectRatio>
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+
+                <Text style={{ fontSize: 15, fontWeight: "bold",marginTop:'2%' }}>Quantity</Text>
+
+                <TextInput
+                    editable={false}
+                    value={quantity}
+                    style={{
+                        flex: 1,
+                        height: 30,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 4,
+                        paddingHorizontal: 8,
+                        marginHorizontal: 8
+                    }}
+                />
 
 
-            <View mt={3}>
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Food Name</Text>
+                <Text style={{ fontSize: 15, fontWeight: "bold",marginTop:'2%' }}>Total</Text>
 
-                <Input
-                    variant="outline"
-                    placeholder="Food Name"
-                    value={foodname}
-                    disabled={true}
-                    mt={2}
-                    size="lg"
+                <TextInput
+                    editable={false}
+                    value={total}
+                    style={{
+                        flex: 1,
+                        height: 30,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 4,
+                        paddingHorizontal: 8,
+                        marginHorizontal: 8,
+                    }}
                 />
             </View>
+
 
             <View>
 
@@ -129,6 +171,7 @@ const FoodOrderScreen = ({ navigation, route }) => {
                     variant="outline"
                     placeholder="Address"
                     value={address}
+                    isRequired={true}
                     size="lg"
                     mt={2}
                     onChangeText={handleAddressChange}
@@ -147,7 +190,7 @@ const FoodOrderScreen = ({ navigation, route }) => {
                     size="lg"
                     mt={2}
                     onChangeText={handlePhoneChange}
-                    keyboardType="numeric"
+                    keyboardType="phone-pad"
                 />
                 {errorPhone && (
                     <View mt={2}>
@@ -167,38 +210,18 @@ const FoodOrderScreen = ({ navigation, route }) => {
                 )}
             </View>
 
-            <View>
-
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Quantity</Text>
-
-                <Input
-                    variant="outline"
-                    placeholder="Quantity"
-                    value={quantity}
-                    size="lg"
-                    mt={2}
-                    onChangeText={handleQuantityChange}
-                    keyboardType="default"
-                />
-            </View>
-            <View>
-
-                <Text style={{ fontSize: 15, fontWeight: "bold" }}>Total</Text>
-
-                <Input
-                    variant="outline"
-                    placeholder="Total"
-                    value={total}
-                    size="lg"
-                    mt={2}
-                    onChangeText={handleTotalChange}
-                    keyboardType="default"
-                />
-            </View>
-
-            <Button colorScheme="orange" size="lg" onPress={() => bookTable()}>
-                Confirm Order
-            </Button>
+            <View  position="absolute"
+            bottom="0"
+            right='0'
+            left='0'>
+        <Button
+          colorScheme="orange"
+          size="lg"
+          onPress={() => orderFood()}
+        >
+          Confirm Order
+        </Button>
+      </View>
         </Stack>
     );
 };

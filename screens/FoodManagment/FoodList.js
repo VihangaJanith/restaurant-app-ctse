@@ -1,31 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import {
-  Box,
-  Heading,
-  View,
-  FormControl,
-  AspectRatio,
-  Image,
-  Text,
-  Center,
-  HStack,
-  Stack,
-  NativeBaseProvider,
-  Button,
-  Icon,
-  Input,
-  WarningOutlineIcon,
-  Divider,
-  VStack,
-  IconButton,
-  CloseIcon,
-  Spinner,
-  PresenceTransition,
-  Skeleton,
-  Pressable,
-  AlertDialog,
-  Badge,
+  Box, Heading, View, FormControl, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider, Button, Icon, Input, WarningOutlineIcon, Divider, VStack, IconButton, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge,
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
@@ -40,11 +16,27 @@ const FoodData = (props) => {
 
   const cancelRef = React.useRef(null);
 
+  const [quantity, setQuantity] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  const setPlus = () => {
+    setQuantity(quantity + 1);
+  }
+  const setMinus = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  }
+  useEffect(() => {
+    setTotal(parseInt(food.price) * quantity)
+  }, [quantity, food.price])
+
+
   return (
     <Box alignItems="center" style={styles.aaaaa}>
       <Box
         //maxW="100px"
-        style={{marginRight:"5%",marginLeft:"5%",marginBottom:"5%",backgroundColor:"#F5F3F1"}}
+        style={{ marginRight: "5%", marginLeft: "5%", marginBottom: "5%", backgroundColor: "#F5F3F1" }}
         rounded="lg"
         overflow="hidden"
         borderColor="coolGray.200"
@@ -71,7 +63,7 @@ const FoodData = (props) => {
             />
           </AspectRatio>
 
-          
+
 
           <Center
             bg="violet.500"
@@ -124,7 +116,7 @@ const FoodData = (props) => {
             startIcon={<Icon as={Ionicons} name="cart-sharp" size="sm" />}
             onPress={() => setIsOpen(!isOpen)}
           >
-           Order Now
+            Order Now
           </Button>
 
           <AlertDialog
@@ -161,7 +153,39 @@ const FoodData = (props) => {
                 >
                   {food.description}
                 </Text>
-    
+
+                <View>
+                  <Center>
+                    <Button.Group space={2} >
+
+                    <Button
+                      variant="solid"
+                      colorScheme="blue"
+                      style={{ width: '15%' }}
+                      startIcon={<Icon as={Ionicons} name="remove" size="md" />}
+                      onPress={() => setMinus()}
+                    >
+                    </Button>
+                    <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: '5%', marginLeft: '7%', marginRight: '7%' }}>{quantity}</Text>
+
+                    <Button
+                      variant="solid"
+                      style={{ width: '15%' }}
+                      colorScheme="blue"
+                      startIcon={<Icon as={Ionicons} name="add" size="md"
+                      
+                      />}
+                      onPress={() => setPlus()}
+                    >
+                    </Button>
+          
+
+                    </Button.Group>
+                  </Center>
+                  {/* <Divider/>
+                  <Text position="absolute" right='0'style={{ fontSize: 18, fontWeight: "bold",marginTop:'12%' }}>Total: Rs.{total}</Text> */}
+                </View>
+
               </AlertDialog.Body>
               <AlertDialog.Footer>
                 <Button.Group space={2}>
@@ -178,7 +202,7 @@ const FoodData = (props) => {
                     colorScheme="red"
                     onPress={() =>
                       navigation.navigate("Food Order Screen", {
-                        id: food._id,
+                        id: food._id, qty: quantity,foodImage:food.foodImage
                       })
                     }
                     startIcon={
