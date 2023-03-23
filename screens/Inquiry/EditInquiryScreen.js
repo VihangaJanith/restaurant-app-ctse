@@ -20,7 +20,7 @@ const EditInquiryScreen = ({ navigation, route }) => {
   const [inq, setInq] = useState("");
 
   useEffect(() => {
-    axios.get(`http://172.28.8.27:5000/inquiry/${id}`).then((res) => {
+    axios.get(`inquiry/${id}`).then((res) => {
       console.log(res.data);
       setName(res.data.name);
       setPhone(res.data.phone);
@@ -38,14 +38,14 @@ const EditInquiryScreen = ({ navigation, route }) => {
         inq: inq,
       };
       await axios
-        .put(`http://172.28.8.27:5000/inquiry/${id}`, updatedInquiry)
+        .put(`inquiry/${id}`, updatedInquiry)
         .then((res) => {
           console.log(res.updatedInquiry);
         });
       console.log(updatedInquiry);
       alert("Inquiry Updated Successfully");
 
-      await axios.get("http://172.28.8.27:5000/inquiry/");
+      await axios.get("inquiry/");
 
       navigation.navigate("MyInquiry Screen");
     } catch (error) {

@@ -18,7 +18,7 @@ const MyInquiryScreen = ({ navigation }) => {
   const [inquiries, setInquiries] = useState();
 
   useEffect(() => {
-    axios.get("http://172.28.8.27:5000/inquiry/").then((res) => {
+    axios.get("inquiry/").then((res) => {
       setInquiries(res.data);
     });
   }, [navigation]);
@@ -35,7 +35,7 @@ const MyInquiryScreen = ({ navigation }) => {
       //  .then(response => response.json())
       //  .then(data => setTables(data))
       //  .catch(error => console.error(error))
-      axios.get("http://172.28.8.27:5000/inquiry/").then((res) => {
+      axios.get("inquiry/").then((res) => {
         setInquiries(res.data);
       });
     } catch (error) {
@@ -45,11 +45,11 @@ const MyInquiryScreen = ({ navigation }) => {
 
   const deleteInquiry = async (id) => {
     try {
-      await axios.delete(`http://172.28.8.27:5000/inquiry/${id}`);
+      await axios.delete(`inquiry/${id}`);
       alert("Inquiry Deleted Successfully");
       navigation.navigate("MyInquiry Screen");
 
-      await axios.get("http://172.28.8.27:5000/inquiry/").then((res) => {
+      await axios.get("inquiry/").then((res) => {
         setInquiries(res.data);
       });
     } catch (error) {

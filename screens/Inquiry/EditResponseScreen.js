@@ -17,7 +17,7 @@ const EditResponseScreen = ({ navigation, route }) => {
   const [adreply, setAdreply] = useState("");
 
   useEffect(() => {
-    axios.get(`http://172.28.8.27:5000/inquiry/${id}`).then((res) => {
+    axios.get(`inquiry/${id}`).then((res) => {
       console.log(res.data);
       setAdreply(res.data.adreply);
     });
@@ -29,14 +29,14 @@ const EditResponseScreen = ({ navigation, route }) => {
         adreply: adreply,
       };
       await axios
-        .put(`http://172.28.8.27:5000/inquiry/${id}`, updatedResponse)
+        .put(`inquiry/${id}`, updatedResponse)
         .then((res) => {
           console.log(res.updatedResponse);
         });
       console.log(updatedResponse);
       alert("Response Updated Successfully");
 
-      await axios.get("http://172.28.8.27:5000/inquiry/");
+      await axios.get("inquiry/");
 
       navigation.navigate("AllUserInquiry Screen");
     } catch (error) {

@@ -31,7 +31,7 @@ const AddInquiryScreen = ({ navigation }) => {
           userid: "123",
         };
         await axios
-          .post("http://172.28.8.27:5000/inquiry/add", newInquiry)
+          .post("inquiry/add", newInquiry)
           .then((res) => {
             console.log(res.newInquiry);
           });
@@ -57,9 +57,9 @@ const AddInquiryScreen = ({ navigation }) => {
         mb="2.5"
         mt="1.5"
         space={5}
-        width={350}
-        marginLeft={30}
-        marginTop={60}
+        p={4}
+        
+        marginTop={40}
       >
         <Text style={{ fontWeight: "bold" }}>Enter Your Name</Text>
         <Input
