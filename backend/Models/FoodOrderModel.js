@@ -2,17 +2,9 @@ const mongoose = require('mongoose')
 const Schema =  mongoose.Schema
 
 const FoodOrderSchema = new Schema({
-    name:{
+    cusname:{
         type:String,
-        required:false
-    },
-    qty:{
-        type:String,
-        required:false
-    },
-    userid:{
-        type:String,
-        required:false
+        required:true
     },
     address:{
         type:String,
@@ -20,13 +12,33 @@ const FoodOrderSchema = new Schema({
     },
     phone:{
         type:String,
-        required:false
+        required:true
+    },
+    foodname:{
+        type:String,
+        required:true
+    },
+    quantity:{
+        type:Number,
+        required:true
+    },
+    total:{
+        type:String,
+        required:true
+    },
+    orderedDate:{
+        type:Date,
+        default:Date.now
+    },
+    userid:{
+        type:String,
+        required:true
     }
 
 },{
     timestamps:true
 })
 
-const foodOrder = mongoose.model('FoodOrders' , FoodOrderSchema)
+const foodOrder = mongoose.model('foodorders' , FoodOrderSchema)
 
 module.exports = foodOrder

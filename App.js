@@ -33,6 +33,7 @@ import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
 
 import FoodList from "./screens/FoodManagment/FoodList";
+import OrderFood from "./screens/FoodManagment/OrderFoodForm";
 
  //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
  axios.defaults.baseURL = 'http://192.168.0.109:5000/';
@@ -240,6 +241,9 @@ export default function App() {
             component={EditInquiryScreen}
           />
             <Stack.Screen name="MyInquiry Screen" component={MyInquiryScreen} />
+
+
+            <Stack.Screen name="Food Order Screen" component={OrderFood} />
 
       </Stack.Navigator>
     </NavigationContainer>

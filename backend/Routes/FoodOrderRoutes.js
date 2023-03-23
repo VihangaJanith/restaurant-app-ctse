@@ -6,11 +6,13 @@ const FoodOrders = require('../Models/FoodOrderModel')
 router.post("/add", async(req, res) => {
     try{
         const user = {
-            name : req.body.name, 
-            qty : req.body.qty,
-            userid : req.body.userid,
-            address : req.body.address,
-            phone : req.body.phone
+            cusname:req.body.cusname,
+            address:req.body.address,
+            phone:req.body.phone,
+            foodname:req.body.foodname,
+            quantity:req.body.quantity,
+            total:req.body.total,
+            userid:req.body.userid
         }
         
         const newOrder = new FoodOrders(user);

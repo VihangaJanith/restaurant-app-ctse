@@ -44,7 +44,7 @@ const FoodData = (props) => {
     <Box alignItems="center" style={styles.aaaaa}>
       <Box
         //maxW="100px"
-        style={{marginRight:"5%",marginLeft:"5%",marginBottom:"5%"}}
+        style={{marginRight:"5%",marginLeft:"5%",marginBottom:"5%",backgroundColor:"#F5F3F1"}}
         rounded="lg"
         overflow="hidden"
         borderColor="coolGray.200"
@@ -81,7 +81,7 @@ const FoodData = (props) => {
             _text={{
               color: "warmGray.50",
               fontWeight: "700",
-              fontSize: "xs",
+              fontSize: "md",
             }}
             position="absolute"
             bottom="0"
@@ -121,7 +121,7 @@ const FoodData = (props) => {
           <Button
             variant="solid"
             colorScheme="red"
-            startIcon={<Icon as={Ionicons} name="book-outline" size="sm" />}
+            startIcon={<Icon as={Ionicons} name="cart-sharp" size="sm" />}
             onPress={() => setIsOpen(!isOpen)}
           >
            Order Now
@@ -177,12 +177,12 @@ const FoodData = (props) => {
                     variant="solid"
                     colorScheme="red"
                     onPress={() =>
-                      navigation.navigate("Booking Screen", {
+                      navigation.navigate("Food Order Screen", {
                         id: food._id,
                       })
                     }
                     startIcon={
-                      <Icon as={Ionicons} name="book-outline" size="sm" />
+                      <Icon as={Ionicons} name="cart-sharp" size="sm" />
                     }
                   >
                     Order Now
