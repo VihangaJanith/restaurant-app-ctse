@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema =  mongoose.Schema
 
 const FoodSchema = new Schema({
-    name:{
+    foodName:{
         type:String,
         required:true
     },
@@ -11,10 +11,10 @@ const FoodSchema = new Schema({
         required:true
     },
     price:{
-        type:String,
+        type:Number,
         required:true
     },
-    image:{
+    foodImage:{
         type:String,
         required:true
     }
@@ -23,6 +23,6 @@ const FoodSchema = new Schema({
     timestamps:true
 })
 
-const foods = mongoose.model('Foods' , FoodSchema)
+const foods = mongoose.model('foods' , FoodSchema)
 
 module.exports = foods

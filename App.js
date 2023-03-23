@@ -35,7 +35,7 @@ import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
 import FoodList from "./screens/FoodManagment/FoodList";
 
  //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
- axios.defaults.baseURL = 'http://192.168.1.6:5000/';
+ axios.defaults.baseURL = 'http://192.168.0.109:5000/';
  
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
 
@@ -105,6 +105,9 @@ export default function App() {
             }
             else if (route.name === "Inquiries") {
               iconName = focused ? "create" : "create-outline";
+            }
+            else if (route.name === "Foods") {
+              iconName = focused ? "restaurant" : "restaurant-outline";
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;

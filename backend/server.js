@@ -19,7 +19,7 @@ app.use('/inquiry', inquiryRoute)
 
 
 const foodRoute = require('./Routes/FoodsRoutes')
-app.use('/foods', foodRoute)
+app.use('/food', foodRoute)
 
 const foodOrderRoute = require('./Routes/FoodOrderRoutes')
 app.use('/food-order', foodOrderRoute)
