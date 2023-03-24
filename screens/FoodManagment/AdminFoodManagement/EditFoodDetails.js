@@ -9,7 +9,7 @@ import { TextInput } from 'react-native';
 
 const FoodUpdateScreen = ({ navigation, route }) => {
 
-    const { id} = route.params;
+    const { id } = route.params;
 
     const [foodName, setFoodName] = useState("");
     const [description, setDescription] = useState("");
@@ -56,14 +56,14 @@ const FoodUpdateScreen = ({ navigation, route }) => {
 
         try {
             if (price === "") {
-                setErrorPhone("is a requeired field");
+                setErrorPrice("is a requeired field");
             } if (description === "") {
-                setErrorCusName("is a requeired field");
+                setErrorDescription("is a requeired field");
             } if (foodImage === "") {
-                setErrorAddress("is a requeired field");
+                setErrorFoodImage("is a requeired field");
             } if (foodName === "") {
-                setErrorAddress("is a requeired field");
-            } if (price && description && foodName&& foodImage) {
+                setErrorFoodName("is a requeired field");
+            } if (price && description && foodName && foodImage) {
                 const res = await axios.put(`food/${id}`, {
                     price,
                     foodName,
@@ -78,7 +78,7 @@ const FoodUpdateScreen = ({ navigation, route }) => {
                     render: () => (
                         <AlertBox
                             status="success"
-                            title="Order Success"
+                            title="Food Details Update"
                             description="Food Details Update Successfull !!!"
                         />
                     ),
@@ -97,7 +97,7 @@ const FoodUpdateScreen = ({ navigation, route }) => {
             <AspectRatio w="100%" ratio={16 / 9}>
                 <Image
                     source={{
-                        uri: 'https://img.freepik.com/premium-vector/fresh-food-store-grocery-store-background-city-flat-style-vector_174639-3212.jpg',
+                        uri: 'https://media.istockphoto.com/id/1198111486/vector/software-update-loading-process-upgrade-concept-vector-illustration-in-flat-style-upgrade.jpg?s=612x612&w=0&k=20&c=mq3Se_ogFGTCF9Xhawp7rzdgjY9c0jHUpyFhfpOK7Zg=',
                     }}
                     alt="image"
                 />
@@ -185,7 +185,7 @@ const FoodUpdateScreen = ({ navigation, route }) => {
                         <HStack
                         >
                             <Text style={{ color: "red" }}>
-                                Please Enter a valid Phone Number{" "}
+                                is a requeired field{" "}
                             </Text>
                             <Icon
                                 style={{ color: "red" }}

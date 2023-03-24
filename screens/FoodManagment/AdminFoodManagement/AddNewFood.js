@@ -43,13 +43,13 @@ const FoodAddScreen = ({ navigation, route }) => {
     const AddFood = () => {
 
         if (price === "") {
-            setErrorPhone("is a requeired field");
+            setErrorPrice("is a requeired field");
         } if (description === "") {
-            setErrorCusName("is a requeired field");
+            setErrorDescription("is a requeired field");
         } if (foodImage === "") {
-            setErrorAddress("is a requeired field");
+            setErrorFoodImage("is a requeired field");
         } if (foodName === "") {
-            setErrorAddress("is a requeired field");
+            setErrorFoodName("is a requeired field");
         } else {
             const data = {
                 price,
@@ -83,14 +83,14 @@ const FoodAddScreen = ({ navigation, route }) => {
             <AspectRatio w="100%" ratio={16 / 9}>
                 <Image
                     source={{
-                        uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCZFPxBN_AmBnZSutW3Bh-EUKk3ChfXWDwMJ_haKUSX9xumh18W945onV5jhzcsJQQhLU&usqp=CAU',
+                        uri: 'https://www.eatthis.com/wp-content/uploads/sites/4/2022/06/fast-food-assortment-soda.jpg?quality=82&strip=1',
                     }}
                     alt="image"
                 />
             </AspectRatio>
 
 
-            <View>
+            <View style={{ marginTop: '13%' }}>
 
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>Food Name</Text>
 
@@ -171,7 +171,7 @@ const FoodAddScreen = ({ navigation, route }) => {
                         <HStack
                         >
                             <Text style={{ color: "red" }}>
-                                Please Enter a valid Phone Number{" "}
+                                is a requeired field{" "}
                             </Text>
                             <Icon
                                 style={{ color: "red" }}
@@ -190,7 +190,7 @@ const FoodAddScreen = ({ navigation, route }) => {
 
                 <Input
                     variant="outline"
-                    placeholder="Dood Image"
+                    placeholder="Food Image"
                     value={foodImage}
                     size="lg"
                     mt={2}
@@ -202,7 +202,7 @@ const FoodAddScreen = ({ navigation, route }) => {
                         <HStack
                         >
                             <Text style={{ color: "red" }}>
-                            is a requeired field{" "}
+                                is a requeired field{" "}
                             </Text>
                             <Icon
                                 style={{ color: "red" }}

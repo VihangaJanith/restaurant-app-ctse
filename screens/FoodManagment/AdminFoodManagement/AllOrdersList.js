@@ -3,32 +3,35 @@ import React, { useEffect, useState, useRef } from "react";
 import { Alert, RefreshControl, ScrollView, StyleSheet } from "react-native";
 import { useToast, Box,Thumbnail, Body,Heading, CardItem,View,Card, FormControl, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider, Button, Icon, Input, WarningOutlineIcon, Divider, VStack, IconButton, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
-import LandscapeLoader from "../../components/LandscapeLoader";
+import LandscapeLoader from "../../../components/LandscapeLoader";
 import { useIsFocused } from "@react-navigation/native";
-import DetailsLoader from "../../components/DetailsLoader";
+import DetailsLoader from "../../../components/DetailsLoader";
 
 const FoodOrderData = (props) => {
     const { orders, setOrders, navigation, ids } = props;
     const [isOpen, setIsOpen] = React.useState(false);
     const [isDeletOpen, setIsDeletOpen] = React.useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = React.useState(false);
 
     const [food, setFood] = useState([]);
 
 
     const onClose = () => setIsOpen(false);
     const onDeleteClose = () => setIsDeletOpen(false);
+    const onConfirmClose = () => setIsConfirmOpen(false);
 
     const cancelRef = React.useRef(null);
     const deleteRef = React.useRef(null);
     const toast = useToast();
 
-    const deleteOrder = async (id) => {
+    const cancelOrder = async (id) => {
         try {
-            await axios.delete(`food-order/${id}`).then((res) => {
-                // setTeams(res.data)
+            const data = {
+                status: "Cancelled",
+            };
+            await axios.put(`food-order/${id}`, data).then((res) => {
                 console.log(res.data);
             });
-
             await axios.get("food-order/").then((res) => {
                 // setTeams(res.data)
                 setOrders(res.data);
@@ -38,10 +41,10 @@ const FoodOrderData = (props) => {
         }
     };
 
-    const cancelOrder = async (id) => {
+    const confirmOrder = async (id) => {
         try {
             const data = {
-                status: "Cancelled",
+                status: "Delivered",
             };
             await axios.put(`food-order/${id}`, data).then((res) => {
                 console.log(res.data);
@@ -121,38 +124,84 @@ const FoodOrderData = (props) => {
                             {orders.status == "Cancelled" ? (
                                 <Text color="red.500"> (Cancelled)</Text>
                             ) : null}
-                             {orders.status == "Delivered" ? (
+                            {orders.status == "Delivered" ? (
                                 <Text color="red.500"> (Delivered)</Text>
                             ) : null}
                             </Text>
-
-                            
 
                         {orders.status == "Cancelled" || orders.status == "Delivered" ? null : (
                             <HStack space={3} mt={1}>
                                 
                                 <Pressable
-                                    onPress={() =>
-                                        navigation.navigate("Food Order Update", {
-                                            id: orders._id,
-                                        })
-                                    }
+                                    onPress={() => setIsConfirmOpen(!isOpen)}
                                 >
-                                    <Center p="2" h="12" bg="yellow.500" rounded="md">
+                                    <Center p="2" h="12" bg="yellow.600" rounded="md">
                                         <HStack>
                                             <Text color="white" fontSize="lg">
                                                 {" "}
-                                                Update Booking
+                                                Confirm Dilivery
                                             </Text>
                                             <Icon
                                                 mt={1}
-                                                as={<Ionicons name="pencil-outline" />}
+                                                as={<Ionicons name="checkmark-done-outline" />}
                                                 size="sm"
                                                 color="white"
                                             />
                                         </HStack>
                                     </Center>
                                 </Pressable>
+
+                                {isConfirmOpen && (
+                                    <AlertDialog
+                                        leastDestructiveRef={cancelRef}
+                                        isOpen={isConfirmOpen}
+                                        onClose={onConfirmClose}
+                                    >
+                                        <AlertDialog.Content>
+                                            <AlertDialog.CloseButton />
+                                            <AlertDialog.Header>
+                                                <Heading size="md">{`Deliver Confirm?`}</Heading>
+                                            </AlertDialog.Header>
+                                            <AlertDialog.Body>
+                                                <Text
+                                                    fontWeight="400"
+                                                    mt={2}
+                                                    mb={2}
+                                                    fontSize="sm"
+                                                    color="coolGray.800"
+                                                >
+                                                    Are you sure this food Order Delivered?
+                                                </Text>
+                                            </AlertDialog.Body>
+                                            <AlertDialog.Footer>
+                                                <Button.Group space={2}>
+                                                    <Button
+                                                        variant="unstyled"
+                                                        colorScheme="coolGray"
+                                                        onPress={onConfirmClose}
+                                                        ref={cancelRef}
+                                                    >
+                                                        No
+                                                    </Button>
+                                                    <Button
+                                                        variant="solid"
+                                                        colorScheme="red"
+                                                        startIcon={
+                                                            <Icon
+                                                                as={Ionicons}
+                                                                name="trash-outline"
+                                                                size="sm"
+                                                            />
+                                                        }
+                                                        onPress={() => confirmOrder(orders._id)}
+                                                    >
+                                                        Confirm
+                                                    </Button>
+                                                </Button.Group>
+                                            </AlertDialog.Footer>
+                                        </AlertDialog.Content>
+                                    </AlertDialog>
+                                )}
 
                                 <Pressable onPress={() => setIsDeletOpen(!isOpen)}>
                                     <Center h="12" p="2" bg="red.500" rounded="md">
@@ -163,7 +212,7 @@ const FoodOrderData = (props) => {
                                             </Text>
                                             <Icon
                                                 mt={1}
-                                                as={<Ionicons name="trash-outline" />}
+                                                as={<Ionicons name="close-outline" />}
                                                 size="sm"
                                                 color="white"
                                             />
@@ -190,7 +239,7 @@ const FoodOrderData = (props) => {
                                                     fontSize="sm"
                                                     color="coolGray.800"
                                                 >
-                                                    Are you sure you want to Cancel food Order?
+                                                    Are you sure Cancel this food Order?
                                                 </Text>
                                             </AlertDialog.Body>
                                             <AlertDialog.Footer>
@@ -296,7 +345,7 @@ const OrderFoods = ({ navigation }) => {
                     }
                 >
                       <Text fontSize="2xl" style={{marginLeft:'3%',fontWeight:'bold',marginTop:'4%',marginBottom:'5%'}}>
-                                    Kamindu's Food Orders
+                                   All Food Orders
                                 </Text>
                     {order &&
                         order.map((orders, index) => (

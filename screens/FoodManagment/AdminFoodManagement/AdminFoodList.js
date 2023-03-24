@@ -2,27 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import {
     Box, Heading, View, FormControl, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider, Button, Icon, Input,
-    WarningOutlineIcon, Divider, VStack, IconButton, useToast, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge
+    WarningOutlineIcon, Fab, Divider, VStack, IconButton, useToast, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import SkeletonLoader from "../../../components/SleletonLoader";
 import { useIsFocused } from "@react-navigation/native";
 import AlertBox from "../../../components/AlertBox";
+import { AntDesign } from "@expo/vector-icons";
 
 const FoodData = (props) => {
     const { food, navigation, setFoods } = props;
     const [isOpen, setIsOpen] = React.useState(false);
-
     const onClose = () => setIsOpen(false);
-
     const cancelRef = React.useRef(null);
-
     const [isDeletOpen, setIsDeletOpen] = React.useState(false);
     const onDeleteClose = () => setIsDeletOpen(false);
-
     const toast = useToast();
-
 
     //delete method
     const DeleteFoodItemById = async (id) => {
@@ -54,7 +50,7 @@ const FoodData = (props) => {
 
     return (
         <Box alignItems="center" style={styles.aaaaa}>
-            <Box style={{ marginRight: "5%", marginLeft: "5%", marginBottom: "5%", backgroundColor: "#F5F3F1" }} rounded="lg"
+            <Box style={{ marginRight: "5%", marginLeft: "5%", marginBottom: "5%", backgroundColor: "#e3e3e3" }} rounded="lg"
                 overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
                     borderColor: "coolGray.600",
                     backgroundColor: "gray.700",
@@ -139,15 +135,15 @@ const FoodData = (props) => {
                                     </AlertDialog.Body>
                                     <AlertDialog.Footer>
                                         <Button.Group space={2}>
-                                          
+
                                             <Button
                                                 variant="solid"
                                                 colorScheme="red"
                                                 onPress={onClose}
                                                 ref={cancelRef}
-                                               
+
                                             >
-                                               Back
+                                                Back
                                             </Button>
                                         </Button.Group>
                                     </AlertDialog.Footer>
@@ -415,6 +411,22 @@ const AdminFoodList = ({ navigation }) => {
                             ))}
 
                     </PresenceTransition>
+                    <Pressable>
+                <Box position="relative" h={100} w="100%">
+                    <Fab
+                        position="absolute"
+                        size="lg"
+                        icon={
+                            <Icon
+                                color="white"
+                                as={<AntDesign name="plus" />}
+                                size="lg"
+                            />
+                        }
+                        onPress={() => navigation.navigate("Add New Food")}
+                    />
+                </Box>
+            </Pressable>
                 </ScrollView>
             )}
         </NativeBaseProvider>

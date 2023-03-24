@@ -43,19 +43,12 @@ const ExampleScreen = ({ navigation }) => {
             onPress={() => navigation.navigate('Admin Food List')}
           />
           <Button
-            title="Go to Food Order Edit"
-            onPress={() => navigation.navigate("Food Order Update", {
-              id: "641d5e9133b05418b5075b34",
-            })
-            }
-          />
-          <Button
             title="Orders List"
             onPress={() => navigation.navigate('Orders List')}
           />
           <Button
-            title="Add New Food"
-            onPress={() => navigation.navigate('Add New Food')}
+            title="All Food Orders"
+            onPress={() => navigation.navigate('All Food Orders')}
           />
         </View>
       </View></>
