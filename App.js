@@ -33,11 +33,11 @@ import EditResponseScreen from "./screens/Inquiry/EditResponseScreen";
 import AddInquiryScreen from "./screens/Inquiry/AddInquiryScreen";
 import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
-import LoginScreen from "./screens/user/login";
 import RegisterScreen from "./screens/user/register";
-import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import LoginScreen from "./screens/user/login";
 import ProfileScreen from "./screens/user/profile";
- axios.defaults.baseURL = 'https://sliitfoodsystem.onrender.com';
+
+axios.defaults.baseURL = 'https://sliitfoodsystem.onrender.com/';
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
 
 
