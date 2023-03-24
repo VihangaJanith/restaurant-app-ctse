@@ -18,11 +18,7 @@ const MyInquiryScreen = ({ navigation }) => {
   const [inquiries, setInquiries] = useState();
 
   useEffect(() => {
-<<<<<<< HEAD
     axios.get("inquiry/").then((res) => {
-=======
-    axios.get("http://172.28.8.27:5000/inquiry/").then((res) => {
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
       setInquiries(res.data);
     });
   }, [navigation]);
@@ -39,11 +35,7 @@ const MyInquiryScreen = ({ navigation }) => {
       //  .then(response => response.json())
       //  .then(data => setTables(data))
       //  .catch(error => console.error(error))
-<<<<<<< HEAD
       axios.get("inquiry/").then((res) => {
-=======
-      axios.get("http://172.28.8.27:5000/inquiry/").then((res) => {
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
         setInquiries(res.data);
       });
     } catch (error) {
@@ -53,19 +45,11 @@ const MyInquiryScreen = ({ navigation }) => {
 
   const deleteInquiry = async (id) => {
     try {
-<<<<<<< HEAD
       await axios.delete(`inquiry/${id}`);
       alert("Inquiry Deleted Successfully");
       navigation.navigate("MyInquiry Screen");
 
       await axios.get("inquiry/").then((res) => {
-=======
-      await axios.delete(`http://172.28.8.27:5000/inquiry/${id}`);
-      alert("Inquiry Deleted Successfully");
-      navigation.navigate("MyInquiry Screen");
-
-      await axios.get("http://172.28.8.27:5000/inquiry/").then((res) => {
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
         setInquiries(res.data);
       });
     } catch (error) {

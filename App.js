@@ -17,7 +17,6 @@ import Eg from "./screens/Eg";
 
 
 import Ionicons from "react-native-vector-icons/Ionicons";
-<<<<<<< HEAD
 import AppBars from "./components/AppBar";
 import { TouchableOpacity } from "react-native";
 import axios from "axios";
@@ -29,22 +28,19 @@ import AllBookings from "./screens/tableBooking/admin/AllBookings";
 
 
 
-=======
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
 import AllUserInquiryScreen from "./screens/Inquiry/AllUserInquiryScreen";
 import EditResponseScreen from "./screens/Inquiry/EditResponseScreen";
 import AddInquiryScreen from "./screens/Inquiry/AddInquiryScreen";
 import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
-
-<<<<<<< HEAD
- axios.defaults.baseURL = 'http://192.168.8.113:5000/';
+import LoginScreen from "./screens/user/login";
+import RegisterScreen from "./screens/user/register";
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+import ProfileScreen from "./screens/user/profile";
+ axios.defaults.baseURL = 'https://sliitfoodsystem.onrender.com';
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
 
 
-=======
-//import Card from "./screens/Inquiry/Card";
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,6 +86,7 @@ function AppBar() {
 }
 
 export default function App() {
+ 
   function TabNav() {
     return (
       <Tab.Navigator 
@@ -111,33 +108,27 @@ export default function App() {
             else if (route.name === "Inquiries") {
               iconName = focused ? "create" : "create-outline";
             }
+            else if (route.name === "login") {
+              iconName = focused ? "create" : "create-outline";
+            }
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: "tomato",
           tabBarInactiveTintColor: "gray",
-<<<<<<< HEAD
         
           
         })}
       >
         <Tab.Screen name="Home" component={HomeScreen}  options={{ tabBarBadge: 3, headerShown: false }}/>
-=======
-        })}
-      >
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ tabBarBadge: 3 }}
-        />
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
         <Tab.Screen name="Example" component={ExampleScreen} />
         <Tab.Screen name="Inquiries" component={AddInquiryScreen} />
+        <Tab.Screen name="login" component={LoginScreen} />
+        <Tab.Screen name="profile" component={ProfileScreen} />
       </Tab.Navigator>
     );
   }
 
-<<<<<<< HEAD
 
 
 
@@ -169,10 +160,10 @@ export default function App() {
         <Menu w="190" trigger={triggerProps => {
         return  <TouchableOpacity  accessibilityLabel="More options menu" {...triggerProps}>
         <Ionicons name="ios-menu" size={25} color="white" />
-      </TouchableOpacity>;
-      }}>
-          <Menu.Item 
-          >My Orders</Menu.Item>
+        </TouchableOpacity>;
+        }}>
+
+          <Menu.Item onPress={() => navigation.navigate('login')}>My Orders</Menu.Item>
           <Center>
           <Divider w="90%"/>
           </Center>
@@ -180,12 +171,14 @@ export default function App() {
           <Center>
           <Divider w="90%"/>
           </Center>
-
           <Menu.Item>My Inquiries</Menu.Item>
           <Center>
           <Divider w="90%"/>
           </Center>
           <Menu.Item>My Profile</Menu.Item>
+          <Divider w="90%"/>
+          
+          <Menu.Item >LogOut</Menu.Item>
           
         </Menu>
     
@@ -213,11 +206,11 @@ export default function App() {
           },
         }}
 
-
         />
         <Stack.Screen name="Table List" component={TableList} />
         <Stack.Screen name="Eg" component={Eg} />
         <Stack.Screen name="Add Table" component={AddTable} />
+        
         <Stack.Screen name="Booking Screen" component={BookingScreen} />
         <Stack.Screen name="Update Table" component={UpdateTable} />
         <Stack.Screen name="Booked List" component={BookedTables}
@@ -235,25 +228,10 @@ export default function App() {
         />
         <Stack.Screen name="Update Booking" component={UpdateBooking} />
         <Stack.Screen name="AllBookings" component={AllBookings} />
-
+        <Stack.Screen name="register" component={RegisterScreen} />
 
 
         <Stack.Screen
-=======
-  return (
-    <View style={styles.bg}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="TabNav"
-            component={TabNav}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="Home Screen" component={HomeScreen} />
-          <Stack.Screen name="Example Screen" component={ExampleScreen} />
-
-          <Stack.Screen
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
             name="AllUserInquiry Screen"
             component={AllUserInquiryScreen}
           />
@@ -261,28 +239,17 @@ export default function App() {
             name="EditResponse Screen"
             component={EditResponseScreen}
           />
-<<<<<<< HEAD
            <Stack.Screen name="AddInquiry Screen" component={AddInquiryScreen} />
-=======
-          <Stack.Screen name="AddInquiry Screen" component={AddInquiryScreen} />
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
           <Stack.Screen
             name="EditInquiry Screen"
             component={EditInquiryScreen}
           />
-<<<<<<< HEAD
             <Stack.Screen name="MyInquiry Screen" component={MyInquiryScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
  
     </NativeBaseProvider>
-=======
-          <Stack.Screen name="MyInquiry Screen" component={MyInquiryScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
   );
 }
 

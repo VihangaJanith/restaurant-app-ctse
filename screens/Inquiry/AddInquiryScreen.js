@@ -31,11 +31,7 @@ const AddInquiryScreen = ({ navigation }) => {
           userid: "123",
         };
         await axios
-<<<<<<< HEAD
           .post("inquiry/add", newInquiry)
-=======
-          .post("http://172.28.8.27:5000/inquiry/add", newInquiry)
->>>>>>> 0a1ffb6f33f069fcbf677b36d9d601f3d978ca78
           .then((res) => {
             console.log(res.newInquiry);
           });
