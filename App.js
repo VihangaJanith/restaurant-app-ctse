@@ -34,6 +34,9 @@ import EditResponseScreen from "./screens/Inquiry/EditResponseScreen";
 import AddInquiryScreen from "./screens/Inquiry/AddInquiryScreen";
 import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
+import RegisterScreen from "./screens/user/register";
+import LoginScreen from "./screens/user/login";
+import ProfileScreen from "./screens/user/profile";
 
  //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
  //axios.defaults.baseURL = 'http://192.168.1.6:5000/';
@@ -142,6 +145,9 @@ export default function App({navigation}) {
             else if (route.name === "Inquiries") {
               iconName = focused ? "create" : "create-outline";
             }
+            else if (route.name === "login") {
+              iconName = focused ? "create" : "create-outline";
+            }
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -154,6 +160,13 @@ export default function App({navigation}) {
         <Tab.Screen name="Home" component={HomeScreen}  options={{ tabBarBadge: 3, headerShown: false }}/>
         <Tab.Screen name="Example" component={ExampleScreen} />
         <Tab.Screen name="Inquiries" component={AddInquiryScreen} />
+        <Tab.Screen name="login" component={LoginScreen}
+        options = {{
+          headerShown: false,
+        }}
+        
+        />
+        {/* <Tab.Screen name="profile" component={ProfileScreen} /> */}
       </Tab.Navigator>
     );
   }
@@ -215,11 +228,11 @@ export default function App({navigation}) {
           },
         }}
 
-
         />
         <Stack.Screen name="Table List" component={TableList} />
         <Stack.Screen name="Eg" component={Eg} />
         <Stack.Screen name="Add Table" component={AddTable} />
+        
         <Stack.Screen name="Booking Screen" component={BookingScreen} />
         <Stack.Screen name="Update Table" component={UpdateTable} />
         <Stack.Screen name="Booked List" component={BookedTables}
@@ -237,7 +250,7 @@ export default function App({navigation}) {
         />
         <Stack.Screen name="Update Booking" component={UpdateBooking} />
         <Stack.Screen name="AllBookings" component={AllBookings} />
-
+        <Stack.Screen name="register" component={RegisterScreen} />
 
 
         <Stack.Screen

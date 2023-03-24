@@ -5,7 +5,7 @@ const {dbConnection} =require('./dbCon')
 
 const tableRoute = require('./Routes/TableRoutes')
 const tableBookingRoute = require('./Routes/TableBookingRoutes')
-
+const userRoute = require('./Routes/userRoutes')
 const inquiryRoute = require('./Routes/InquiryRoutes')
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(cors());
 
 app.use('/table', tableRoute)
 app.use('/tablebooking', tableBookingRoute)
-
+app.use('/user', userRoute)
 app.use('/inquiry', inquiryRoute)
 
 
