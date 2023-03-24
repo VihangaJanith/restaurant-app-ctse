@@ -32,6 +32,17 @@ const ProfileScreen = ({ navigation }) => {
     const [name, setName] = useState("");
     const [mobile, setMobile] = useState("");
 
+    useEffect(() => {
+        setEmail("kavindupro40@gmail.com")
+        setName("Kavindu")
+        setMobile("071-988219")
+        
+
+    }, []);
+
+    btnUpdate = () =>  {
+        setName()
+    }
    
 
     useEffect(() => {
@@ -70,7 +81,7 @@ const ProfileScreen = ({ navigation }) => {
                 />
             </View> */}
 
-<Stack space={1} w="75%" maxW="300px" mx="auto">
+            <Stack space={1} w="75%" maxW="300px" mx="auto">
                 <Text> Name</Text>
                 <Input size="sm" placeholder="First Name" value={name} onChangeText={(e) => setName(e)}/>
                 <Text >Email</Text>
@@ -86,12 +97,12 @@ const ProfileScreen = ({ navigation }) => {
             variant="solid"
             colorScheme="lightBlue"
             startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
-            onPress={() => btnLogin()}
+            onPress={() => btnUpdate()}
             >
                 Login
             </Button>
 
-            <Text style={styles.baseText} onPress={()=>navigation.navigate('register')} >Register</Text>
+         //   <Text style={styles.baseText} onPress={()=>navigation.navigate('register')} >Register</Text>
         </Center>
     </NativeBaseProvider>
     );
