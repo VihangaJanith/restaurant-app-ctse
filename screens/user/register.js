@@ -12,7 +12,8 @@ import {
     Box,
     View,
     IconButton,
-    CloseIcon
+    CloseIcon,
+    useToast
   } from "native-base";
   import { Images } from 'react-native'
   import { Alert } from "native-base";
@@ -23,7 +24,7 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import {Image, ScrollView, TextInput} from 'react-native';
 import {StyleSheet} from "react-native";
-
+import AlertBox from "../../components/AlertBox";
 const RegisterScreen = ({ navigation }) => {
    
   const [show, setShow] = React.useState(false);
@@ -32,8 +33,88 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [mobile, setMobile] = useState("");
-
+    const toast = useToast();
     const btnRegsiter =() =>{
+
+        if (name == "") {
+            toast.show({
+                placement: "top",
+                render: () => (
+                  <AlertBox
+                    status="error"
+                    title="Name Is Empty"
+                    // description="Check Again and Fill All Fields"
+                  />
+                ),
+              });
+            return;
+        }
+        if (email == "") {
+            toast.show({
+                placement: "top",
+                render: () => (
+                  <AlertBox
+                    status="error"
+                    title="email Is Empty"
+                    // description="Check Again and Fill All Fields"
+                  />
+                ),
+              });
+            return;
+        }
+        if (password == "") {
+            toast.show({
+                placement: "top",
+                render: () => (
+                  <AlertBox
+                    status="error"
+                    title="password Is Empty"
+                    // description="Check Again and Fill All Fields"
+                  />
+                ),
+              });
+            return;
+        }
+        if (confirmPassword == "") {
+            toast.show({
+                placement: "top",
+                render: () => (
+                  <AlertBox
+                    status="error"
+                    title="confirm Password Is Empty"
+                    // description="Check Again and Fill All Fields"
+                  />
+                ),
+              });
+            return;
+        }
+        if (mobile == "") {
+            toast.show({
+                placement: "top",
+                render: () => (
+                  <AlertBox
+                    status="error"
+                    title="Mobile Is Empty"
+                    // description="Check Again and Fill All Fields"
+                  />
+                ),
+              });
+            return;
+        }
+        if (password != confirmPassword) {
+            toast.show({
+                placement: "top",
+                render: () => (
+                  <AlertBox
+                    status="error"
+                    title="Password Match error Is Empty"
+                    // description="Check Again and Fill All Fields"
+                  />
+                ),
+              });
+            return;
+        }
+        else{
         axios.post('https://sliitfoodsystem.onrender.com/user/reg',{
             name: name,
             email: email,
@@ -43,13 +124,24 @@ const RegisterScreen = ({ navigation }) => {
         })
         .then(response => {
             if(response.data.success){
-                alert("Registration Success");
-                navigation.navigate('Login')
+                toast.show({
+                    placement: "top",
+            
+                    render: () => (
+                      <AlertBox
+                        status="Success"
+                        title="Registration Success"
+                        description={`Welcome`}
+                      />
+                    ),
+                  },[]);
+                navigation.navigate('login')
             }
         })
         .catch(error => {
             console.log(error);
         });
+    }
     }
 
     return (

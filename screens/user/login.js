@@ -44,6 +44,18 @@ const LoginScreen = ({ navigation }) => {
         });
         navigation.navigate('Home')
       }
+      else if(email == "" || password == ""){
+        toast.show({
+          placement: "top",
+          render: () => (
+            <AlertBox
+              status="error"
+              title="Fill All Fields"
+              description="Check Again and Fill All Fields"
+            />
+          ),
+        });
+      }
       else{
       
         await axios.post('https://sliitfoodsystem.onrender.com/user/login',{
@@ -114,7 +126,7 @@ const LoginScreen = ({ navigation }) => {
                 <Input 
                     w={{base: "75%",md: "25%"}} 
                     InputLeftElement={<Icon as={<MaterialIcons name="person" />} size={5} ml="2" color="muted.400" />}
-                    placeholder="Name" 
+                    placeholder="Mobile Number" 
                     value={email}
                     onChangeText={(e) => setEmail(e)}
                 />

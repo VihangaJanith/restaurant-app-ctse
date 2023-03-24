@@ -35,51 +35,44 @@ const ProfileScreen = ({ navigation }) => {
     useEffect(() => {
         setEmail("kavindupro40@gmail.com")
         setName("Kavindu")
-        setMobile("071-988219")
-        
+        setMobile("0719882819")
+        setPassword("abcd")
 
     }, []);
 
     btnUpdate = () =>  {
-        setName("kamindu")
+        setMobile(mobile)
+        setEmail(email)
+        setName(name)
+        setPassword(password)
+
+        toast.show({
+            placement: "top",
+    
+            render: () => (
+              <AlertBox
+                status="Success"
+                title="Updated Success"
+                description={`Welcome`}
+              />
+            ),
+          },[]);
     }
    
 
-    useEffect(() => {
-        
-        AsyncStorage.getItem("token").then((value) => {
-            console.log({token:value.substring(2, value.length - 2)})
-            axios.post('https://sliitfoodsystem.onrender.com/user/view',{
-                token: {token:value.substring(2, value.length - 2)}
-            })
-            .then(response => {
-                if(response.data){
-                    console.log(response.data);
-    
-                }
-                else{
-                    
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        });
-        
-        
-    } , []);
-
+   
     return (
     <NativeBaseProvider>
         
         <Center flex={1} px="3">
                
-             {/* <View style={{marginTop: 10 }}>
+                 <View style={{marginTop: 10 }}>
                 <Image
-                    source={require('../../assets/profile.png')}
-                    style={{width: 200, height: 200,marginBottom: 30, alignSelf: 'center' }}
+                    source={require('../../assets/user-avatar.png')}
+                    style={{width: 100, height: 100,marginBottom: 30, alignSelf: 'center' }}
+                    alt="Alternate Text"
                 />
-            </View> */}
+            </View>
 
             <Stack space={1} w="75%" maxW="300px" mx="auto">
                 <Text> Name</Text>
@@ -89,7 +82,7 @@ const ProfileScreen = ({ navigation }) => {
                 <Text >Mobile Number</Text>
                 <Input size="sm" placeholder="071-9882***" value={mobile} onChangeText={(e) => setMobile(e)} />
                 <Text >Password</Text>
-                <Input size="sm" placeholder="Password" value={password} onChangeText={(e) => setPassword(e)} />
+                <Input type="password"size="sm" placeholder="Password" value={password} onChangeText={(e) => setPassword(e)} />
             </Stack>;
 
             <Button
