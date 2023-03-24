@@ -43,7 +43,7 @@ const FoodOrderData = (props) => {
             const data = {
                 status: "Cancelled",
             };
-            await axios.put(`food-order/${id}`, data).then((res) => {
+            await axios.delete(`food-order/${id}`, data).then((res) => {
                 console.log(res.data);
             });
             await axios.get("food-order/").then((res) => {

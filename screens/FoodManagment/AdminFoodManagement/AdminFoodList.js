@@ -2,35 +2,54 @@ import React, { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import {
     Box, Heading, View, FormControl, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider, Button, Icon, Input,
-    WarningOutlineIcon, Divider, VStack, IconButton, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge
+    WarningOutlineIcon, Divider, VStack, IconButton,useToast, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import SkeletonLoader from "../../../components/SleletonLoader";
 import { useIsFocused } from "@react-navigation/native";
+import AlertBox from "../../../components/AlertBox";
 
 const FoodData = (props) => {
-    const { food, navigation } = props;
+    const { food, navigation,setFoods } = props;
     const [isOpen, setIsOpen] = React.useState(false);
 
     const onClose = () => setIsOpen(false);
 
     const cancelRef = React.useRef(null);
 
-    const [quantity, setQuantity] = useState(1);
-    const [total, setTotal] = useState(0);
+    const [isDeletOpen, setIsDeletOpen] = React.useState(false);
+    const onDeleteClose = () => setIsDeletOpen(false);
 
-    const setPlus = () => {
-        setQuantity(quantity + 1);
-    }
-    const setMinus = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1);
+    const toast = useToast();
+
+
+    //delete method
+    const DeleteFoodItemById = async (id) => {
+        try {
+             const res = await axios.delete(`food/${id}`)
+            console.log(res.data);
+
+                toast.show({
+                    placement: "top",
+    
+                    render: () => (
+                        <AlertBox
+                            status="success"
+                            title="Delete Success"
+                            description="Delete Successfully !!!"
+                        />
+                    ),
+                });
+
+                await axios.get("food/").then((res) => {
+                    setFoods(res.data);
+                });
+            
+        } catch (error) {
+            console.log(error);
         }
-    }
-    useEffect(() => {
-        setTotal(parseInt(food.price) * quantity)
-    }, [quantity, food.price])
+    };
 
 
     return (
@@ -69,117 +88,109 @@ const FoodData = (props) => {
                         </Text>
                     </Stack>
                     <Text fontWeight="400">{food.description}</Text>
+                    <Center>
+                        <Button.Group space={2}>
+                            <Button
+                                variant="solid"
+                                colorScheme="blue"
+                                onPress={() =>
+                                    navigation.navigate("Food Order", {
+                                        id: food._id
+                                    })
+                                }
+                                startIcon={
+                                    <Icon as={Ionicons} name="cart-sharp" size="sm" />
+                                }
+                            >
+                                View
+                            </Button>
+                            <Button
+                                variant="solid"
+                                colorScheme="yellow"
+                                onPress={() =>
+                                    navigation.navigate("Food Order", {
+                                        id: food._id
+                                    })
+                                }
+                                startIcon={
+                                    <Icon as={Ionicons} name="cart-sharp" size="sm" />
+                                }
+                            >
+                                Update
+                            </Button>
+                            <Button
+                                variant="solid"
+                                colorScheme="red"
+                                onPress={() => setIsDeletOpen(!isOpen)}
+                                startIcon={
+                                    <Icon as={Ionicons} name="cart-sharp" size="sm" />
+                                }
+                            >
+                                Delete
+                            </Button>
+                        </Button.Group>
 
-                    <Button
-                        variant="solid"
-                        colorScheme="red"
-                        startIcon={<Icon as={Ionicons} name="cart-sharp" size="sm" />}
-                        onPress={() => setIsOpen(!isOpen)}
-                    >
-                        Order Now
-                    </Button>
-
-                    <AlertDialog
-                        leastDestructiveRef={cancelRef}
-                        isOpen={isOpen}
-                        onClose={onClose}
-                    >
-                        <AlertDialog.Content>
-                            <AlertDialog.CloseButton />
-                            <AlertDialog.Header>
-                                <Heading size="md">{`${food.foodName}`}</Heading>
-                                {/* {`${table.name} Table`} */}
-                            </AlertDialog.Header>
-                            <AlertDialog.Body>
-                                <AspectRatio
-                                    w="100%"
-                                    ratio={16 / 9}
-                                    rounded="lg"
-                                    overflow="hidden"
-                                >
-                                    <Image
-                                        source={{
-                                            uri: food.foodImage,
-                                        }}
-                                        alt="image"
-                                    />
-                                </AspectRatio>
-                                <Text
-                                    fontWeight="400"
-                                    mt={2}
-                                    mb={2}
-                                    fontSize="sm"
-                                    color="coolGray.800"
-                                >
-                                    {food.description}
-                                </Text>
-
-                                <View>
-                                    <Center>
-                                        <Button.Group space={2} >
-
+                        {isDeletOpen && (
+                            <AlertDialog
+                                leastDestructiveRef={cancelRef}
+                                isOpen={isDeletOpen}
+                                onClose={onDeleteClose}
+                            >
+                                <AlertDialog.Content>
+                                    <AlertDialog.CloseButton />
+                                    <AlertDialog.Header>
+                                        <Heading size="md">{`Delete Food?`}</Heading>
+                                    </AlertDialog.Header>
+                                    <AlertDialog.Body>
+                                        <Text
+                                            fontWeight="400"
+                                            mt={2}
+                                            mb={2}
+                                            fontSize="sm"
+                                            color="coolGray.800"
+                                        >
+                                            Are you sure you want to Delete Food?
+                                        </Text>
+                                    </AlertDialog.Body>
+                                    <AlertDialog.Footer>
+                                        <Button.Group space={2}>
                                             <Button
                                                 variant="solid"
-                                                colorScheme="blue"
-                                                style={{ width: '15%' }}
-                                                startIcon={<Icon as={Ionicons} name="remove" size="md" />}
-                                                onPress={() => setMinus()}
+                                                colorScheme="coolGray"
+                                                onPress={onDeleteClose}
+                                                ref={cancelRef}
                                             >
+                                                No
                                             </Button>
-                                            <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: '5%', marginLeft: '7%', marginRight: '7%' }}>{quantity}</Text>
-
                                             <Button
                                                 variant="solid"
-                                                style={{ width: '15%' }}
-                                                colorScheme="blue"
-                                                startIcon={<Icon as={Ionicons} name="add" size="md"
-
-                                                />}
-                                                onPress={() => setPlus()}
+                                                colorScheme="red"
+                                                startIcon={
+                                                    <Icon
+                                                        as={Ionicons}
+                                                        name="trash-outline"
+                                                        size="sm"
+                                                    />
+                                                }
+                                                onPress={() => DeleteFoodItemById(food._id)}
                                             >
+                                                Delete
                                             </Button>
-
-
                                         </Button.Group>
-                                    </Center>
-                                </View>
+                                    </AlertDialog.Footer>
+                                </AlertDialog.Content>
+                            </AlertDialog>
+                        )}
 
-                            </AlertDialog.Body>
-                            <AlertDialog.Footer>
-                                <Button.Group space={2}>
-                                    <Button
-                                        variant="unstyled"
-                                        colorScheme="coolGray"
-                                        onPress={onClose}
-                                        ref={cancelRef}
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        variant="solid"
-                                        colorScheme="red"
-                                        onPress={() =>
-                                            navigation.navigate("Food Order", {
-                                                id: food._id, qty: quantity, foodImage: food.foodImage
-                                            })
-                                        }
-                                        startIcon={
-                                            <Icon as={Ionicons} name="cart-sharp" size="sm" />
-                                        }
-                                    >
-                                        Order Now
-                                    </Button>
-                                </Button.Group>
-                            </AlertDialog.Footer>
-                        </AlertDialog.Content>
-                    </AlertDialog>
+                    </Center>
+
                 </Stack>
             </Box>
         </Box>
     );
 };
 
-const FoodList = ({ navigation }) => {
+const AdminFoodList = ({ navigation }) => {
     const [foods, setFoods] = useState();
     const [searchkey, setsearchkey] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -299,9 +310,10 @@ const FoodList = ({ navigation }) => {
             ) : (
                 <Box>
                     {notab && (
-                        <PresenceTransition visible={notab} initial={{ opacity: 0, }} 
-                        animate={{ opacity: 1, transition: { duration: 500, }, }}
+                        <PresenceTransition visible={notab} initial={{ opacity: 0, }}
+                            animate={{ opacity: 1, transition: { duration: 500, }, }}
                             exit={{ opacity: 0, transition: { duration: 550 }, }} >
+                                
                             <Box alignSelf="center" px="3" py="2" width={500} _text={{
                                 alignSelf: "center", fontSize: "md", fontWeight: "medium",
                                 color: "warmGray.50", letterSpacing: "lg"
@@ -337,19 +349,20 @@ const FoodList = ({ navigation }) => {
                             opacity: 1,
                             transition: {
                                 duration: 500,
-                            },
+                            }
                         }}
                     >
-                        <Center flex={1} px="3">
+                       
                             {foods &&
                                 foods.map((food, index) => (
                                     <FoodData
                                         food={food}
+                                        setFoods={setFoods}
                                         key={index}
                                         navigation={navigation}
                                     />
                                 ))}
-                        </Center>
+                        
                     </PresenceTransition>
                 </ScrollView>
             )}
@@ -357,13 +370,12 @@ const FoodList = ({ navigation }) => {
     );
 };
 
-export default FoodList;
+export default AdminFoodList;
 
 const styles = StyleSheet.create({
     aaaaa: {
         boxShadow: "1px 1px 1px 1px #ccc",
         border: "1px solid red",
-
         marginTop: 5,
         marginBottom: 5,
     },

@@ -40,7 +40,7 @@ const ExampleScreen = ({ navigation }) => {
           <Text>Example Food Screen</Text>
           <Button
             title="Go to Admin Food..."
-            onPress={() => navigation.navigate('Home Screen')}
+            onPress={() => navigation.navigate('Admin Food List')}
           />
           <Button
             title="Go to Food Order Edit"
