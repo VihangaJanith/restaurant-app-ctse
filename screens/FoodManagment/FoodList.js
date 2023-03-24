@@ -201,7 +201,7 @@ const FoodData = (props) => {
                     variant="solid"
                     colorScheme="red"
                     onPress={() =>
-                      navigation.navigate("Food Order Screen", {
+                      navigation.navigate("Food Order", {
                         id: food._id, qty: quantity,foodImage:food.foodImage
                       })
                     }

@@ -7,8 +7,8 @@ import React, { useEffect, useState } from "react";
 import AlertBox from "../../components/AlertBox";
 import { TextInput } from 'react-native';
 
-const FoodOrderScreen = ({ navigation, route }) => {
-    const { id, qty, foodImage } = route.params;
+const FoodOrderUpadteScreen = ({ navigation, route }) => {
+    const { id} = route.params;
 
     const [userid, setUserid] = useState("");
 
@@ -16,9 +16,12 @@ const FoodOrderScreen = ({ navigation, route }) => {
     const [cusname, setCusname] = useState("");
     const [address, setAddress] = useState("");
     const [foodname, setFoodname] = useState("");
+    const [foodImage, setFoodImage] = useState();
     const [foodPrice, setFoodPrice] = useState("0");
-    const [quantity, setQuantity] = useState("");
+    const [quantity, setQuantity] = useState();
     const [total, setTotal] = useState("");
+
+    const [foodId, setFoodId] = useState("");
 
     const toast = useToast();
 
@@ -26,17 +29,28 @@ const FoodOrderScreen = ({ navigation, route }) => {
     const [errorCusName, setErrorCusName] = useState(false);
     const [errorAddress, setErrorAddress] = useState(false);
 
+//setform data
+    useEffect(() => {
+        axios.get(`food-order/${id}`).then((res) => {
+            setPhone(res.data.phone);
+            setAddress(res.data.address);
+            setCusname(res.data.cusname);
+            setFoodId(res.data.foodId);
+            setQuantity(res.data.quantity)
+        });
+    }, []);
+
     //Load food data
     useEffect(() => {
-        console.log(id);
-        loadTabledata(id);
-    }, []);
+        console.log(foodId);
+        loadTabledata(foodId);
+    }, [foodId]);
 
     const loadTabledata = (id) => {
         axios.get(`food/${id}`).then((res) => {
             setFoodname(res.data.foodName);
             setFoodPrice(res.data.price)
-            setQuantity(qty.toString())
+            setFoodImage(res.data.foodImage)
         });
     };
 
@@ -57,55 +71,52 @@ const FoodOrderScreen = ({ navigation, route }) => {
 
     //calculate total
     useEffect(() => {
-        let subtotal = parseInt(foodPrice) * parseInt(qty)
+        let subtotal = parseInt(foodPrice) * parseInt(quantity)
 
         setTotal(`Rs.${subtotal}.00`);
     }, [foodPrice]);
 
     //On Submit
-    const orderFood = () => {
-
-        if (phone.length < 10) {
-            setErrorPhone("Please Enter a Valid Phone Number");
-        }if (phone === "") {
-            setErrorPhone("is a requeired field");
-        }if (cusname === "") {
-            setErrorCusName("is a requeired field");
-        }if (address === "") {
-            setErrorAddress("is a requeired field");
-        } else {
-            const data = {
-                cusname,
-                address,
-                phone,
-                foodId:id,
-                quantity,
-                total,
-                userid: "111"
-            };
-            console.log(data);
-            axios.post("food-order/add", data).then((res) => {
+    const updateOrder = async () => {
+        try {
+            if (phone.length < 10) {
+                setErrorPhone("Please Enter a Valid Phone Number");
+            } if (phone === "") {
+                setErrorPhone("is a requeired field");
+            } if (cusname === "") {
+                setErrorCusName("is a requeired field");
+            } if (address === "") {
+                setErrorAddress("is a requeired field");
+            } if (cusname && address && phone) {
+                const res = await axios.put(`food-order/${id}`, {
+                    address,
+                    cusname,
+                    phone,
+                });
                 console.log(res.data);
-            });
-            toast.show({
-                placement: "top",
 
-                render: () => (
-                    <AlertBox
-                        status="success"
-                        title="Order Success"
-                        description="Your Order Success !!!"
-                    />
-                ),
-            });
-            navigation.navigate("Home");
+                toast.show({
+                    placement: "top",
+    
+                    render: () => (
+                        <AlertBox
+                            status="success"
+                            title="Order Success"
+                            description="Your Order Successfully Update !!!"
+                        />
+                    ),
+                });
+                navigation.navigate("Orders List");
+            }
+        } catch (error) {
+            console.log(error);
         }
-
     };
 
     return (
         <Stack space={4} w="95%" maxW="350px" mx="auto" minH={"90%"} mt={3}>
             <Heading>{foodname}</Heading>
+            
             <AspectRatio w="100%" ratio={16 / 9}>
                 <Image
                     source={{
@@ -253,13 +264,13 @@ const FoodOrderScreen = ({ navigation, route }) => {
         <Button
           colorScheme="orange"
           size="lg"
-          onPress={() => orderFood()}
+          onPress={() => updateOrder()}
         >
-          Confirm Order
+          Update Order Details
         </Button>
       </View>
         </Stack>
     );
 };
 
-export default FoodOrderScreen;
+export default FoodOrderUpadteScreen;

@@ -12,7 +12,8 @@ router.post("/add", async(req, res) => {
             foodname:req.body.foodname,
             quantity:req.body.quantity,
             total:req.body.total,
-            userid:req.body.userid
+            userid:req.body.userid,
+            foodId:req.body.foodId
         }
         
         const newOrder = new FoodOrders(user);

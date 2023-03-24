@@ -14,12 +14,12 @@ const FoodOrderSchema = new Schema({
         type:String,
         required:true
     },
-    foodname:{
+    foodId:{
         type:String,
-        required:true
+        required:false
     },
     quantity:{
-        type:Number,
+        type:String,
         required:true
     },
     total:{
@@ -33,6 +33,11 @@ const FoodOrderSchema = new Schema({
     userid:{
         type:String,
         required:true
+    },
+    status:{
+        type:String,
+        required:false,
+        default:"Pending"
     }
 
 },{
