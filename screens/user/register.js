@@ -84,7 +84,7 @@ const RegisterScreen = ({ navigation }) => {
             <Button
             style={{ width: 250, marginLeft: 10, marginTop: 25 }}
             variant="solid"
-            colorScheme="lightBlue"
+            colorScheme="red"
             startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
             onPress={() => btnRegsiter()}
             >

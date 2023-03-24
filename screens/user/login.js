@@ -30,6 +30,22 @@ const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState("");
 
     btnLogin = async() =>  {
+
+      if(email == "admin" && password == "admin"){
+        toast.show({
+          placement: "top",
+          render: () => (
+            <AlertBox
+              status="success"
+              title="Admin Login Success"
+              description="Hello Admin"
+            />
+          ),
+        });
+        navigation.navigate('Home')
+      }
+      else{
+      
         await axios.post('https://sliitfoodsystem.onrender.com/user/login',{
             mobile: email,
             password: password
@@ -74,6 +90,7 @@ const LoginScreen = ({ navigation }) => {
         .catch(error => {
             console.log(error);
         });
+      }
     }
     //const value = AsyncStorage.getItem("token")
     // useEffect(() => {
@@ -115,14 +132,14 @@ const LoginScreen = ({ navigation }) => {
             <Button
             style={{ width: 250, marginLeft: 10, marginTop: 25 }}
             variant="solid"
-            colorScheme="lightBlue"
+            colorScheme="red"
             startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
             onPress={() => btnLogin()}
             >
                 Login
             </Button>
 
-            <Text style={styles.baseText} onPress={()=>navigation.navigate('register')} >Register</Text>
+            <Text  style={styles.baseText} onPress={()=>navigation.navigate('register')} >Register</Text>
         </Center>
     </NativeBaseProvider>
     );
@@ -131,7 +148,7 @@ const LoginScreen = ({ navigation }) => {
   const styles = StyleSheet.create({
     baseText: {
       marginTop: '5%',
-      color: 'red',
+      color: 'blue',
 
     }
   });

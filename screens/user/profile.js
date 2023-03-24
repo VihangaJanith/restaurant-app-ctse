@@ -41,7 +41,7 @@ const ProfileScreen = ({ navigation }) => {
     }, []);
 
     btnUpdate = () =>  {
-        setName()
+        setName("kamindu")
     }
    
 
@@ -95,14 +95,11 @@ const ProfileScreen = ({ navigation }) => {
             <Button
             style={{ width: 250, marginLeft: 10, marginTop: 25 }}
             variant="solid"
-            colorScheme="lightBlue"
+            colorScheme="red"
             startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
             onPress={() => btnUpdate()}
-            >
-                Login
+            > Update Details
             </Button>
-
-         //   <Text style={styles.baseText} onPress={()=>navigation.navigate('register')} >Register</Text>
         </Center>
     </NativeBaseProvider>
     );
