@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import axios from "axios";
-import { Alert, RefreshControl, ScrollView, StyleSheet } from "react-native";
+import { Alert, ImageBackground, RefreshControl, ScrollView, StyleSheet } from "react-native";
 import {
   Box,
   Fab,
@@ -38,6 +38,10 @@ import { Ionicons } from "@expo/vector-icons";
 import LandscapeLoader from "../../../components/LandscapeLoader";
 import { useIsFocused } from "@react-navigation/native";
 import DetailsLoader from "../../../components/DetailsLoader";
+import { useNavigation } from '@react-navigation/native'; 
+import AlertBox from "../../../components/AlertBox";
+import NoData from "../../../components/NoData";
+
 
 // import { Container } from './styles';
 
@@ -52,6 +56,13 @@ const GG = (props) => {
   const cancelRef = React.useRef(null);
   const deleteRef = React.useRef(null);
   const toast = useToast();
+
+
+
+  const nav = useNavigation();
+
+  
+  
   
 
   const deleteTeam = async (id) => {
@@ -60,7 +71,20 @@ const GG = (props) => {
         // setTeams(res.data)
         console.log(res.data);
       });
+      toast.show({
+        placement: "top",
+
+        render: () => (
+          <AlertBox
+            status="success"
+            title="Reservation is Deleted"
+            description="Table Reservation has been Deleted Successfully !!!"
+          />
+        ),
+      });
+
       onRefresh();
+
       await axios.get("tablebooking/").then((res) => {
         // setTeams(res.data)
         setTables(res.data);
@@ -77,6 +101,17 @@ const GG = (props) => {
       };
       await axios.put(`tablebooking/${id}`, data).then((res) => {
         console.log(res.data);
+      });
+      toast.show({
+        placement: "top",
+
+        render: () => (
+          <AlertBox
+            status="success"
+            title="Reservation is Cancelled"
+            description="Table Reservation has been Canceled !!!"
+          />
+        ),
       });
       onRefresh();
       await axios.get("tablebooking/").then((res) => {
@@ -152,9 +187,9 @@ const GG = (props) => {
             
             : (
               <HStack  mt={1}>
-                {/* <Pressable
+                <Pressable
                   onPress={() =>
-                    navigation.navigate("Update Booking", {
+                    nav.navigate("Update Booking", {
                       id: table._id,
                     })
                   }
@@ -173,7 +208,7 @@ const GG = (props) => {
                       />
                     </HStack>
                   </Center>
-                </Pressable> */}
+                </Pressable>
 
                 <Pressable onPress={() => setIsDeletOpen(!isOpen)}>
                   <Center h="12" p="2" bg="red.500" rounded="md">
@@ -307,6 +342,7 @@ const FirstRoute = ({  navigation }) => {
         setTables(res.data);
         const tableIds = res.data.map((table) => table.tableId);
         setId(tableIds);
+       
 
         // console.log(res.data);
         setIsLoading(false);
@@ -332,6 +368,8 @@ const FirstRoute = ({  navigation }) => {
       });
   }, []);
 
+  const pendingTables = tables.filter((table) => table.status === "Pending");
+
   return (
     <>
       {isLoading ? (
@@ -344,6 +382,16 @@ const FirstRoute = ({  navigation }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
+          {pendingTables.length === 0 ?
+
+          <NoData 
+          onRefresh={onRefresh}
+          message="No Table Reservations"
+          />
+          
+          : <>
+         
+
           {tables &&
             tables.map((table, index) => (
               <>
@@ -359,6 +407,7 @@ const FirstRoute = ({  navigation }) => {
                 ) : null}
               </>
             ))}
+            </>}
         </ScrollView>
       )}
     </>
@@ -415,6 +464,8 @@ const SecondRoute = ({ index, navigation }) => {
       });
   }, []);
 
+  const pendingTables = tables.filter((table) => table.status !== "Pending");
+
   return (
     <>
       {isLoading ? (
@@ -427,6 +478,17 @@ const SecondRoute = ({ index, navigation }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
+          {pendingTables.length === 0 ?
+
+          <NoData
+          onRefresh={onRefresh}
+          message="No Canceled Reservations"
+          />
+            
+            
+            :
+            <>
+
           {tables &&
             tables.map((table, index) => (
               <>
@@ -441,6 +503,7 @@ const SecondRoute = ({ index, navigation }) => {
                 )}
               </>
             ))}
+            </>}
         </ScrollView>
       )}
     </>
@@ -457,7 +520,7 @@ const renderScene = SceneMap({
 
   first: FirstRoute,
   second: () => <View>
-    <Text>Second</Text>
+
   <SecondRoute/>
   </View>
 
@@ -470,21 +533,26 @@ return (
     {...props}
     style={{ backgroundColor: "#f4511e" }}
     activeColor={"white"}
-    inactiveColor={"gray"}
-    fontWeight={"bold"}
+    // inactiveColor={"gray"}
+    // fontWeight={"bold"}
    
     renderLabel={({ route, focused }) => (
       <View style={{ flexDirection: "row" }}>
       
-        <Text fontSize="md" style={{ color: focused ? "white" : "gray"  }}>
+        <Text fontSize="md" style={{ color:"white" , opacity: focused ? 1 : 0.8
+       }}>
           {route.title}{' '}
         </Text>
         {route.key === "second" && (
           <Badge // bg="red.400"
-          colorScheme="danger" rounded="full"  zIndex={1} variant="solid" alignSelf="flex-end" _text={{
-            fontSize: 12
-          }}>
+          variant="subtle"
+          style={{ color:"white" , opacity: focused ? 1 : 0.8}}
+           rounded="full"  zIndex={1} alignSelf="flex-end">
+            <Text fontSize="xs" fontWeight="bold"  style={{ color: 'tomato'  }}>
+
             {itemLength}
+            </Text>
+
             </Badge>
         )}
       </View>

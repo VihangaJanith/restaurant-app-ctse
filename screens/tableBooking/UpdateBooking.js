@@ -9,11 +9,14 @@ import {
   useToast,
   Stack,
   WarningOutlineIcon,
+  HStack,
+  Heading,
 } from "native-base";
 import { View, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { MaterialIcons } from "@expo/vector-icons";
+import AlertBox from "../../components/AlertBox";
 
 // import { Container } from './styles';
 
@@ -143,6 +146,21 @@ const UpdateBooking = ({ navigation, route }) => {
           time,
           phone,
         });
+
+        toast.show({
+          placement: "top",
+  
+          render: () => (
+            <AlertBox
+              status="success"
+              title="Table Reservation Update Successfully"
+              description="Your Table Reservation has been Updated Successfully !!!"
+            />
+          ),
+        });
+
+
+
         console.log(res.data);
         // navigation.navigate('Booking')
         navigation.navigate("Booked List");
@@ -154,179 +172,162 @@ const UpdateBooking = ({ navigation, route }) => {
 
   return (
     <Stack space={4} w="75%" maxW="300px" mx="auto" mt={3}>
-      <Text style={{ fontSize: 20, fontWeight: "bold" }}>Book {tabletype}</Text>
+    <Heading>Update Your Reservation</Heading>
 
-      <Input
-        variant="outline"
-        placeholder="Table Type"
-        value={tabletype}
-        disabled={true}
-        mb={4}
-        mt={4}
-        size="lg"
-      />
 
-      {/* <Input
-        variant="outline"
-        placeholder="User ID"
-        value={userid}
-        disabled={true}
-      /> */}
+  <View mt={3}>
+    <Text style={{ fontSize: 15, fontWeight: "bold" }}>Table Type</Text>
 
-      <Input
-        variant="outline"
-        placeholder="Date"
-        value={date}
-        size="lg"
-        InputRightElement={
-          <Button
-            rounded="xs"
-            w="2/6"
-            h="full"
-            onPress={showDatePicker}
-            colorScheme="amber"
-          >
-            <Ionicons name="calendar" size={24} color="white" />
-          </Button>
-        }
-      />
+    <Input
+      variant="outline"
+      placeholder="Table Type"
+      value={tabletype}
+      disabled={true}
+      mt={2}
+      size="lg"
+    />
+  </View>
 
-      {errorDate && (
-        <Text style={{ color: "red" }}>
-          Please Select a Date{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
+  <View>
+    <Text style={{ fontSize: 15, fontWeight: "bold" }}>Date</Text>
+    <Input
+      variant="outline"
+      placeholder="Date"
+      value={date}
+      size="lg"
+      mt={2}
+      InputRightElement={
+        <Button
+          rounded="xs"
+          w="2/6"
+          h="full"
+          onPress={showDatePicker}
+          colorScheme="orange"
+        >
+          <Ionicons name="calendar" size={24} color="white" />
+        </Button>
+      }
+    />
 
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        backdropStyleIOS={{ backgroundColor: "red" }}
-        cancelTextIOS="Cancel"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
+    {errorDate && (
+      <View mt={2}>
+        <HStack 
+        >
+      <Text style={{ color: "red" }}>
+        Please Select a Date{" "}
+      </Text>
+      <Icon
+          style={{ color: "red" }}
+          as={Ionicons}
+          name="alert-circle-outline"
+          size="sm"
+        />
+        </HStack>
+    </View>
+    )}
 
-      <Input
-        variant="outline"
-        placeholder="Time"
-        value={time}
-        size="lg"
-        InputRightElement={
-          <Button
-            rounded="xs"
-            w="2/6"
-            h="full"
-            onPress={showTimePicker}
-            colorScheme="amber"
-          >
-            <Ionicons name="time" size={24} color="white" />
-          </Button>
-        }
-      />
 
-      {errorTime && (
-        <Text style={{ color: "red" }}>
-          Please Select a Time{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
 
-      <DateTimePickerModal
-        isVisible={isTimePickerVisible}
-        mode="time"
-        onConfirm={handleTimeConfirm}
-        onCancel={hideTimePicker}
-        minimumDate={minimumTime}
-        maximumDate={maximumTime}
-      />
+    
 
-      <Input
-        variant="outline"
-        placeholder="Phone"
-        value={phone}
-        size="lg"
-        onChangeText={handlePhoneChange}
-      />
-      {errorPhone && (
-        <Text style={{ color: "red" }}>
-          Please Enter a Phone Number{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
 
-      {/* 
-      <Input
-        variant="outline"
-        placeholder="Description"
-        value={description}
-        onChangeText={handleDescriptionChange}
-      />
-      {errorDescription && (
-        <Text style={{ color: "red" }}>
-          Please Enter a Table Description{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
-      <Input
-        variant="outline"
-        placeholder="Users"
-        value={users}
-        onChangeText={handleUsersChange}
-      />
-      {errorUsers && (
-        <Text style={{ color: "red" }}>
-          Please Enter a Table User Amount{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
-      <Input
-        variant="outline"
-        placeholder="Image"
-        value={image}
-        onChangeText={handleImageChange}
-      />
-      {errorImage && (
-        <Text style={{ color: "red" }}>
-          Please Enter a Image URL{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )} */}
+    <DateTimePickerModal
+      isVisible={isDatePickerVisible}
+      mode="date"
+      backdropStyleIOS={{ backgroundColor: "red" }}
+      cancelTextIOS="Cancel"
+      minimumDate={new Date()}
+      onConfirm={handleConfirm}
+      onCancel={hideDatePicker}
+    />
+    
+    </View>
 
-      <Button colorScheme="orange" size="sm" onPress={() => updateBooking()}>
-        Add Table
-      </Button>
-    </Stack>
+
+    <View >
+    <Text style={{ fontSize: 15, fontWeight: "bold" }}>Time</Text>
+
+    <Input
+      variant="outline"
+      placeholder="Time"
+      value={time}
+      size="lg"
+      mt={2}
+      InputRightElement={
+        <Button
+          rounded="xs"
+          w="2/6"
+          h="full"
+          onPress={showTimePicker}
+          colorScheme="orange"
+        >
+          <Ionicons name="time" size={24} color="white" />
+        </Button>
+      }
+    />
+
+{errorTime && (
+      <View mt={2}>
+        <HStack 
+        >
+      <Text style={{ color: "red" }}>
+        Please Select a Time{" "}
+      </Text>
+      <Icon
+          style={{ color: "red" }}
+          as={Ionicons}
+          name="alert-circle-outline"
+          size="sm"
+        />
+        </HStack>
+    </View>
+    )}
+
+    <DateTimePickerModal
+      isVisible={isTimePickerVisible}
+      mode="time"
+      onConfirm={handleTimeConfirm}
+      onCancel={hideTimePicker}
+      minimumDate={minimumTime}
+      maximumDate={maximumTime}
+    />
+    </View>
+
+    <View>
+
+    <Text style={{ fontSize: 15, fontWeight: "bold" }}>Phone Number</Text>
+
+    <Input
+      variant="outline"
+      placeholder="Phone"
+      value={phone}
+      size="lg"
+      mt={2}
+      onChangeText={handlePhoneChange}
+      keyboardType="numeric"
+    />
+   {errorPhone && (
+      <View mt={2}>
+        <HStack 
+        >
+      <Text style={{ color: "red" }}>
+        Please Enter a valid Phone Number{" "}
+      </Text>
+      <Icon
+          style={{ color: "red" }}
+          as={Ionicons}
+          name="alert-circle-outline"
+          size="sm"
+        />
+        </HStack>
+    </View>
+    )}
+    </View>
+
+    <Button colorScheme="orange" size="lg" onPress={() => updateBooking()}>
+      Update Table
+    </Button>
+  </Stack>
   );
 };
 

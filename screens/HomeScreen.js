@@ -31,6 +31,7 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import SkeletonLoader from "../components/SleletonLoader";
 import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TableData = (props) => {
   const { table, navigation } = props;
@@ -241,9 +242,15 @@ const HomeScreen = ({ navigation }) => {
   const [filterLoaded, setFilterLoaded] = useState(false);
   const isFocused = useIsFocused();
 
+
   useEffect(() => {
     if (isFocused) {
       onRefresh();
+
+     
+      
+
+
     }
   }, [isFocused]);
 
@@ -252,13 +259,21 @@ const HomeScreen = ({ navigation }) => {
     // setTimeout(() => {
     //   setRefreshing(false);
     // }, 2000);
+    // AsyncStorage.setItem('vjs', '123456789');
+
+    // AsyncStorage.getItem('vjs').then((value) => 
+    // console.log(value)
+    // );
+    
 
     if (filterLoaded) {
       setFilterLoaded(false);
+       setsearchkey("");
     }
     setsearchkey("");
 
     setIsLoading(true);
+    console.log("refreshing");
     try {
       //  fetch('http://192.168.8.113:5000/table/')
       //  .then(response => response.json())
@@ -341,18 +356,17 @@ const HomeScreen = ({ navigation }) => {
           flex={1}
           margin={2}
           rounded="full"
+          onPointerEnterCapture={() => console.log("enter")}
+          InputRightElement={
+            <Icon as={Ionicons} name="close-outline" size="xl" 
+              onPress={() => onRefresh()}
+              mr={3}
+            />
+          
+          }
         />
 
-        {filterLoaded ? (
-          <Button
-            variant="solid"
-            colorScheme="red"
-            size={"lg"}
-            rounded="full"
-            startIcon={<Icon as={Ionicons} name="close" size="sm" />}
-            onPress={() => onRefresh()}
-          ></Button>
-        ) : (
+     
           <Button
             variant="solid"
             colorScheme="red"
@@ -361,7 +375,7 @@ const HomeScreen = ({ navigation }) => {
             startIcon={<Icon as={Ionicons} name="search-outline" size="sm" />}
             onPress={() => filterPackages(searchkey)}
           ></Button>
-        )}
+      
       </View>
 
       {isLoading ? (

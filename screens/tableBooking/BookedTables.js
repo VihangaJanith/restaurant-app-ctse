@@ -35,6 +35,9 @@ import { Ionicons } from "@expo/vector-icons";
 import LandscapeLoader from "../../components/LandscapeLoader";
 import { useIsFocused } from "@react-navigation/native";
 import DetailsLoader from "../../components/DetailsLoader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import AlertBox from "../../components/AlertBox";
+import NoData from "../../components/NoData";
 
 // import { Container } from './styles';
 
@@ -74,10 +77,27 @@ const TableData = (props) => {
       await axios.put(`tablebooking/${id}`, data).then((res) => {
         console.log(res.data);
       });
+      toast.show({
+        placement: "top",
+
+        render: () => (
+          <AlertBox
+            status="success"
+            title="Your Reservation is Cancelled"
+            description="Your Table Reservation has been Canceled Successfully !!!"
+          />
+        ),
+      });
+      onDeleteClose();
       await axios.get("tablebooking/").then((res) => {
         // setTeams(res.data)
         setTables(res.data);
+
       });
+      
+        
+
+
     } catch (error) {
       console.log(error);
     }
@@ -258,7 +278,10 @@ const TableData = (props) => {
   );
 };
 
-const BookedTables = ({ navigation }) => {
+const BookedTables = ({ navigation, route }) => {
+
+  const {id} = route.params;
+
   const [tables, setTables] = useState([]);
 
   const [img, setImg] = useState("");
@@ -271,18 +294,26 @@ const BookedTables = ({ navigation }) => {
 
   useEffect(() => {
     if (isFocused) {
+      
       onRefresh();
     }
   }, [isFocused]);
 
   const onRefresh = React.useCallback(() => {
+    console.log("userId", id);
+
+    // AsyncStorage.getItem('vjs').then((value) => 
+    // console.log(value)
+    // );
     setIsLoading(true);
+    if (id){
+
+      const userId = id
+
     axios
-      .get("tablebooking/")
+      .get(`tablebooking/book/${userId}`)
       .then((res) => {
         setTables(res.data);
-        const tableIds = res.data.map((table) => table.tableId);
-        setId(tableIds);
 
         console.log(res.data);
         setIsLoading(false);
@@ -290,6 +321,10 @@ const BookedTables = ({ navigation }) => {
       .catch((err) => {
         console.log(err);
       });
+    }else{
+      setTables([])
+    }
+      
   }, []);
 
   useEffect(() => {
@@ -301,7 +336,6 @@ const BookedTables = ({ navigation }) => {
         const tableIds = res.data.map((table) => table.tableId);
         setId(tableIds);
         setIsLoading(false);
-        
       })
       .catch((err) => {
         console.log(err);
@@ -320,6 +354,17 @@ const BookedTables = ({ navigation }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
+          {tables.length == 0 ? 
+          
+          <NoData
+            message="You have not booked any table"
+            onRefresh={onRefresh}
+            />
+            :
+
+            <>
+
+
           {tables &&
             tables.map((table, index) => (
               <TableData
@@ -330,6 +375,8 @@ const BookedTables = ({ navigation }) => {
                 ids={ids}
               />
             ))}
+            </>
+          }
         </ScrollView>
       )}
     </>

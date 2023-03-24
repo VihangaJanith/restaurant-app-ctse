@@ -1,10 +1,11 @@
 
-import { StyleSheet, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { Pressable, StyleSheet, View } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { VStack, HStack, Button, IconButton, Menu, HamburgerIcon,Icon, Text, NativeBaseProvider, Center, Box, StatusBar, Divider } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
+
 
 import HomeScreen from "./screens/HomeScreen";
 import ExampleScreen from "./screens/ExampleScreen";
@@ -35,32 +36,64 @@ import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
 
  //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
- axios.defaults.baseURL = 'http://192.168.1.6:5000/';
+ //axios.defaults.baseURL = 'http://192.168.1.6:5000/';
  
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
+axios.defaults.baseURL = 'https://sliitfoodsystem.onrender.com/';
+
 
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
+
 function Menus() {
-  return <Box w="90%" alignItems="center">
-      <Menu w="190" trigger={triggerProps => {
+  const navigation = useNavigation();
+
+
+  return<Menu w="250" placement="bottom right"
+  trigger={triggerProps => {
       return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-              <HamburgerIcon />
+             <Ionicons name="ios-menu" size={25} color="white" />
             </Pressable>;
     }}>
-        <Menu.Item>Arial</Menu.Item>
-        <Menu.Item>Nunito Sans</Menu.Item>
-        <Menu.Item>Roboto</Menu.Item>
-        <Menu.Item>Poppins</Menu.Item>
-        <Menu.Item>SF Pro</Menu.Item>
-        <Menu.Item>Helvetica</Menu.Item>
-        <Menu.Item isDisabled>Sofia</Menu.Item>
-        <Menu.Item>Cookie</Menu.Item>
-      </Menu>
-    </Box>;
+
+
+          <Menu.Item 
+         
+          mt={2}
+          mb={2}
+           onPress={() => navigation.navigate('#')}>
+            <Text fontSize="xl" fontWeight="bold" > My Orders</Text>
+           </Menu.Item>
+
+          <Center>
+          <Divider w="90%"/>
+          </Center>
+        <Menu.Item 
+        mt={2}
+        mb={2}
+        
+        onPress={() => navigation.navigate('Booked List', {id : 111}) }>
+            
+          <Text fontSize="xl" fontWeight="bold" > My Table Reservations</Text>
+          </Menu.Item>
+        
+
+        
+         
+          <Center>
+          <Divider w="90%"/>
+          </Center>
+
+          <Menu.Item>My Inquiries</Menu.Item>
+          <Center>
+          <Divider w="90%"/>
+          </Center>
+          <Menu.Item>My Profile</Menu.Item>
+      </Menu>;
 }
 
 function AppBar() {
@@ -84,7 +117,10 @@ function AppBar() {
     </>;
 }
 
-export default function App() {
+export default function App({navigation}) {
+
+  
+
   function TabNav() {
     return (
       <Tab.Navigator 
@@ -138,7 +174,7 @@ export default function App() {
     
       
    
-    <NavigationContainer >
+    <NavigationContainer  >
       <Stack.Navigator   screenOptions={{
       headerStyle: {
         backgroundColor: '#f4511e',
@@ -148,30 +184,12 @@ export default function App() {
         fontWeight: 'bold',
       },
       headerRight: () => (
-       
-       
-        <Menu w="190" trigger={triggerProps => {
-        return  <TouchableOpacity  accessibilityLabel="More options menu" {...triggerProps}>
-        <Ionicons name="ios-menu" size={25} color="white" />
-      </TouchableOpacity>;
-      }}>
-          <Menu.Item 
-          >My Orders</Menu.Item>
-          <Center>
-          <Divider w="90%"/>
-          </Center>
-          <Menu.Item>My Table Reservations</Menu.Item>
-          <Center>
-          <Divider w="90%"/>
-          </Center>
+        <Menus />
+        
+    
+         
 
-          <Menu.Item>My Inquiries</Menu.Item>
-          <Center>
-          <Divider w="90%"/>
-          </Center>
-          <Menu.Item>My Profile</Menu.Item>
-          
-        </Menu>
+   
     
       ),
 
