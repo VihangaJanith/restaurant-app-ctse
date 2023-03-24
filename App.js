@@ -37,6 +37,8 @@ import OrderFood from "./screens/FoodManagment/OrderFoodForm";
 import UpdateOrder from "./screens/FoodManagment/UpdateFoodOrder";
 import OrderedFoods from "./screens/FoodManagment/MyFoodOrders";
 import AdminFoodList from "./screens/FoodManagment/AdminFoodManagement/AdminFoodList";
+import AddNewFood from "./screens/FoodManagment/AdminFoodManagement/AddNewFood";
+import UpdateFoodDetails from "./screens/FoodManagment/AdminFoodManagement/EditFoodDetails";
 
 //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
 axios.defaults.baseURL = 'http://192.168.0.109:5000/';
@@ -250,6 +252,8 @@ export default function App() {
           <Stack.Screen name="Food Order Update" component={UpdateOrder} />
           <Stack.Screen name="Orders List" component={OrderedFoods} />
           <Stack.Screen name="Admin Food List" component={AdminFoodList} />
+          <Stack.Screen name="Add New Food" component={AddNewFood} />
+          <Stack.Screen name="Food Details Update" component={UpdateFoodDetails} />
 
         </Stack.Navigator>
       </NavigationContainer>

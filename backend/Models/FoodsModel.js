@@ -11,7 +11,7 @@ const FoodSchema = new Schema({
         required:true
     },
     price:{
-        type:Number,
+        type:String,
         required:true
     },
     foodImage:{

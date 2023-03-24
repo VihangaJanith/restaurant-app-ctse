@@ -49,10 +49,14 @@ const ExampleScreen = ({ navigation }) => {
             })
             }
           />
-            <Button
-          title="Orders List"
-          onPress={() => navigation.navigate('Orders List')}
-        />
+          <Button
+            title="Orders List"
+            onPress={() => navigation.navigate('Orders List')}
+          />
+          <Button
+            title="Add New Food"
+            onPress={() => navigation.navigate('Add New Food')}
+          />
         </View>
       </View></>
   )

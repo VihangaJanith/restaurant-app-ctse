@@ -8,7 +8,7 @@ import AlertBox from "../../components/AlertBox";
 import { TextInput } from 'react-native';
 
 const FoodOrderUpadteScreen = ({ navigation, route }) => {
-    const { id} = route.params;
+    const { id } = route.params;
 
     const [userid, setUserid] = useState("");
 
@@ -29,7 +29,7 @@ const FoodOrderUpadteScreen = ({ navigation, route }) => {
     const [errorCusName, setErrorCusName] = useState(false);
     const [errorAddress, setErrorAddress] = useState(false);
 
-//setform data
+    //setform data
     useEffect(() => {
         axios.get(`food-order/${id}`).then((res) => {
             setPhone(res.data.phone);
@@ -97,7 +97,7 @@ const FoodOrderUpadteScreen = ({ navigation, route }) => {
 
                 toast.show({
                     placement: "top",
-    
+
                     render: () => (
                         <AlertBox
                             status="success"
@@ -116,7 +116,7 @@ const FoodOrderUpadteScreen = ({ navigation, route }) => {
     return (
         <Stack space={4} w="95%" maxW="350px" mx="auto" minH={"90%"} mt={3}>
             <Heading>{foodname}</Heading>
-            
+
             <AspectRatio w="100%" ratio={16 / 9}>
                 <Image
                     source={{
@@ -128,7 +128,7 @@ const FoodOrderUpadteScreen = ({ navigation, route }) => {
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-                <Text style={{ fontSize: 15, fontWeight: "bold",marginTop:'2%' }}>Quantity</Text>
+                <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: '2%' }}>Quantity</Text>
 
                 <TextInput
                     editable={false}
@@ -145,7 +145,7 @@ const FoodOrderUpadteScreen = ({ navigation, route }) => {
                 />
 
 
-                <Text style={{ fontSize: 15, fontWeight: "bold",marginTop:'2%' }}>Total</Text>
+                <Text style={{ fontSize: 15, fontWeight: "bold", marginTop: '2%' }}>Total</Text>
 
                 <TextInput
                     editable={false}
@@ -213,7 +213,7 @@ const FoodOrderUpadteScreen = ({ navigation, route }) => {
                         <HStack
                         >
                             <Text style={{ color: "red" }}>
-                            is a requeired field{" "}
+                                is a requeired field{" "}
                             </Text>
                             <Icon
                                 style={{ color: "red" }}
@@ -257,18 +257,18 @@ const FoodOrderUpadteScreen = ({ navigation, route }) => {
                 )}
             </View>
 
-            <View  position="absolute"
-            bottom="0"
-            right='0'
-            left='0'>
-        <Button
-          colorScheme="orange"
-          size="lg"
-          onPress={() => updateOrder()}
-        >
-          Update Order Details
-        </Button>
-      </View>
+            <View position="absolute"
+                bottom="0"
+                right='0'
+                left='0'>
+                <Button
+                    colorScheme="orange"
+                    size="lg"
+                    onPress={() => updateOrder()}
+                >
+                    Update Order Details
+                </Button>
+            </View>
         </Stack>
     );
 };

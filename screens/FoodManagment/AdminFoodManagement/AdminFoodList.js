@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import {
     Box, Heading, View, FormControl, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider, Button, Icon, Input,
-    WarningOutlineIcon, Divider, VStack, IconButton,useToast, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge
+    WarningOutlineIcon, Divider, VStack, IconButton, useToast, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
@@ -11,7 +11,7 @@ import { useIsFocused } from "@react-navigation/native";
 import AlertBox from "../../../components/AlertBox";
 
 const FoodData = (props) => {
-    const { food, navigation,setFoods } = props;
+    const { food, navigation, setFoods } = props;
     const [isOpen, setIsOpen] = React.useState(false);
 
     const onClose = () => setIsOpen(false);
@@ -27,25 +27,25 @@ const FoodData = (props) => {
     //delete method
     const DeleteFoodItemById = async (id) => {
         try {
-             const res = await axios.delete(`food/${id}`)
+            const res = await axios.delete(`food/${id}`)
             console.log(res.data);
 
-                toast.show({
-                    placement: "top",
-    
-                    render: () => (
-                        <AlertBox
-                            status="success"
-                            title="Delete Success"
-                            description="Delete Successfully !!!"
-                        />
-                    ),
-                });
+            toast.show({
+                placement: "top",
 
-                await axios.get("food/").then((res) => {
-                    setFoods(res.data);
-                });
-            
+                render: () => (
+                    <AlertBox
+                        status="success"
+                        title="Delete Success"
+                        description="Delete Successfully !!!"
+                    />
+                ),
+            });
+
+            await axios.get("food/").then((res) => {
+                setFoods(res.data);
+            });
+
         } catch (error) {
             console.log(error);
         }
@@ -93,22 +93,73 @@ const FoodData = (props) => {
                             <Button
                                 variant="solid"
                                 colorScheme="blue"
-                                onPress={() =>
-                                    navigation.navigate("Food Order", {
-                                        id: food._id
-                                    })
-                                }
+                                onPress={() => setIsOpen(!isOpen)}
                                 startIcon={
                                     <Icon as={Ionicons} name="cart-sharp" size="sm" />
                                 }
                             >
                                 View
                             </Button>
+
+                            <AlertDialog
+                                leastDestructiveRef={cancelRef}
+                                isOpen={isOpen}
+                                onClose={onClose}
+                            >
+                                <AlertDialog.Content>
+                                    <AlertDialog.CloseButton />
+                                    <AlertDialog.Header>
+                                        <Heading size="md">{`${food.foodName}`}</Heading>
+                                        {/* {`${table.name} Table`} */}
+                                    </AlertDialog.Header>
+                                    <AlertDialog.Body>
+                                        <AspectRatio
+                                            w="100%"
+                                            ratio={16 / 9}
+                                            rounded="lg"
+                                            overflow="hidden"
+                                        >
+                                            <Image
+                                                source={{
+                                                    uri: food.foodImage,
+                                                }}
+                                                alt="image"
+                                            />
+                                        </AspectRatio>
+                                        <Text
+                                            fontWeight="400"
+                                            mt={2}
+                                            mb={2}
+                                            fontSize="sm"
+                                            color="coolGray.800"
+                                        >
+                                            {food.description}
+                                        </Text>
+
+                                    </AlertDialog.Body>
+                                    <AlertDialog.Footer>
+                                        <Button.Group space={2}>
+                                          
+                                            <Button
+                                                variant="solid"
+                                                colorScheme="red"
+                                                onPress={onClose}
+                                                ref={cancelRef}
+                                               
+                                            >
+                                               Back
+                                            </Button>
+                                        </Button.Group>
+                                    </AlertDialog.Footer>
+                                </AlertDialog.Content>
+                            </AlertDialog>
+
+
                             <Button
                                 variant="solid"
                                 colorScheme="yellow"
                                 onPress={() =>
-                                    navigation.navigate("Food Order", {
+                                    navigation.navigate("Food Details Update", {
                                         id: food._id
                                     })
                                 }
@@ -313,7 +364,7 @@ const AdminFoodList = ({ navigation }) => {
                         <PresenceTransition visible={notab} initial={{ opacity: 0, }}
                             animate={{ opacity: 1, transition: { duration: 500, }, }}
                             exit={{ opacity: 0, transition: { duration: 550 }, }} >
-                                
+
                             <Box alignSelf="center" px="3" py="2" width={500} _text={{
                                 alignSelf: "center", fontSize: "md", fontWeight: "medium",
                                 color: "warmGray.50", letterSpacing: "lg"
@@ -352,17 +403,17 @@ const AdminFoodList = ({ navigation }) => {
                             }
                         }}
                     >
-                       
-                            {foods &&
-                                foods.map((food, index) => (
-                                    <FoodData
-                                        food={food}
-                                        setFoods={setFoods}
-                                        key={index}
-                                        navigation={navigation}
-                                    />
-                                ))}
-                        
+
+                        {foods &&
+                            foods.map((food, index) => (
+                                <FoodData
+                                    food={food}
+                                    setFoods={setFoods}
+                                    key={index}
+                                    navigation={navigation}
+                                />
+                            ))}
+
                     </PresenceTransition>
                 </ScrollView>
             )}
