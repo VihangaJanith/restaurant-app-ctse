@@ -39,6 +39,7 @@ import LoginScreen from "./screens/user/login";
 import ProfileScreen from "./screens/user/profile";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from "@react-navigation/native";
+import Adminhome from "./screens/Adminhome";
 
 
  //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
@@ -394,6 +395,7 @@ export default function App({}) {
         <Stack.Screen name="Booking Screen" component={BookingScreen} />
         <Stack.Screen name="Update Table" component={UpdateTable} />
         <Stack.Screen name="Booked List" component={BookedTables}
+        
         options={{
           headerStyle: {
             
@@ -406,6 +408,7 @@ export default function App({}) {
         }}
 
         />
+        <Stack.Screen name="AdminHome" component={Adminhome}/>
         <Stack.Screen name="Update Booking" component={UpdateBooking} />
         <Stack.Screen name="AllBookings" component={AllBookings} />
         <Stack.Screen name="register" component={RegisterScreen} />

@@ -42,7 +42,7 @@ const LoginScreen = ({ navigation }) => {
             />
           ),
         });
-        navigation.navigate('Home')
+        navigation.navigate('AdminHome')
       }
       else if(email == "" || password == ""){
         toast.show({

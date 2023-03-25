@@ -187,7 +187,7 @@ const GG = (props) => {
             
             : (
               <HStack  mt={1}>
-                <Pressable
+                {/* <Pressable
                   onPress={() =>
                     nav.navigate("Update Booking", {
                       id: table._id,
@@ -208,7 +208,7 @@ const GG = (props) => {
                       />
                     </HStack>
                   </Center>
-                </Pressable>
+                </Pressable> */}
 
                 <Pressable onPress={() => setIsDeletOpen(!isOpen)}>
                   <Center h="12" p="2" bg="red.500" rounded="md">
