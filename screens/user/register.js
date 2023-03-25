@@ -129,7 +129,7 @@ const RegisterScreen = ({ navigation }) => {
             
                     render: () => (
                       <AlertBox
-                        status="Success"
+                        status="success"
                         title="Registration Success"
                         description={`Welcome`}
                       />

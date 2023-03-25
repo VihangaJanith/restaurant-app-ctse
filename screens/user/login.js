@@ -69,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
             
                     render: () => (
                       <AlertBox
-                        status="Success"
+                        status="success"
                         title="Login Success"
                         description={`Welcome`}
                       />
@@ -125,6 +125,7 @@ const LoginScreen = ({ navigation }) => {
             <Stack space={9} w="100%" alignItems="center">
                 <Input 
                     w={{base: "75%",md: "25%"}} 
+                    size="lg"
                     InputLeftElement={<Icon as={<MaterialIcons name="person" />} size={5} ml="2" color="muted.400" />}
                     placeholder="Mobile Number" 
                     value={email}
@@ -132,6 +133,7 @@ const LoginScreen = ({ navigation }) => {
                 />
                 <Input 
                     w={{base: "75%",md: "25%"}} type={show ? "text" : "password"} 
+                    size="lg"
                     InputRightElement={<Pressable onPress={() => setShow(!show)}>
                     <Icon as={<MaterialIcons name={show ? "visibility" : "visibility-off"} />} 
                     size={5} mr="2" color="muted.400" /></Pressable>} 

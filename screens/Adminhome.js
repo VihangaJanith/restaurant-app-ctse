@@ -42,6 +42,17 @@ const Adminhome = ({navigation}) => {
         onPress={() => navigation.navigate('AllUserInquiry Screen')}
       > User Inquiries
       </Button>
+      <Button colorScheme="orange" size="sm" 
+        
+        onPress={() => navigation.navigate('Admin Food List')}
+      >  Food List
+      </Button>
+
+      <Button colorScheme="orange" size="sm" 
+        
+        onPress={() => navigation.navigate('All Food Orders')}
+      >  All Food Orders
+      </Button>
         
       </Stack>
     );

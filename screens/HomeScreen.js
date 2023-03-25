@@ -465,7 +465,7 @@ const HomeScreen = ({ navigation }) => {
             <Actionsheet.Item
              mt={2}
              mb={2}
-              onPress={() => navigation.navigate('')}>
+              onPress={() => navigation.navigate('Orders List', {userid : idd, name :idd})}>
                <Text fontSize="xl" fontWeight="bold" > My Orders</Text>
             </Actionsheet.Item>
 

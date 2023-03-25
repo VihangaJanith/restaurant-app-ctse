@@ -58,7 +58,37 @@ const ProfileScreen = ({ navigation }) => {
             ),
           },[]);
     }
-   
+    
+    const profileDate = async() => {
+
+      axios.post('https://sliitfoodsystem.onrender.com/user/reg',{
+        name: name,
+        email: email,
+        password: password,
+        confirmPass: confirmPassword,
+        mobile: mobile
+    })
+    .then(response => {
+        if(response.data.success){
+            toast.show({
+                placement: "top",
+        
+                render: () => (
+                  <AlertBox
+                    status="Success"
+                    title="Registration Success"
+                    description={`Welcome`}
+                  />
+                ),
+              },[]);
+            navigation.navigate('login')
+        }
+    })
+    .catch(error => {
+        console.log(error);
+    });
+
+    }
 
    
     return (
@@ -91,6 +121,16 @@ const ProfileScreen = ({ navigation }) => {
             colorScheme="red"
             startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
             onPress={() => btnUpdate()}
+            > Update Details
+            </Button>
+
+            <Button 
+            
+            style={{ width: 250, marginLeft: 10, marginTop: 25 , display: 'none'  }}
+            variant="solid"
+            colorScheme="red"
+            startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
+            onPress={() => profileDate()}
             > Update Details
             </Button>
         </Center>

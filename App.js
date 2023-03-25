@@ -41,12 +41,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from "@react-navigation/native";
 import Adminhome from "./screens/Adminhome";
 
+import FoodList from "./screens/FoodManagment/FoodList";
+import OrderFood from "./screens/FoodManagment/OrderFoodForm";
+import UpdateOrder from "./screens/FoodManagment/UpdateFoodOrder";
+import OrderedFoods from "./screens/FoodManagment/MyFoodOrders";
+import AdminFoodList from "./screens/FoodManagment/AdminFoodManagement/AdminFoodList";
+import AddNewFood from "./screens/FoodManagment/AdminFoodManagement/AddNewFood";
+import UpdateFoodDetails from "./screens/FoodManagment/AdminFoodManagement/EditFoodDetails";
+import AllFoodOrders from "./screens/FoodManagment/AdminFoodManagement/AllOrdersList";
 
- //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
+
+ axios.defaults.baseURL = 'http://192.168.193.18:5000/';
  //axios.defaults.baseURL = 'http://192.168.1.6:5000/';
  
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
-axios.defaults.baseURL = 'https://sliitfoodsystem.onrender.com/';
+//axios.defaults.baseURL = 'https://sliitfoodsystem.onrender.com/';
 
 
 
@@ -283,6 +292,9 @@ export default function App({}) {
             else if (route.name === "login") {
               iconName = focused ? "create" : "create-outline";
             }
+            else if (route.name === "Foods") {
+              iconName = focused ? "restaurant" : "restaurant-outline";
+            }
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
@@ -296,9 +308,9 @@ export default function App({}) {
 
 
       >
-        <Tab.Screen name="Home" component={HomeScreen}  options={{ tabBarBadge: 3, headerShown: false }}/>
-        <Tab.Screen name="Example" component={ExampleScreen} />
-       
+        <Tab.Screen name="Home" component={HomeScreen}  options={{  headerShown: false }}/>
+      
+        <Tab.Screen name="Foods" component={FoodList} />
         
         {/* <Tab.Screen name="profile" component={ProfileScreen}
         options = {{
@@ -428,6 +440,15 @@ export default function App({}) {
             component={EditInquiryScreen}
           />
             <Stack.Screen name="MyInquiry Screen" component={MyInquiryScreen} />
+
+
+            <Stack.Screen name="Food Order" component={OrderFood} />
+          <Stack.Screen name="Food Order Update" component={UpdateOrder} />
+          <Stack.Screen name="Orders List" component={OrderedFoods} />
+          <Stack.Screen name="Admin Food List" component={AdminFoodList} />
+          <Stack.Screen name="Add New Food" component={AddNewFood} />
+          <Stack.Screen name="Food Details Update" component={UpdateFoodDetails} />
+          <Stack.Screen name="All Food Orders" component={AllFoodOrders} />
 
       </Stack.Navigator>
     </NavigationContainer>
