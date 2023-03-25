@@ -271,7 +271,7 @@ const HomeScreen = ({ navigation }) => {
         setUserId(user)
 
       } else {
-        navigation.navigate("login")
+        
         
       
       }
@@ -313,7 +313,7 @@ const HomeScreen = ({ navigation }) => {
         setUserId(user)
 
       } else {
-        navigation.navigate("login")
+        
         
       
       }
@@ -394,13 +394,46 @@ const HomeScreen = ({ navigation }) => {
         setIdd(user)
 
       } else {
-        navigation.navigate("login")
+        
         
       
       }
 
     }
     )
+
+    const logout = () => {
+      AsyncStorage.removeItem('userId');
+      AsyncStorage.removeItem('mobile');
+      AsyncStorage.removeItem('name');
+      AsyncStorage.removeItem('email');
+      AsyncStorage.removeItem('token');
+  
+  
+      AsyncStorage.getItem('userId').then((user) => {
+        console.log(user, 'userId',)
+      })
+        AsyncStorage.getItem('mobile').then((user) => {
+          console.log(user, 'mobile')
+        })
+          AsyncStorage.getItem('name').then((user) => {
+            console.log(user,  'name')
+          })
+            AsyncStorage.getItem('email').then((user) => {
+              console.log(user, 'email') 
+            })
+              AsyncStorage.getItem('token').then((user) => {
+                console.log(user, 'token') 
+              })
+  
+      
+      navigation.navigate('login');
+  
+      alert('Logout Successfully')
+  
+    }
+  
+
 
 
 
@@ -450,6 +483,13 @@ const HomeScreen = ({ navigation }) => {
         
         onPress={() => navigation.navigate('MyInquiry Screen', {userid : idd, name :idd}) }>
             <Text fontSize="xl" fontWeight="bold" > My Inquiries</Text>
+          </Actionsheet.Item>
+
+          <Actionsheet.Item  mt={2}
+        mb={2}
+        
+        onPress={() => logout() }>
+            <Text fontSize="xl" fontWeight="bold" > Logout</Text>
           </Actionsheet.Item>
      
           </Actionsheet.Content>

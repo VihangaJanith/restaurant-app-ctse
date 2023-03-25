@@ -4,17 +4,22 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   View,
   HStack,
-  Stack,
+  VStack,
   Input,
   Button,
   Icon,
   NativeBaseProvider,
+  useToast,
 } from "native-base";
+
+import AlertBox from "../../components/AlertBox";
 
 const EditResponseScreen = ({ navigation, route }) => {
   const id = route.params.id;
-  
+
   const [adreply, setAdreply] = useState("");
+  
+  const toast = useToast();
 
   useEffect(() => {
     axios.get(`inquiry/${id}`).then((res) => {
@@ -28,13 +33,20 @@ const EditResponseScreen = ({ navigation, route }) => {
       const updatedResponse = {
         adreply: adreply,
       };
-      await axios
-        .put(`inquiry/${id}`, updatedResponse)
-        .then((res) => {
-          console.log(res.updatedResponse);
-        });
+      await axios.put(`inquiry/${id}`, updatedResponse).then((res) => {
+        console.log(res.updatedResponse);
+      });
       console.log(updatedResponse);
-      alert("Response Updated Successfully");
+      toast.show({
+        placement: "top",
+        render: () => (
+          <AlertBox
+            title="Response Updated Successfully"
+            description="Your response has been updated successfully"
+            status="success"
+          />
+        ),
+      });
 
       await axios.get("inquiry/");
 
@@ -50,44 +62,36 @@ const EditResponseScreen = ({ navigation, route }) => {
 
   return (
     <NativeBaseProvider>
-      <Stack
-        mb="2.5"
-        mt="1.5"
-        space={3}
-        width={350}
-        marginLeft={30}
-        marginTop={30}
-      >
-        <Input 
-          variant="outline" 
+      <VStack space={4} w="75%" maxW="300px" mx="auto" mt={10}>
+        <Input
+          fontSize={15}
+          variant="outline"
           placeholder="outline"
-          onChangeText={(e) => setAdreply(e)} 
-          value={adreply} 
+          onChangeText={(e) => setAdreply(e)}
+          value={adreply}
         />
-      </Stack>
 
-      <View style={{ height: 30 }}></View>
-      <HStack marginLeft={30}>
-        <Button
-          style={{ width: 170 }}
-          variant="solid"
-          colorScheme="green"
-          startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
-          onPress={() => editResponse(id)}
-        >
-          Edit Response
-        </Button>
-        <View style={{ width: 10 }}></View>
-        <Button
-          style={{ width: 170 }}
-          variant="solid"
-          colorScheme="red"
-          startIcon={<Icon as={Ionicons} name="close-outline" size="sm" />}
-          onPress={reset}
-        >
-          Reset Response
-        </Button>
-      </HStack>
+        <HStack space={7} mt={3}>
+          <Button
+            w={135}
+            variant="solid"
+            colorScheme="green"
+            startIcon={<Icon as={Ionicons} name="pencil-outline" size="sm" />}
+            onPress={() => editResponse(id)}
+          >
+            Edit Response
+          </Button>
+          <Button
+            w={135}
+            variant="solid"
+            colorScheme="red"
+            startIcon={<Icon as={Ionicons} name="close-outline" size="sm" />}
+            onPress={reset}
+          >
+            Reset Response
+          </Button>
+        </HStack>
+      </VStack>
     </NativeBaseProvider>
   );
 };

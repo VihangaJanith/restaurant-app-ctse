@@ -297,7 +297,9 @@ export default function App({}) {
       >
         <Tab.Screen name="Home" component={HomeScreen}  options={{ tabBarBadge: 3, headerShown: false }}/>
         <Tab.Screen name="Example" component={ExampleScreen} />
-        <Tab.Screen name="Inquiries" component={AddInquiryScreen} />
+        <Tab.Screen name="Inquiries" component={AddInquiryScreen} options = {{
+          headerShown: false,
+        }} />
         <Tab.Screen name="login" component={LoginScreen}
         options = {{
           headerShown: false,
