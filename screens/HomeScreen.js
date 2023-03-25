@@ -36,6 +36,7 @@ import SkeletonLoader from "../components/SleletonLoader";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from '@expo/vector-icons'
 
 const TableData = (props) => {
   const { table, navigation } = props;
@@ -409,10 +410,11 @@ const HomeScreen = ({ navigation }) => {
               <Fab
                 position="absolute"
                 size="lg"
+                colorScheme="red"
                 icon={
                   <Icon
                     color="white"
-                    as={<AntDesign name="plus" />}
+                    as={<Entypo name="user" size={24} />}
                     size="lg"
                   />
                 }
@@ -449,8 +451,7 @@ const HomeScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('MyInquiry Screen', {userid : idd, name :idd}) }>
             <Text fontSize="xl" fontWeight="bold" > My Inquiries</Text>
           </Actionsheet.Item>
-            <Actionsheet.Item>Favourite</Actionsheet.Item>
-            <Actionsheet.Item>Cancel</Actionsheet.Item>
+     
           </Actionsheet.Content>
         </Actionsheet>
       </Center>;
