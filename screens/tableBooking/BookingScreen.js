@@ -137,20 +137,27 @@ const BookingScreen = ({ navigation, route }) => {
   maximumTime.setHours(17, 0, 0, 0); // Set maximum time to 5:00 PM
 
   const bookTable = () => {
+    let hasError = false;
     if (date === "") {
       setErrorDate("Please Select a Date");
+      hasError = true;
     }
     if (time === "") {
       setErrorTime("Please Select a Time");
+      hasError = true;
     }
     if (phone === "" || phone.length < 10) {
       setErrorPhone("Please Enter a Valid Phone Number");
-    } else {
+      hasError = true;
+    } 
+    
+    if (!hasError) {
+  
       const data = {
         name,
         tableId: id,
         tabletype,
-        userid: "111",
+        userid: "112",
         date,
         time,
         phone,
@@ -206,7 +213,7 @@ const BookingScreen = ({ navigation, route }) => {
             w="2/6"
             h="full"
             onPress={showDatePicker}
-            colorScheme="amber"
+            colorScheme="orange"
           >
             <Ionicons name="calendar" size={24} color="white" />
           </Button>
@@ -263,7 +270,7 @@ const BookingScreen = ({ navigation, route }) => {
             w="2/6"
             h="full"
             onPress={showTimePicker}
-            colorScheme="amber"
+            colorScheme="orange"
           >
             <Ionicons name="time" size={24} color="white" />
           </Button>

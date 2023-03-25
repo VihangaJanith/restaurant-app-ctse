@@ -6,6 +6,8 @@ import {
   useToast,
   Stack,
   WarningOutlineIcon,
+  Heading,
+  HStack,
 } from "native-base";
 import React, { useState } from "react";
 import { View, Text } from "react-native";
@@ -51,18 +53,26 @@ const AddTable = ({ navigation }) => {
 
   const addTable = async (props) => {
     try {
+      let hasError = false;
       if (name === "") {
         setErrorName("Please Enter a Table Type Name");
+         hasError = true;
       }
       if (description === "") {
         setErrorDescription("Please Enter a Table Description");
+          hasError = true;
       }
       if (users === "") {
         setErrorUsers("Please Enter a Table User Amount");
+          hasError = true;
       }
       if (image === "") {
         setErrorImage("Please Enter a Image URL");
-      } else {
+          hasError = true;
+      }
+      
+     
+      if (!hasError) {
         const data = {
           name,
           description,
@@ -101,75 +111,144 @@ const AddTable = ({ navigation }) => {
   };
   return (
     <Stack space={4} w="75%" maxW="300px" mx="auto" mt={3}>
-      <Input
-        variant="outline"
-        placeholder="Table Type Name"
-        value={name}
-        onChangeText={handleNameChange}
-      />
-      {errorName && (
-        <Text style={{ color: "red" }}>
-          Please Enter a Table Type Name{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
+      <Heading>Add New Table Type</Heading>
 
-      <Input
-        variant="outline"
-        placeholder="Description"
-        value={description}
-        onChangeText={handleDescriptionChange}
-      />
-      {errorDescription && (
-        <Text style={{ color: "red" }}>
-          Please Enter a Table Description{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
-      <Input
-        variant="outline"
-        placeholder="Users"
-        value={users}
-        onChangeText={handleUsersChange}
-      />
-      {errorUsers && (
-        <Text style={{ color: "red" }}>
-          Please Enter a Table User Amount{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
-      <Input
-        variant="outline"
-        placeholder="Image"
-        value={image}
-        onChangeText={handleImageChange}
-      />
-      {errorImage && (
-        <Text style={{ color: "red" }}>
-          Please Enter a Image URL{" "}
-          <Icon
-            style={{ color: "red" }}
-            as={Ionicons}
-            name="alert-circle-outline"
-            size="sm"
-          />
-        </Text>
-      )}
+      <View>
+
+<Text style={{ fontSize: 15, fontWeight: "bold" }}>Table Type Name</Text>
+
+<Input
+  variant="outline"
+  placeholder="Table Type Name"
+  value={name}
+  size="lg"
+  mt={2}
+  mb={1}
+  onChangeText={handleNameChange}
+  
+/>
+{errorName && (
+  <View mt={2}>
+    <HStack 
+    >
+  <Text style={{ color: "red" }}>
+    Please Enter a Table Type {" "}
+  </Text>
+  <Icon
+      style={{ color: "red" }}
+      as={Ionicons}
+      name="alert-circle-outline"
+      size="sm"
+    />
+    </HStack>
+</View>
+)}
+</View>
+
+
+
+<View>
+
+<Text style={{ fontSize: 15, fontWeight: "bold" }}>Detailed Description</Text>
+
+<Input
+  variant="outline"
+  placeholder="Description"
+  value={description}
+  size="lg"
+  mt={2}
+  mb={1}
+  onChangeText={handleDescriptionChange}
+  
+/>
+{errorDescription && (
+  <View mt={2}>
+    <HStack 
+    >
+  <Text style={{ color: "red" }}>
+    Please Enter a Description {" "}
+  </Text>
+  <Icon
+      style={{ color: "red" }}
+      as={Ionicons}
+      name="alert-circle-outline"
+      size="sm"
+    />
+    </HStack>
+</View>
+)}
+</View>
+
+      
+
+
+
+<View>
+
+<Text style={{ fontSize: 15, fontWeight: "bold" }}>User Limit at a Time</Text>
+
+<Input
+  variant="outline"
+  placeholder="User Limit"
+  value={users}
+  size="lg"
+  mt={2}
+  mb={1}
+  onChangeText={handleUsersChange}
+  keyboardType="numeric"
+  
+/>
+{errorUsers && (
+  <View mt={2}>
+    <HStack 
+    >
+  <Text style={{ color: "red" }}>
+    Please Enter Users Limit {" "}
+  </Text>
+  <Icon
+      style={{ color: "red" }}
+      as={Ionicons}
+      name="alert-circle-outline"
+      size="sm"
+    />
+    </HStack>
+</View>
+)}
+</View>
+
+
+
+<View>
+
+<Text style={{ fontSize: 15, fontWeight: "bold" }}>Image URL</Text>
+
+<Input
+  variant="outline"
+  placeholder="Image URL"
+  value={image}
+  size="lg"
+  mt={2}
+  mb={1}
+  onChangeText={handleImageChange}
+  
+/>
+{errorImage && (
+  <View mt={2}>
+    <HStack 
+    >
+  <Text style={{ color: "red" }}>
+    Please Enter an Image URL {" "}
+  </Text>
+  <Icon
+      style={{ color: "red" }}
+      as={Ionicons}
+      name="alert-circle-outline"
+      size="sm"
+    />
+    </HStack>
+</View>
+)}
+</View>
 
       <Button colorScheme="orange" size="sm" onPress={() => addTable()}>
         Add Table

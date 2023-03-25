@@ -167,9 +167,9 @@ const RegisterScreen = ({ navigation }) => {
                 <Text >Mobile Number</Text>
                 <Input size="sm" placeholder="071-9882***" value={mobile} onChangeText={(e) => setMobile(e)} />
                 <Text >Password</Text>
-                <Input size="sm" placeholder="Password" value={password} onChangeText={(e) => setPassword(e)} />
+                <Input type="password" size="sm" placeholder="Password" value={password} onChangeText={(e) => setPassword(e)} />
                 <Text >Confirm Password</Text>
-                <Input size="sm" placeholder="Confirm Password" value={confirmPassword} onChangeText={(e) => setConfirmPassword(e)} />
+                <Input type="password"size="sm" placeholder="Confirm Password" value={confirmPassword} onChangeText={(e) => setConfirmPassword(e)} />
             </Stack>;
 
 
