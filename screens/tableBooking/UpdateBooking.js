@@ -163,7 +163,7 @@ const UpdateBooking = ({ navigation, route }) => {
 
         console.log(res.data);
         // navigation.navigate('Booking')
-        navigation.navigate("Booked List");
+        navigation.navigate("Home");
       }
     } catch (error) {
       console.log(error);

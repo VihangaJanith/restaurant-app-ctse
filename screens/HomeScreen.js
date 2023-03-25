@@ -6,6 +6,8 @@ import {
   View,
   FormControl,
   AspectRatio,
+  Actionsheet, 
+  useDisclose,
   Image,
   Text,
   Center,
@@ -26,16 +28,20 @@ import {
   Pressable,
   AlertDialog,
   Badge,
+  Fab,
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import SkeletonLoader from "../components/SleletonLoader";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from '@expo/vector-icons'
 
 const TableData = (props) => {
   const { table, navigation } = props;
   const [isOpen, setIsOpen] = React.useState(false);
+
 
   const onClose = () => setIsOpen(false);
 
@@ -242,6 +248,8 @@ const HomeScreen = ({ navigation }) => {
   const [filterLoaded, setFilterLoaded] = useState(false);
   const isFocused = useIsFocused();
 
+  const [userId, setUserId] = useState();
+
 
   useEffect(() => {
     if (isFocused) {
@@ -255,15 +263,22 @@ const HomeScreen = ({ navigation }) => {
   }, [isFocused]);
 
   const onRefresh = React.useCallback(() => {
-    // setRefreshing(true);
-    // setTimeout(() => {
-    //   setRefreshing(false);
-    // }, 2000);
-    // AsyncStorage.setItem('vjs', '123456789');
 
-    // AsyncStorage.getItem('vjs').then((value) => 
-    // console.log(value)
-    // );
+    AsyncStorage.getItem('userId').then((user) => {
+      if (user) {
+       
+        console.log(user)
+        setUserId(user)
+
+      } else {
+        
+        
+      
+      }
+
+    }
+    )
+  
     
 
     if (filterLoaded) {
@@ -290,6 +305,24 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+
+    AsyncStorage.getItem('userId').then((user) => {
+      if (user) {
+       
+        console.log(user)
+        setUserId(user)
+
+      } else {
+        
+        
+      
+      }
+
+    }
+    )
+
+    
+
     setIsLoading(true);
     try {
       //  fetch('http://192.168.8.113:5000/table/')
@@ -343,6 +376,138 @@ const HomeScreen = ({ navigation }) => {
       console.log(error);
     }
   };
+
+
+  function Action() {
+    const [idd, setIdd] = useState();
+
+    const {
+      isOpen,
+      onOpen,
+      onClose
+    } = useDisclose();
+
+    AsyncStorage.getItem('userId').then((user) => {
+      if (user) {
+       
+        console.log(user)
+        setIdd(user)
+
+      } else {
+        
+        
+      
+      }
+
+    }
+    )
+
+    const logout = () => {
+      AsyncStorage.removeItem('userId');
+      AsyncStorage.removeItem('mobile');
+      AsyncStorage.removeItem('name');
+      AsyncStorage.removeItem('email');
+      AsyncStorage.removeItem('token');
+  
+  
+      AsyncStorage.getItem('userId').then((user) => {
+        console.log(user, 'userId',)
+      })
+        AsyncStorage.getItem('mobile').then((user) => {
+          console.log(user, 'mobile')
+        })
+          AsyncStorage.getItem('name').then((user) => {
+            console.log(user,  'name')
+          })
+            AsyncStorage.getItem('email').then((user) => {
+              console.log(user, 'email') 
+            })
+              AsyncStorage.getItem('token').then((user) => {
+                console.log(user, 'token') 
+              })
+  
+      
+      navigation.navigate('login');
+  
+      alert('Logout Successfully')
+  
+    }
+  
+
+
+
+
+    return <>
+    {idd ? 
+    <Center>
+      <Pressable>
+            <Box position="relative" h={100} w="100%">
+              <Fab
+                position="absolute"
+                size="lg"
+                colorScheme="red"
+                icon={
+                  <Icon
+                    color="white"
+                    as={<Entypo name="user" size={24} />}
+                    size="lg"
+                  />
+                }
+                onPress={onOpen}
+              />
+            </Box>
+          </Pressable>
+        
+        <Actionsheet isOpen={isOpen} onClose={onClose}>
+          <Actionsheet.Content>
+           
+
+            <Actionsheet.Item
+             mt={2}
+             mb={2}
+              onPress={() => navigation.navigate('')}>
+               <Text fontSize="xl" fontWeight="bold" > My Orders</Text>
+            </Actionsheet.Item>
+
+                {userId === null ? <Actionsheet.Item>
+                  <Text fontSize="xl" fontWeight="bold" > Login</Text>  
+                </Actionsheet.Item>
+                : null
+                }
+            <Actionsheet.Item  mt={2}
+        mb={2}
+        
+        onPress={() => navigation.navigate('Booked List', {userid : idd, name :idd}) }>
+            <Text fontSize="xl" fontWeight="bold" > My Table Reservations</Text>
+          </Actionsheet.Item>
+          <Actionsheet.Item  mt={2}
+        mb={2}
+        
+        onPress={() => navigation.navigate('MyInquiry Screen', {userid : idd, name :idd}) }>
+            <Text fontSize="xl" fontWeight="bold" > My Inquiries</Text>
+          </Actionsheet.Item>
+          <Actionsheet.Item  mt={2}
+        mb={2}
+        
+        onPress={() => navigation.navigate('profile')}>
+            <Text fontSize="xl" fontWeight="bold" > Profile</Text>
+          </Actionsheet.Item>
+          <Actionsheet.Item  mt={2}
+        mb={2}
+        
+        onPress={() => logout() }>
+            <Text fontSize="xl" fontWeight="bold" > Logout</Text>
+          </Actionsheet.Item>
+     
+          </Actionsheet.Content>
+        </Actionsheet>
+      </Center>
+      : null }
+    </>;
+  }
+
+
+
 
   return (
     <NativeBaseProvider>
@@ -461,6 +626,9 @@ const HomeScreen = ({ navigation }) => {
                 ))}
             </Center>
           </PresenceTransition>
+           <Action />
+          
+         
         </ScrollView>
       )}
     </NativeBaseProvider>

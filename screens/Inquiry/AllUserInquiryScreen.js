@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ScrollView, StyleSheet, RefreshControl } from "react-native";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { Ionicons } from "@expo/vector-icons";
 import {
   VStack,
@@ -9,21 +10,32 @@ import {
   Text,
   HStack,
   View,
-  Stack,
+  Badge,
   Spacer,
   AlertDialog,
 } from "native-base";
 import axios from "axios";
 
-const Inquiry = (props) => {
-  const { inquiry, navigation, index } = props;
-  const [isOpen, setIsOpen] = React.useState(false);
+import { useIsFocused } from "@react-navigation/native";
 
+//Skeleton Loader
+import DetailsLoader from "../../components/DetailsLoader";
+
+import { useNavigation } from "@react-navigation/native";
+
+const Inquiry = (props) => {
+  const { inquiry, index } = props;
+
+  //popup box
+  const [isOpen, setIsOpen] = React.useState(false);
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef(null);
 
+  const nav = useNavigation();
+
   return (
     <View key={index} style={styles.container}>
+      {/* popup box */}
       <AlertDialog
         leastDestructiveRef={cancelRef}
         isOpen={isOpen}
@@ -32,24 +44,41 @@ const Inquiry = (props) => {
         <AlertDialog.Content>
           <AlertDialog.CloseButton />
           <AlertDialog.Header>Inquiry Details</AlertDialog.Header>
-          <AlertDialog.Body>
-            <View style={styles.detailContainer}>
-              <Text style={styles.label}>Name :</Text>
-              <Text style={styles.detail}>{inquiry.name}</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.label}>Phone :</Text>
-              <Text style={styles.detail}>{inquiry.phone}</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.label}>Email :</Text>
-              <Text style={styles.detail}>{inquiry.email}</Text>
-            </View>
-            <View style={styles.detailContainer}>
-              <Text style={styles.label}>Admin Response :</Text>
-              <Text style={styles.detail}>{inquiry.adreply}</Text>
-            </View>
-          </AlertDialog.Body>
+          {inquiry.adreply === "Our team will response to your inquiry soon" ? (
+            <AlertDialog.Body>
+              <View style={styles.detailContainer}>
+                <Text style={styles.label}>Name :</Text>
+                <Text style={styles.detail}>{inquiry.name}</Text>
+              </View>
+              <View style={styles.detailContainer}>
+                <Text style={styles.label}>Phone :</Text>
+                <Text style={styles.detail}>{inquiry.phone}</Text>
+              </View>
+              <View style={styles.detailContainer}>
+                <Text style={styles.label}>Email :</Text>
+                <Text style={styles.detail}>{inquiry.email}</Text>
+              </View>
+            </AlertDialog.Body>
+          ) : (
+            <AlertDialog.Body>
+              <View style={styles.detailContainer}>
+                <Text style={styles.label}>Name :</Text>
+                <Text style={styles.detail}>{inquiry.name}</Text>
+              </View>
+              <View style={styles.detailContainer}>
+                <Text style={styles.label}>Phone :</Text>
+                <Text style={styles.detail}>{inquiry.phone}</Text>
+              </View>
+              <View style={styles.detailContainer}>
+                <Text style={styles.label}>Email :</Text>
+                <Text style={styles.detail}>{inquiry.email}</Text>
+              </View>
+              <View style={styles.detailContainer}>
+                <Text style={styles.label}>Response :</Text>
+                <Text style={styles.detail}>{inquiry.adreply}</Text>
+              </View>
+            </AlertDialog.Body>
+          )}
           <AlertDialog.Footer>
             <Button.Group space={2}>
               <Button
@@ -66,7 +95,7 @@ const Inquiry = (props) => {
                 <Button
                   mr="18.5"
                   onPress={() =>
-                    navigation.navigate("EditResponse Screen", {
+                    nav.navigate("EditResponse Screen", {
                       id: inquiry._id,
                     })
                   }
@@ -82,14 +111,14 @@ const Inquiry = (props) => {
                 <Button
                   mr="18.5"
                   onPress={() =>
-                    navigation.navigate("EditResponse Screen", {
+                    nav.navigate("EditResponse Screen", {
                       id: inquiry._id,
                     })
                   }
                   variant="solid"
                   colorScheme="yellow"
                   startIcon={
-                    <Icon as={Ionicons} name="open-outline" size="sm" />
+                    <Icon as={Ionicons} name="pencil-outline" size="sm" />
                   }
                 >
                   Edit Response
@@ -99,55 +128,97 @@ const Inquiry = (props) => {
           </AlertDialog.Footer>
         </AlertDialog.Content>
       </AlertDialog>
-      <VStack mb="2.5" mt="1.5" marginLeft={0}>
+
+      <VStack>
         <View style={styles.detailContainer}>
           <Text style={styles.label}>Inquiry :</Text>
           <Text style={styles.detail}>{inquiry.inq}</Text>
         </View>
-        <Spacer height={2} />
-        <HStack>
-          <HStack style={{ width: 110 }} marginLeft={0}>
+
+        <HStack mb="2.5" mt="1" flexDirection={"row"}>
+          <View style={styles.detailContainer}>
+            <Text style={styles.label}>Status :</Text>
+          </View>
+          {inquiry.adreply === "Our team will response to your inquiry soon" ? (
+            <Badge
+              variant="outline"
+              colorScheme="red"
+              startIcon={<Icon as={Ionicons} name="close-outline" size="sm" />}
+            >
+              Haven't Responded
+            </Badge>
+          ) : (
+            <Badge
+              variant="outline"
+              colorScheme="green"
+              startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
+            >
+              Response Added
+            </Badge>
+          )}
+        </HStack>
+
+        <View style={[styles.detailContainer, styles.horizontalLine]}>
+          <View style={styles.line} />
+        </View>
+
+        {inquiry.adreply !== "Our team will response to your inquiry soon" ? (
+          <View mt={2} style={styles.detailContainer}>
+            <Text style={styles.label}>Response : </Text>
+            <Text style={styles.detail}>{inquiry.adreply}</Text>
+          </View>
+        ) : null}
+        <HStack mt={2} style={{ width: 120 }} space={1}>
+          {inquiry.adreply === "Our team will response to your inquiry soon" ? (
             <HStack>
-              {inquiry.adreply ===
-              "Our team will response to your inquiry soon" ? (
-                <HStack>
-                  <Button
-                    mr="18.5"
-                    onPress={() =>
-                      navigation.navigate("EditResponse Screen", {
-                        id: inquiry._id,
-                      })
-                    }
-                    variant="solid"
-                    colorScheme="green"
-                    startIcon={
-                      <Icon as={Ionicons} name="add-outline" size="sm" />
-                    }
-                  >
-                    Add Response
-                  </Button>
-                </HStack>
-              ) : (
-                <HStack>
-                  <Button
-                    mr="18.5"
-                    onPress={() =>
-                      navigation.navigate("EditResponse Screen", {
-                        id: inquiry._id,
-                      })
-                    }
-                    variant="solid"
-                    colorScheme="yellow"
-                    startIcon={
-                      <Icon as={Ionicons} name="open-outline" size="sm" />
-                    }
-                  >
-                    Edit Response
-                  </Button>
-                </HStack>
-              )}
+              <Button
+                mr="18.5"
+                onPress={() =>
+                  nav.navigate("EditResponse Screen", {
+                    id: inquiry._id,
+                  })
+                }
+                variant="solid"
+                colorScheme="green"
+                startIcon={<Icon as={Ionicons} name="add-outline" size="sm" />}
+              >
+                Add Response
+              </Button>
             </HStack>
-            <Spacer height={6} />
+          ) : (
+            <HStack>
+              <Button
+                mr="18.5"
+                onPress={() =>
+                  nav.navigate("EditResponse Screen", {
+                    id: inquiry._id,
+                  })
+                }
+                variant="solid"
+                colorScheme="yellow"
+                startIcon={
+                  <Icon as={Ionicons} name="pencil-outline" size="sm" />
+                }
+              >
+                Edit Response
+              </Button>
+            </HStack>
+          )}
+
+          <Spacer height={6} />
+          {inquiry.adreply === "Our team will response to your inquiry soon" ? (
+            <Button
+              onPress={() => {
+                setIsOpen(!isOpen);
+                console.log("aaaaa");
+              }}
+              variant="solid"
+              colorScheme="violet"
+              startIcon={<Icon as={Ionicons} name="eye-outline" size="sm" />}
+            >
+              User Details
+            </Button>
+          ) : (
             <Button
               onPress={() => {
                 setIsOpen(!isOpen);
@@ -159,70 +230,41 @@ const Inquiry = (props) => {
             >
               View Response
             </Button>
-          </HStack>
-        </HStack>
-
-        <Spacer height={2} />
-        <View style={[styles.detailContainer, styles.horizontalLine]}>
-          <View style={styles.line} />
-        </View>
-
-        <VStack
-          mb="2.5"
-          mt="1.5"
-          marginLeft={0}
-          marginTop={3}
-          flexDirection={"row"}
-        >
-          <View style={styles.detailContainer}>
-            <Text style={styles.label}>Response Status :</Text>
-          </View>
-          {inquiry.adreply === "Our team will response to your inquiry soon" ? (
-            <VStack style={{ width: 130 }}>
-              <Button
-                variant="solid"
-                colorScheme="red"
-                startIcon={
-                  <Icon as={Ionicons} name="close-outline" size="sm" />
-                }
-              >
-                Haven't Responded
-              </Button>
-            </VStack>
-          ) : (
-            <VStack style={{ width: 130 }}>
-              <Button
-                variant="solid"
-                colorScheme="green"
-                startIcon={<Icon as={Ionicons} name="open-outline" size="sm" />}
-              >
-                Response Added
-              </Button>
-            </VStack>
           )}
-        </VStack>
+        </HStack>
       </VStack>
     </View>
   );
 };
 
-const MyInquiryScreen = ({ navigation }) => {
+const FirstRoute = ({ index, navigation }) => {
   const [inquiries, setInquiries] = useState();
+  const [ids, setId] = useState("");
 
+  //Skeleton Loader
+  const [isLoading, setIsLoading] = useState(false);
+
+  //Refresh
   const [refreshing, setRefreshing] = React.useState(false);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      onRefresh();
+    }
+  }, [isFocused]);
+
   const onRefresh = React.useCallback(() => {
-    // setRefreshing(true);
-    // setTimeout(() => {
-    //   setRefreshing(false);
-    // }, 2000);
-    //setIsLoading(true);
+    setIsLoading(true);
     try {
-      //  fetch('http://192.168.8.113:5000/table/')
-      //  .then(response => response.json())
-      //  .then(data => setTables(data))
-      //  .catch(error => console.error(error))
       axios.get("inquiry/").then((res) => {
         setInquiries(res.data);
+        const inquiryIds = res.data.map((inquiry) => inquiry.inquiryId);
+        setId(inquiryIds);
+
+        console.log(res.data);
+        setIsLoading(false);
       });
     } catch (error) {
       console.log(error);
@@ -230,34 +272,237 @@ const MyInquiryScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    axios.get("inquiry/").then((res) => {
-      setInquiries(res.data);
-    });
-  }, [navigation]);
+    setIsLoading(true);
+    axios
+      .get("inquiry/")
+      .then((res) => {
+        setInquiries(res.data);
+        const inquiryIds = res.data.map((inquiry) => inquiry.inquiryId);
+        setId(inquiryIds);
+        setIsLoading(false);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  return (
+    <>
+      {isLoading ? (
+        <ScrollView>
+          <DetailsLoader />
+        </ScrollView>
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {inquiries &&
+            inquiries.map((inquiry, index) => (
+              <>
+                {inquiry.adreply ===
+                "Our team will response to your inquiry soon" ? null : (
+                  <Inquiry
+                    inquiry={inquiry}
+                    key={index}
+                    setInquiries={setInquiries}
+                    navigation={navigation}
+                    ids={ids}
+                  />
+                )}
+              </>
+            ))}
+        </ScrollView>
+      )}
+    </>
+  );
+};
+
+const SecondRoute = ({ index, navigation }) => {
+  const [inquiries, setInquiries] = useState();
+  const [ids, setId] = useState("");
+
+  //Skeleton Loader
+  const [isLoading, setIsLoading] = useState(false);
+
+  //Refresh
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      onRefresh();
+    }
+  }, [isFocused]);
+
+  const onRefresh = React.useCallback(() => {
+    setIsLoading(true);
+    try {
+      axios.get("inquiry/").then((res) => {
+        setInquiries(res.data);
+        const inquiryIds = res.data.map((inquiry) => inquiry.inquiryId);
+        setId(inquiryIds);
+
+        console.log(res.data);
+        setIsLoading(false);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get("inquiry/")
+      .then((res) => {
+        setInquiries(res.data);
+        const inquiryIds = res.data.map((inquiry) => inquiry.inquiryId);
+        setId(inquiryIds);
+        setIsLoading(false);
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <NativeBaseProvider>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        {inquiries &&
-          inquiries.map((inquiry, index) => (
-            <Inquiry inquiry={inquiry} key={index} navigation={navigation} />
-          ))}
-      </ScrollView>
+      {isLoading ? (
+        <ScrollView>
+          <DetailsLoader />
+        </ScrollView>
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {inquiries &&
+            inquiries.map((inquiry, index) => (
+              <>
+                {inquiry.adreply ===
+                "Our team will response to your inquiry soon" ? (
+                  <Inquiry
+                    inquiry={inquiry}
+                    key={index}
+                    setInquiries={setInquiries}
+                    navigation={navigation}
+                    ids={ids}
+                  />
+                ) : null}
+              </>
+            ))}
+        </ScrollView>
+      )}
     </NativeBaseProvider>
   );
 };
 
-export default MyInquiryScreen;
+const initialRoutes = [
+  { key: "first", title: "Resolved Inquiries" },
+  { key: "second", title: "Pending Inquiries" },
+];
+const renderScene = SceneMap({
+  first: FirstRoute,
+  second: SecondRoute,
+});
+const renderTabBar = (props) => {
+  const { itemLength } = props;
+  return (
+  <TabBar
+    {...props}
+    style={{ backgroundColor: "#f4511e" }}
+    activeColor={"white"}
+    inactiveColor={"gray"}
+    fontWeight={"bold"}
+
+    renderLabel={({ route, focused }) => (
+      <View style={{ flexDirection: "row" }}>
+      
+        <Text fontSize="md" style={{ color:"white" , opacity: focused ? 1 : 0.8
+       }}>
+          {route.title}{' '}
+        </Text>
+        {route.key === "second" && (
+          <Badge // bg="red.400"
+          variant="subtle"
+          style={{ color:"white" , opacity: focused ? 1 : 0.8}}
+           rounded="full"  zIndex={1} alignSelf="flex-end">
+            <Text fontSize="xs" fontWeight="bold"  style={{ color: 'tomato'  }}>
+
+            {itemLength}
+            </Text>
+
+            </Badge>
+        )}
+      </View>
+    )}
+   
+  />
+  )
+};
+
+const AllUserInquiryScreen = ({ navigation }) => {
+  const [index, setIndex] = useState(0);
+
+  const [itemLength, setItemLength] = useState("");
+
+  const newff = () => {
+    console.log("neww");
+  };
+
+  const handleIndexChange = (index) => {
+    setIndex(index);
+    if (index === 0) {
+      console.log("First");
+      newff();
+    }
+    if (index === 1) {
+      console.log("Second");
+    }
+    if (index === 2) {
+      console.log("Third");
+    }
+  };
+
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (isFocused) {
+      console.log("useEffect");
+      axios.get("inquiry/").then((res) => {
+        // console.log(res.data, "res");
+        const pendingItems = res.data.filter(item => item.adreply === "Our team will response to your inquiry soon");
+        console.log(pendingItems, 'cannn');
+        setItemLength(pendingItems.length);
+        console.log(itemLength, 'itemLength');
+      });
+    }
+  }, [isFocused, index]);
+
+  return (
+    <TabView
+      index={index}
+      //key={index}
+      navigationState={{ index, routes: initialRoutes }}
+      renderScene={renderScene}
+      onIndexChange={handleIndexChange}
+      renderTabBar={(props) => renderTabBar({...props, itemLength})}
+    />
+  );
+};
+
+export default AllUserInquiryScreen;
 
 const styles = StyleSheet.create({
   container: {
     width: "90%",
-    backgroundColor: "lightgrey",
-    marginTop: 40,
+    backgroundColor: "white",
+    marginTop: 20,
     borderRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
