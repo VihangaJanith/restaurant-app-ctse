@@ -6,6 +6,8 @@ import {
   View,
   FormControl,
   AspectRatio,
+  Actionsheet, 
+  useDisclose,
   Image,
   Text,
   Center,
@@ -26,16 +28,19 @@ import {
   Pressable,
   AlertDialog,
   Badge,
+  Fab,
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import SkeletonLoader from "../components/SleletonLoader";
 import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AntDesign } from "@expo/vector-icons";
 
 const TableData = (props) => {
   const { table, navigation } = props;
   const [isOpen, setIsOpen] = React.useState(false);
+
 
   const onClose = () => setIsOpen(false);
 
@@ -242,6 +247,8 @@ const HomeScreen = ({ navigation }) => {
   const [filterLoaded, setFilterLoaded] = useState(false);
   const isFocused = useIsFocused();
 
+  const [userId, setUserId] = useState();
+
 
   useEffect(() => {
     if (isFocused) {
@@ -255,15 +262,22 @@ const HomeScreen = ({ navigation }) => {
   }, [isFocused]);
 
   const onRefresh = React.useCallback(() => {
-    // setRefreshing(true);
-    // setTimeout(() => {
-    //   setRefreshing(false);
-    // }, 2000);
-    // AsyncStorage.setItem('vjs', '123456789');
 
-    // AsyncStorage.getItem('vjs').then((value) => 
-    // console.log(value)
-    // );
+    AsyncStorage.getItem('userId').then((user) => {
+      if (user) {
+       
+        console.log(user)
+        setUserId(user)
+
+      } else {
+        navigation.navigate("login")
+        
+      
+      }
+
+    }
+    )
+  
     
 
     if (filterLoaded) {
@@ -290,6 +304,24 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
+
+    AsyncStorage.getItem('userId').then((user) => {
+      if (user) {
+       
+        console.log(user)
+        setUserId(user)
+
+      } else {
+        navigation.navigate("login")
+        
+      
+      }
+
+    }
+    )
+
+    
+
     setIsLoading(true);
     try {
       //  fetch('http://192.168.8.113:5000/table/')
@@ -343,6 +375,89 @@ const HomeScreen = ({ navigation }) => {
       console.log(error);
     }
   };
+
+
+  function Action() {
+    const [idd, setIdd] = useState();
+
+    const {
+      isOpen,
+      onOpen,
+      onClose
+    } = useDisclose();
+
+    AsyncStorage.getItem('userId').then((user) => {
+      if (user) {
+       
+        console.log(user)
+        setIdd(user)
+
+      } else {
+        navigation.navigate("login")
+        
+      
+      }
+
+    }
+    )
+
+
+
+    return <Center>
+      <Pressable>
+            <Box position="relative" h={100} w="100%">
+              <Fab
+                position="absolute"
+                size="lg"
+                icon={
+                  <Icon
+                    color="white"
+                    as={<AntDesign name="plus" />}
+                    size="lg"
+                  />
+                }
+                onPress={onOpen}
+              />
+            </Box>
+          </Pressable>
+        
+        <Actionsheet isOpen={isOpen} onClose={onClose}>
+          <Actionsheet.Content>
+           
+
+            <Actionsheet.Item
+             mt={2}
+             mb={2}
+              onPress={() => navigation.navigate('')}>
+               <Text fontSize="xl" fontWeight="bold" > My Orders</Text>
+            </Actionsheet.Item>
+
+                {userId === null ? <Actionsheet.Item>
+                  <Text fontSize="xl" fontWeight="bold" > Login</Text>  
+                </Actionsheet.Item>
+                : null
+                }
+            <Actionsheet.Item  mt={2}
+        mb={2}
+        
+        onPress={() => navigation.navigate('Booked List', {userid : idd, name :idd}) }>
+            <Text fontSize="xl" fontWeight="bold" > My Table Reservations</Text>
+          </Actionsheet.Item>
+          <Actionsheet.Item  mt={2}
+        mb={2}
+        
+        onPress={() => navigation.navigate('MyInquiry Screen', {userid : idd, name :idd}) }>
+            <Text fontSize="xl" fontWeight="bold" > My Inquiries</Text>
+          </Actionsheet.Item>
+            <Actionsheet.Item>Favourite</Actionsheet.Item>
+            <Actionsheet.Item>Cancel</Actionsheet.Item>
+          </Actionsheet.Content>
+        </Actionsheet>
+      </Center>;
+  }
+
+
+
 
   return (
     <NativeBaseProvider>
@@ -461,6 +576,9 @@ const HomeScreen = ({ navigation }) => {
                 ))}
             </Center>
           </PresenceTransition>
+           <Action />
+          
+         
         </ScrollView>
       )}
     </NativeBaseProvider>

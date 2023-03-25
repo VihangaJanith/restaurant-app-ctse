@@ -33,7 +33,7 @@ import {
 } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import LandscapeLoader from "../../components/LandscapeLoader";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import DetailsLoader from "../../components/DetailsLoader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AlertBox from "../../components/AlertBox";
@@ -60,10 +60,7 @@ const TableData = (props) => {
         console.log(res.data);
       });
 
-      await axios.get("tablebooking/").then((res) => {
-        // setTeams(res.data)
-        setTables(res.data);
-      });
+     
     } catch (error) {
       console.log(error);
     }
@@ -89,11 +86,7 @@ const TableData = (props) => {
         ),
       });
       onDeleteClose();
-      await axios.get("tablebooking/").then((res) => {
-        // setTeams(res.data)
-        setTables(res.data);
-
-      });
+   
       
         
 
@@ -278,15 +271,17 @@ const TableData = (props) => {
   );
 };
 
-const BookedTables = ({ navigation, route }) => {
+const BookedTables = ({ navigation }) => {
 
-  const {id} = route.params;
+  const route = useRoute();
+  const {userid, name} = route.params
 
   const [tables, setTables] = useState([]);
 
   const [img, setImg] = useState("");
   const [ids, setId] = useState("");
   const [isLoading, setIsLoading] = useState();
+  const [userId, setUserId] = useState("");
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -300,19 +295,38 @@ const BookedTables = ({ navigation, route }) => {
   }, [isFocused]);
 
   const onRefresh = React.useCallback(() => {
-    console.log("userId", id);
+    // console.log("userId", id);
 
     // AsyncStorage.getItem('vjs').then((value) => 
     // console.log(value)
     // );
     setIsLoading(true);
-    if (id){
+    // if (id){
 
-      const userId = id
+    //   const userId = id
 
+    // AsyncStorage.getItem('userId').then((user) => {
+    //   if (user) {
+       
+    //     console.log(user)
+    //     setUserId(user)
+
+    //   } else {
+    //     navigation.navigate("login")
+        
+      
+    //   }
+
+    // })
+    console.log(userid,'ccccccc')
+      console.log(name,'ccccccc')
+
+    if(userid){
+      console.log(userid,'ccccccc')
     axios
-      .get(`tablebooking/book/${userId}`)
+      .get(`tablebooking/book/${userid}`)
       .then((res) => {
+        
         setTables(res.data);
 
         console.log(res.data);
@@ -321,25 +335,61 @@ const BookedTables = ({ navigation, route }) => {
       .catch((err) => {
         console.log(err);
       });
-    }else{
-      setTables([])
     }
+    else{
+      setIsLoading(false);
+      setTables([])
+      alert("No bookings")
+    }
+  
       
   }, []);
 
   useEffect(() => {
     setIsLoading(true);
+    
+    // if (id){
+
+    //   const userId = id
+
+    // AsyncStorage.getItem('userId').then((user) => {
+    //   if (user) {
+       
+    //     console.log(user)
+    //     setUserId(user)
+
+    //   } else {
+    //     navigation.navigate("login")
+        
+      
+    //   }
+
+    // })
+
+
+    if(userid){
+
+
+
     axios
-      .get("tablebooking/")
+      .get(`tablebooking/book/${userid}`)
       .then((res) => {
+        
         setTables(res.data);
-        const tableIds = res.data.map((table) => table.tableId);
-        setId(tableIds);
+
+        console.log(res.data);
         setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
+    }
+    else{
+      setIsLoading(false);
+      setTables([])
+      alert("No bookings")
+    }
+    
   }, []);
 
   return (

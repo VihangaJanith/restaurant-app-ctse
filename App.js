@@ -1,4 +1,4 @@
-
+import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -37,6 +37,9 @@ import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
 import RegisterScreen from "./screens/user/register";
 import LoginScreen from "./screens/user/login";
 import ProfileScreen from "./screens/user/profile";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from "@react-navigation/native";
+
 
  //axios.defaults.baseURL = 'http://192.168.8.113:5000/';
  //axios.defaults.baseURL = 'http://192.168.1.6:5000/';
@@ -52,11 +55,74 @@ const Tab = createBottomTabNavigator();
 
 
 
-function Menus() {
+
+
+function Menus({userid}) {
+//   const [userid, setUserId] = useState('');
+  
   const navigation = useNavigation();
+//   const isFocused = useIsFocused();
+
+//   useEffect(() => {
+
+//     if(isFocused) {
+
+//     AsyncStorage.getItem('userId').then((user) => {
+//       if (user) {
+       
+//         console.log(user)
+//         setUserId(user)
+
+//       } else {
+//         console.log('bbbb')
+      
+//       }
+
+//     })
+//   }
+// }
+  
+//   ,[isFocused,userid])
 
 
-  return<Menu w="250" placement="bottom right"
+  const logout = () => {
+    AsyncStorage.removeItem('userId');
+    AsyncStorage.removeItem('mobile');
+    AsyncStorage.removeItem('name');
+    AsyncStorage.removeItem('email');
+    AsyncStorage.removeItem('token');
+
+
+    AsyncStorage.getItem('userId').then((user) => {
+      console.log(user, 'userId',)
+    })
+      AsyncStorage.getItem('mobile').then((user) => {
+        console.log(user, 'mobile')
+      })
+        AsyncStorage.getItem('name').then((user) => {
+          console.log(user,  'name')
+        })
+          AsyncStorage.getItem('email').then((user) => {
+            console.log(user, 'email') 
+          })
+            AsyncStorage.getItem('token').then((user) => {
+              console.log(user, 'token') 
+            })
+
+    
+    navigation.navigate('Login');
+
+    alert('Logout Successfully')
+
+  }
+
+
+  return (
+    <>
+
+   
+  
+  <Menu w="250" placement="bottom right"
   trigger={triggerProps => {
       return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
              <Ionicons name="ios-menu" size={25} color="white" />
@@ -68,20 +134,23 @@ function Menus() {
          
           mt={2}
           mb={2}
-           onPress={() => navigation.navigate('#')}>
+           onPress={() => navigation.navigate('')}>
             <Text fontSize="xl" fontWeight="bold" > My Orders</Text>
            </Menu.Item>
 
           <Center>
           <Divider w="90%"/>
           </Center>
+
+          
+
         <Menu.Item 
         mt={2}
         mb={2}
         
-        onPress={() => navigation.navigate('Booked List', {id : 111}) }>
-            
-          <Text fontSize="xl" fontWeight="bold" > My Table Reservations</Text>
+        onPress={() => navigation.navigate('Booked List', {id : userid}) }>
+            <Text fontSize="xl" fontWeight="bold" > My Table Reservations</Text>
+          
           </Menu.Item>
         
 
@@ -91,12 +160,45 @@ function Menus() {
           <Divider w="90%"/>
           </Center>
 
-          <Menu.Item>My Inquiries</Menu.Item>
+          <Menu.Item 
+           mt={2}
+           mb={2}
+           
+           onPress={() => navigation.navigate('Booked List', {id : userid}) }>
+         <Text fontSize="xl" fontWeight="bold" > My Inquiries</Text>
+         </Menu.Item>
+
           <Center>
           <Divider w="90%"/>
           </Center>
-          <Menu.Item>My Profile</Menu.Item>
-      </Menu>;
+          <Menu.Item 
+           mt={2}
+           mb={2}
+           
+           onPress={() => navigation.navigate('Booked List', {id : userid}) }>
+         <Text fontSize="xl" fontWeight="bold" > My Profile</Text>
+         </Menu.Item>
+         <Center>
+          <Divider w="90%"/>
+          </Center>
+
+          <Menu.Item 
+           mt={2}
+           mb={2}
+           
+           onPress={() => logout() }>
+         <Text fontSize="xl" fontWeight="bold" > Logout</Text>
+         </Menu.Item>
+
+
+      </Menu>
+
+     
+    
+  </>
+
+
+      );
 }
 
 function AppBar() {
@@ -120,7 +222,39 @@ function AppBar() {
     </>;
 }
 
-export default function App({navigation}) {
+export default function App({}) {
+
+  const [userid, setUserId] = useState('');
+ 
+
+  useEffect(() => {
+
+   
+
+    AsyncStorage.getItem('userId').then((user) => {
+      if (user) {
+       
+        console.log(user)
+        setUserId(user)
+
+      } else {
+        console.log('bbbb')
+      
+      }
+
+    })
+  
+}
+  
+  ,[userid])
+
+ 
+
+
+
+
+
+
 
   
 
@@ -156,6 +290,10 @@ export default function App({navigation}) {
         
           
         })}
+
+
+
+
       >
         <Tab.Screen name="Home" component={HomeScreen}  options={{ tabBarBadge: 3, headerShown: false }}/>
         <Tab.Screen name="Example" component={ExampleScreen} />
@@ -175,8 +313,9 @@ export default function App({navigation}) {
 
 
 
+
   return (
-  <NativeBaseProvider>
+  <NativeBaseProvider userid={userid} key={userid}>
    
    
       {/* <AppBar  /> */}
@@ -196,8 +335,8 @@ export default function App({navigation}) {
       headerTitleStyle: {
         fontWeight: 'bold',
       },
-      headerRight: () => (
-        <Menus />
+      headerRight: ({userid, key}) => (
+        <Menus  userid={userid} key={userid}  />
         
     
          
@@ -212,6 +351,10 @@ export default function App({navigation}) {
           name="Food Factory"
           component={TabNav}
           // options={{ headerShown: false }}
+          headerRight={() => (
+            <Menus  />
+          )}
+
       
         />
         <Stack.Screen name="Home Screen" component={HomeScreen} 
