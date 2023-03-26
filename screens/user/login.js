@@ -23,15 +23,30 @@ import AlertBox from "../../components/AlertBox";
 import {useEffect} from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {StyleSheet} from "react-native";
+import { useIsFocused } from "@react-navigation/native";
+
 const LoginScreen = ({ navigation }) => {
     const toast = useToast();
     const [show, setShow] = React.useState(false);
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
 
-    btnLogin = async() =>  {
+    const isFocused = useIsFocused()
 
-      if(email == "admin" && password == "admin"){
+
+    useEffect(() => { 
+      if(isFocused){
+      setEmail('')
+        setPassword('')
+      }
+
+    },[])
+
+
+
+   const btnLogin = async() =>  {
+
+      if(email == "Admin" && password == "Admin"){
         toast.show({
           placement: "top",
           render: () => (
@@ -43,6 +58,8 @@ const LoginScreen = ({ navigation }) => {
           ),
         });
         navigation.navigate('AdminHome')
+        setEmail('')
+        setPassword('')
       }
       else if(email == "" || password == ""){
         toast.show({
@@ -64,6 +81,8 @@ const LoginScreen = ({ navigation }) => {
         })
         .then(response => {
             if(response.data.success){
+              setEmail('')
+        setPassword('')
                 toast.show({
                     placement: "top",
             
@@ -102,6 +121,8 @@ const LoginScreen = ({ navigation }) => {
         .catch(error => {
             console.log(error);
         });
+
+        
       }
     }
     //const value = AsyncStorage.getItem("token")

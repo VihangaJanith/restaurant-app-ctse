@@ -49,13 +49,16 @@ import AdminFoodList from "./screens/FoodManagment/AdminFoodManagement/AdminFood
 import AddNewFood from "./screens/FoodManagment/AdminFoodManagement/AddNewFood";
 import UpdateFoodDetails from "./screens/FoodManagment/AdminFoodManagement/EditFoodDetails";
 import AllFoodOrders from "./screens/FoodManagment/AdminFoodManagement/AllOrdersList";
+import { LogBox } from "react-native";
 
 
- axios.defaults.baseURL = 'http://192.168.193.18:5000/';
- //axios.defaults.baseURL = 'http://192.168.1.6:5000/';
+//  axios.defaults.baseURL = 'http://192.168.193.18:5000/'
+ axios.defaults.baseURL = 'http://192.168.0.197:5000/';
  
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
 //axios.defaults.baseURL = 'https://sliitfoodsystem.onrender.com/';
+//axios.defaults.baseURL =  'http://172.20.10.14:5000/'
+
 
 
 
@@ -212,6 +215,7 @@ function Menus({userid}) {
 }
 
 function AppBar() {
+  
   return <>
       <StatusBar bg="#3700B3" barStyle="light-content" />
       <Box safeAreaTop bg="violet.600" />
@@ -233,6 +237,7 @@ function AppBar() {
 }
 
 export default function App({}) {
+  LogBox.ignoreAllLogs();
 
   const [userid, setUserId] = useState('');
  

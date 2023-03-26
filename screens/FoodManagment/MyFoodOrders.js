@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import LandscapeLoader from "../../components/LandscapeLoader";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import DetailsLoader from "../../components/DetailsLoader";
+import NoData from "../../components/NoData"
 
 const FoodOrderData = (props) => {
     const { orders, setOrders, navigation, ids } = props;
@@ -320,8 +321,17 @@ const OrderFoods = ({ navigation }) => {
                     }
                 >
                       <Text fontSize="2xl" style={{marginLeft:'3%',fontWeight:'bold',marginTop:'4%',marginBottom:'5%'}}>
-                                    Kamindu's Food Orders
+                                    My Food Orders
                                 </Text>
+
+                                {order.length == 0 ? 
+          
+          <NoData
+            message="You Do not have any Food Orders"
+            onRefresh={onRefresh}
+            />
+            :
+            <>
                     {order &&
                         order.map((orders, index) => (
                             <View style={{marginBottom:'4%'}}>
@@ -334,6 +344,7 @@ const OrderFoods = ({ navigation }) => {
                             />
                             </View>
                         ))}
+                        </>}
                 </ScrollView>
             )}
         </>

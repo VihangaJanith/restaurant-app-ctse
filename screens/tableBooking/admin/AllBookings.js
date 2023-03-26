@@ -151,7 +151,7 @@ const GG = (props) => {
             <HStack space={6}>
               <Heading size="lg">{table.tabletype}</Heading>
               <Text fontWeight="400" fontSize="sm" color="coolGray.800">
-                Created Date : {table.createdAt.substring(0, 10)}
+                {table.createdAt.substring(0, 10)}
               </Text>
             </HStack>
 
@@ -164,7 +164,7 @@ const GG = (props) => {
             <Text fontWeight="800" fontSize="lg" color="coolGray.800">
               Booked Time : {table.time}
             </Text>
-            <Text>Booked By : {table.name}</Text>
+            {/* <Text>Booked By : {table.name}</Text> */}
 
             {table.status == "Cancelled" ? 
             

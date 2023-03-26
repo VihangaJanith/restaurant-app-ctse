@@ -187,10 +187,10 @@ const MyInquiry = (props) => {
             </VStack>
           )}
         </VStack>
-        <View style={styles.detailContainer}>
+        {/* <View style={styles.detailContainer}>
           <Text style={styles.label}>Response :</Text>
           <Text style={styles.detail}>{inquiry.adreply}</Text>
-        </View>
+        </View> */}
       </VStack>
     </View>
   );

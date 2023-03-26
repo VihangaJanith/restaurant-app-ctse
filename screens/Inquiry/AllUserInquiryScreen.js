@@ -168,11 +168,11 @@ const Inquiry = (props) => {
             <Text style={styles.detail}>{inquiry.adreply}</Text>
           </View>
         ) : null}
-        <HStack mt={2} style={{ width: 120 }} space={1}>
+        <HStack mt={2}  justifyContent='space-between'>
           {inquiry.adreply === "Our team will response to your inquiry soon" ? (
             <HStack>
               <Button
-                mr="18.5"
+               
                 onPress={() =>
                   nav.navigate("EditResponse Screen", {
                     id: inquiry._id,
@@ -188,7 +188,7 @@ const Inquiry = (props) => {
           ) : (
             <HStack>
               <Button
-                mr="18.5"
+              
                 onPress={() =>
                   nav.navigate("EditResponse Screen", {
                     id: inquiry._id,
@@ -205,7 +205,7 @@ const Inquiry = (props) => {
             </HStack>
           )}
 
-          <Spacer height={6} />
+          {/* <Spacer height={6} /> */}
           {inquiry.adreply === "Our team will response to your inquiry soon" ? (
             <Button
               onPress={() => {

@@ -124,7 +124,7 @@ const TableData = (props) => {
             <HStack space={6}>
               <Heading size="lg">{table.tabletype}</Heading>
               <Text fontWeight="400" fontSize="sm" color="coolGray.800">
-                Created Date : {table.createdAt.substring(0, 10)}
+                {table.createdAt.substring(0, 10)}
               </Text>
             </HStack>
 
@@ -137,7 +137,7 @@ const TableData = (props) => {
             <Text fontWeight="800" fontSize="lg" color="coolGray.800">
               Booked Time : {table.time}
             </Text>
-            <Text>Booked By : {table.name}</Text>
+            {/* <Text>Booked By : {table.name}</Text> */}
 
             {table.status == "Cancelled" ? null : (
               <HStack space={3} mt={1}>
@@ -150,7 +150,7 @@ const TableData = (props) => {
                 >
                   <Center p="2" h="12" bg="yellow.500" rounded="md">
                     <HStack>
-                      <Text color="white" fontSize="lg">
+                      <Text color="white" fontSize="sm">
                         {" "}
                         Update Booking
                       </Text>
@@ -167,7 +167,7 @@ const TableData = (props) => {
                 <Pressable onPress={() => setIsDeletOpen(!isOpen)}>
                   <Center h="12" p="2" bg="red.500" rounded="md">
                     <HStack>
-                      <Text color="white" fontSize="lg">
+                      <Text color="white" fontSize="sm">
                         {" "}
                         Cancel Booking
                       </Text>
@@ -407,7 +407,7 @@ const BookedTables = ({ navigation }) => {
           {tables.length == 0 ? 
           
           <NoData
-            message="You have not booked any table"
+            message="You Do Not have any Table Reservations"
             onRefresh={onRefresh}
             />
             :

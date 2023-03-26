@@ -53,6 +53,11 @@ const Adminhome = ({navigation}) => {
         onPress={() => navigation.navigate('All Food Orders')}
       >  All Food Orders
       </Button>
+      <Button colorScheme="orange" size="sm" 
+        
+        onPress={() => navigation.navigate('login')}
+      >  Logout
+      </Button>
         
       </Stack>
     );

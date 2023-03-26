@@ -40,6 +40,7 @@ const AddInquiryScreen = ({ navigation }) => {
   useEffect(() => {
     if (isFocused) {
 
+
       AsyncStorage.getItem('userId').then((user) => {
         if (user) {
          
@@ -60,7 +61,7 @@ const AddInquiryScreen = ({ navigation }) => {
 
     }
     
-  }, []);
+  }, [isFocused]);
 
 
   const handleNameChange = (value) => {
@@ -107,6 +108,10 @@ const AddInquiryScreen = ({ navigation }) => {
         await axios.post("inquiry/add", newInquiry).then((res) => {
           console.log(res.data);
         });
+        setEmail('')
+        setName('')
+        setPhone('')
+        setInq('')
         toast.show({
           placement: "top",
           render: () => (
