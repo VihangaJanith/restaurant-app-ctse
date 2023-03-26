@@ -1,10 +1,11 @@
-
-import { StyleSheet, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { VStack, HStack, Button, IconButton, Menu, HamburgerIcon, Icon, Text, NativeBaseProvider, Center, Box, StatusBar, Divider } from "native-base";
+import { VStack, HStack, Button, IconButton, Menu, HamburgerIcon,Icon, Text, NativeBaseProvider, Center, Box, StatusBar, Divider } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
+
 
 import HomeScreen from "./screens/HomeScreen";
 import ExampleScreen from "./screens/ExampleScreen";
@@ -26,11 +27,19 @@ import BookedTables from "./screens/tableBooking/BookedTables";
 import UpdateBooking from "./screens/tableBooking/UpdateBooking";
 import AllBookings from "./screens/tableBooking/admin/AllBookings";
 
+
+
 import AllUserInquiryScreen from "./screens/Inquiry/AllUserInquiryScreen";
 import EditResponseScreen from "./screens/Inquiry/EditResponseScreen";
 import AddInquiryScreen from "./screens/Inquiry/AddInquiryScreen";
 import EditInquiryScreen from "./screens/Inquiry/EditInquiryScreen";
 import MyInquiryScreen from "./screens/Inquiry/MyInquiryScreen";
+import RegisterScreen from "./screens/user/register";
+import LoginScreen from "./screens/user/login";
+import ProfileScreen from "./screens/user/profile";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from "@react-navigation/native";
+import Adminhome from "./screens/Adminhome";
 
 import FoodList from "./screens/FoodManagment/FoodList";
 import OrderFood from "./screens/FoodManagment/OrderFoodForm";
@@ -40,61 +49,233 @@ import AdminFoodList from "./screens/FoodManagment/AdminFoodManagement/AdminFood
 import AddNewFood from "./screens/FoodManagment/AdminFoodManagement/AddNewFood";
 import UpdateFoodDetails from "./screens/FoodManagment/AdminFoodManagement/EditFoodDetails";
 import AllFoodOrders from "./screens/FoodManagment/AdminFoodManagement/AllOrdersList";
+import { LogBox } from "react-native";
 
-//axios.defaults.baseURL = 'http://192.168.8.113:5000/';
-axios.defaults.baseURL = 'http://192.168.0.109:5000/';
 
+//  axios.defaults.baseURL = 'http://192.168.193.18:5000/'
+ axios.defaults.baseURL = 'http://192.168.0.197:5000/';
+ 
 // axios.defaults.baseURL = 'http://192.168.23.92:5000/';
+//axios.defaults.baseURL = 'https://sliitfoodsystem.onrender.com/';
+//axios.defaults.baseURL =  'http://172.20.10.14:5000/'
+
+
 
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function Menus() {
-  return <Box w="90%" alignItems="center">
-    <Menu w="190" trigger={triggerProps => {
+
+
+
+
+function Menus({userid}) {
+//   const [userid, setUserId] = useState('');
+  
+  const navigation = useNavigation();
+//   const isFocused = useIsFocused();
+
+//   useEffect(() => {
+
+//     if(isFocused) {
+
+//     AsyncStorage.getItem('userId').then((user) => {
+//       if (user) {
+       
+//         console.log(user)
+//         setUserId(user)
+
+//       } else {
+//         console.log('bbbb')
+      
+//       }
+
+//     })
+//   }
+// }
+  
+//   ,[isFocused,userid])
+
+
+  const logout = () => {
+    AsyncStorage.removeItem('userId');
+    AsyncStorage.removeItem('mobile');
+    AsyncStorage.removeItem('name');
+    AsyncStorage.removeItem('email');
+    AsyncStorage.removeItem('token');
+
+
+    AsyncStorage.getItem('userId').then((user) => {
+      console.log(user, 'userId',)
+    })
+      AsyncStorage.getItem('mobile').then((user) => {
+        console.log(user, 'mobile')
+      })
+        AsyncStorage.getItem('name').then((user) => {
+          console.log(user,  'name')
+        })
+          AsyncStorage.getItem('email').then((user) => {
+            console.log(user, 'email') 
+          })
+            AsyncStorage.getItem('token').then((user) => {
+              console.log(user, 'token') 
+            })
+
+    
+    navigation.navigate('Login');
+
+    alert('Logout Successfully')
+
+  }
+
+
+  return (
+    <>
+
+   
+  
+  <Menu w="250" placement="bottom right"
+  trigger={triggerProps => {
       return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-        <HamburgerIcon />
-      </Pressable>;
+             <Ionicons name="ios-menu" size={25} color="white" />
+            </Pressable>;
     }}>
-      <Menu.Item>Arial</Menu.Item>
-      <Menu.Item>Nunito Sans</Menu.Item>
-      <Menu.Item>Roboto</Menu.Item>
-      <Menu.Item>Poppins</Menu.Item>
-      <Menu.Item>SF Pro</Menu.Item>
-      <Menu.Item>Helvetica</Menu.Item>
-      <Menu.Item isDisabled>Sofia</Menu.Item>
-      <Menu.Item>Cookie</Menu.Item>
-    </Menu>
-  </Box>;
+
+
+          <Menu.Item 
+         
+          mt={2}
+          mb={2}
+           onPress={() => navigation.navigate('')}>
+            <Text fontSize="xl" fontWeight="bold" > My Orders</Text>
+           </Menu.Item>
+
+          <Center>
+          <Divider w="90%"/>
+          </Center>
+
+          
+
+        <Menu.Item 
+        mt={2}
+        mb={2}
+        
+        onPress={() => navigation.navigate('Booked List', {id : userid}) }>
+            <Text fontSize="xl" fontWeight="bold" > My Table Reservations</Text>
+          
+          </Menu.Item>
+        
+
+        
+         
+          <Center>
+          <Divider w="90%"/>
+          </Center>
+
+          <Menu.Item 
+           mt={2}
+           mb={2}
+           
+           onPress={() => navigation.navigate('Booked List', {id : userid}) }>
+         <Text fontSize="xl" fontWeight="bold" > My Inquiries</Text>
+         </Menu.Item>
+
+          <Center>
+          <Divider w="90%"/>
+          </Center>
+          <Menu.Item 
+           mt={2}
+           mb={2}
+           
+           onPress={() => navigation.navigate('Booked List', {id : userid}) }>
+         <Text fontSize="xl" fontWeight="bold" > My Profile</Text>
+         </Menu.Item>
+         <Center>
+          <Divider w="90%"/>
+          </Center>
+
+          <Menu.Item 
+           mt={2}
+           mb={2}
+           
+           onPress={() => logout() }>
+         <Text fontSize="xl" fontWeight="bold" > Logout</Text>
+         </Menu.Item>
+
+
+      </Menu>
+
+     
+    
+  </>
+
+
+      );
 }
 
 function AppBar() {
+  
   return <>
-    <StatusBar bg="#3700B3" barStyle="light-content" />
-    <Box safeAreaTop bg="violet.600" />
-    <HStack bg="violet.800" px="1" py="3" justifyContent="space-between" alignItems="center" w="100%" >
-      <HStack alignItems="center">
-        <IconButton icon={<Icon size="sm" as={MaterialIcons} name="menu" color="white" />} />
-        <Text color="white" fontSize="20" fontWeight="bold">
-          Home
-        </Text>
+      <StatusBar bg="#3700B3" barStyle="light-content" />
+      <Box safeAreaTop bg="violet.600" />
+      <HStack bg="violet.800" px="1" py="3" justifyContent="space-between" alignItems="center" w="100%" >
+        <HStack alignItems="center">
+          <IconButton icon={<Icon size="sm" as={MaterialIcons} name="menu" color="white" />} />
+          <Text color="white" fontSize="20" fontWeight="bold">
+            Home
+          </Text>
+        </HStack>
+        <HStack>
+          <IconButton icon={<Icon as={MaterialIcons} name="favorite" size="sm" color="white" />} />
+          <IconButton icon={<Icon as={MaterialIcons} name="search" size="sm" color="white" />} />
+          <IconButton icon={<Icon as={MaterialIcons} name="more-vert" size="sm" color="white" />} />
+          
+        </HStack>
       </HStack>
-      <HStack>
-        <IconButton icon={<Icon as={MaterialIcons} name="favorite" size="sm" color="white" />} />
-        <IconButton icon={<Icon as={MaterialIcons} name="search" size="sm" color="white" />} />
-        <IconButton icon={<Icon as={MaterialIcons} name="more-vert" size="sm" color="white" />} />
-
-      </HStack>
-    </HStack>
-  </>;
+    </>;
 }
 
-export default function App() {
+export default function App({}) {
+  LogBox.ignoreAllLogs();
+
+  const [userid, setUserId] = useState('');
+ 
+
+  useEffect(() => {
+
+   
+
+    AsyncStorage.getItem('userId').then((user) => {
+      if (user) {
+       
+        console.log(user)
+        setUserId(user)
+
+      } else {
+        console.log('bbbb')
+      
+      }
+
+    })
+  
+}
+  
+  ,[userid])
+
+ 
+
+
+
+
+
+
+
+  
+
   function TabNav() {
     return (
-      <Tab.Navigator
+      <Tab.Navigator 
 
         options={{
           headerShown: false,
@@ -113,6 +294,9 @@ export default function App() {
             else if (route.name === "Inquiries") {
               iconName = focused ? "create" : "create-outline";
             }
+            else if (route.name === "login") {
+              iconName = focused ? "create" : "create-outline";
+            }
             else if (route.name === "Foods") {
               iconName = focused ? "restaurant" : "restaurant-outline";
             }
@@ -121,14 +305,33 @@ export default function App() {
           },
           tabBarActiveTintColor: "tomato",
           tabBarInactiveTintColor: "gray",
-
-
+        
+          
         })}
+
+
+
+
       >
-        <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarBadge: 3, headerShown: false }} />
-        <Tab.Screen name="Example" component={ExampleScreen} />
-        <Tab.Screen name="Inquiries" component={AddInquiryScreen} />
+        <Tab.Screen name="Home" component={HomeScreen}  options={{  headerShown: false }}/>
+      
         <Tab.Screen name="Foods" component={FoodList} />
+        
+        {/* <Tab.Screen name="profile" component={ProfileScreen}
+        options = {{
+          headerShown: false,
+        }}
+        /> */}
+        <Tab.Screen name="Inquiries" component={AddInquiryScreen} options = {{
+          headerShown: false,
+        }} />
+        {/* <Tab.Screen name="login" component={LoginScreen}
+        options = {{
+          headerShown: false,
+        }}
+        
+        /> */}
+        {/* <Tab.Screen name="profile" component={ProfileScreen} /> */}
       </Tab.Navigator>
     );
   }
@@ -137,103 +340,98 @@ export default function App() {
 
 
 
+
   return (
-    <NativeBaseProvider>
-
-
+  <NativeBaseProvider userid={userid} key={userid}>
+   
+   
       {/* <AppBar  /> */}
+         
+    
+    
+   
+    
+      
+   
+    <NavigationContainer  >
+      <Stack.Navigator   screenOptions={{
+      headerStyle: {
+        backgroundColor: '#f4511e',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+      headerRight: ({userid, key}) => (
+        <Menus  userid={userid} key={userid}  />
+        
+    
+         
 
+   
+    
+      ),
 
+        cardStyle: { backgroundColor: '#fffff' }
+    }} >
+        <Stack.Screen
+          name="Food Factory"
+          component={TabNav}
+          // options={{ headerShown: false }}
+          headerRight={() => (
+            <Menus  />
+          )}
 
-
-
-
-
-      <NavigationContainer >
-        <Stack.Navigator screenOptions={{
+      
+        />
+        <Stack.Screen name="Home Screen" component={HomeScreen} 
+          // options={{ headerShown: false }}
+       />
+        <Stack.Screen name="Example Screen" component={ExampleScreen}  
+        options={{
           headerStyle: {
-            backgroundColor: '#f4511e',
+            backgroundColor: 'tomato',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          headerRight: () => (
+        }}
 
-
-            <Menu w="190" trigger={triggerProps => {
-              return <TouchableOpacity accessibilityLabel="More options menu" {...triggerProps}>
-                <Ionicons name="ios-menu" size={25} color="white" />
-              </TouchableOpacity>;
-            }}>
-              <Menu.Item
-              >My Orders</Menu.Item>
-              <Center>
-                <Divider w="90%" />
-              </Center>
-              <Menu.Item>My Table Reservations</Menu.Item>
-              <Center>
-                <Divider w="90%" />
-              </Center>
-
-              <Menu.Item>My Inquiries</Menu.Item>
-              <Center>
-                <Divider w="90%" />
-              </Center>
-              <Menu.Item>My Profile</Menu.Item>
-
-            </Menu>
-
-          ),
-
-          cardStyle: { backgroundColor: '#fffff' }
-        }} >
-          <Stack.Screen
-            name="Food Factory"
-            component={TabNav}
+        />
+         <Stack.Screen name="profile" component={ProfileScreen} 
           // options={{ headerShown: false }}
-
-          />
-          <Stack.Screen name="Home Screen" component={HomeScreen}
+       />
+        <Stack.Screen name="login" component={LoginScreen} 
           // options={{ headerShown: false }}
-          />
-          <Stack.Screen name="Example Screen" component={ExampleScreen}
-            options={{
-              headerStyle: {
-                backgroundColor: 'tomato',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
+       />
+        <Stack.Screen name="Table List" component={TableList} />
+        <Stack.Screen name="Eg" component={Eg} />
+        <Stack.Screen name="Add Table" component={AddTable} />
+        
+        <Stack.Screen name="Booking Screen" component={BookingScreen} />
+        <Stack.Screen name="Update Table" component={UpdateTable} />
+        <Stack.Screen name="Booked List" component={BookedTables}
+        
+        options={{
+          headerStyle: {
+            
+            backgroundColor: 'tomato',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+
+        />
+        <Stack.Screen name="AdminHome" component={Adminhome}/>
+        <Stack.Screen name="Update Booking" component={UpdateBooking} />
+        <Stack.Screen name="AllBookings" component={AllBookings} />
+        <Stack.Screen name="register" component={RegisterScreen} />
 
 
-          />
-          <Stack.Screen name="Table List" component={TableList} />
-          <Stack.Screen name="Eg" component={Eg} />
-          <Stack.Screen name="Add Table" component={AddTable} />
-          <Stack.Screen name="Booking Screen" component={BookingScreen} />
-          <Stack.Screen name="Update Table" component={UpdateTable} />
-          <Stack.Screen name="Booked List" component={BookedTables}
-            options={{
-              headerStyle: {
-
-                backgroundColor: 'tomato',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}
-
-          />
-          <Stack.Screen name="Update Booking" component={UpdateBooking} />
-          <Stack.Screen name="AllBookings" component={AllBookings} />
-
-
-
-          <Stack.Screen
+        <Stack.Screen
             name="AllUserInquiry Screen"
             component={AllUserInquiryScreen}
           />
@@ -241,15 +439,15 @@ export default function App() {
             name="EditResponse Screen"
             component={EditResponseScreen}
           />
-          <Stack.Screen name="AddInquiry Screen" component={AddInquiryScreen} />
+           <Stack.Screen name="AddInquiry Screen" component={AddInquiryScreen} />
           <Stack.Screen
             name="EditInquiry Screen"
             component={EditInquiryScreen}
           />
-          <Stack.Screen name="MyInquiry Screen" component={MyInquiryScreen} />
+            <Stack.Screen name="MyInquiry Screen" component={MyInquiryScreen} />
 
 
-          <Stack.Screen name="Food Order" component={OrderFood} />
+            <Stack.Screen name="Food Order" component={OrderFood} />
           <Stack.Screen name="Food Order Update" component={UpdateOrder} />
           <Stack.Screen name="Orders List" component={OrderedFoods} />
           <Stack.Screen name="Admin Food List" component={AdminFoodList} />
@@ -257,9 +455,9 @@ export default function App() {
           <Stack.Screen name="Food Details Update" component={UpdateFoodDetails} />
           <Stack.Screen name="All Food Orders" component={AllFoodOrders} />
 
-        </Stack.Navigator>
-      </NavigationContainer>
-
+      </Stack.Navigator>
+    </NavigationContainer>
+ 
     </NativeBaseProvider>
   );
 }
