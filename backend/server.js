@@ -5,6 +5,7 @@ const {dbConnection} =require('./dbCon')
 
 const tableRoute = require('./Routes/TableRoutes')
 const tableBookingRoute = require('./Routes/TableBookingRoutes')
+const userRoute = require('./Routes/userRoutes')
 const inquiryRoute = require('./Routes/InquiryRoutes')
 
 const app = express();
@@ -13,8 +14,10 @@ app.use(express.json())
 app.use(bodyParser.json())
 app.use(cors());
 
+
 app.use('/table', tableRoute)
 app.use('/tablebooking', tableBookingRoute)
+app.use('/user', userRoute)
 app.use('/inquiry', inquiryRoute)
 
 
@@ -23,6 +26,7 @@ app.use('/food', foodRoute)
 
 const foodOrderRoute = require('./Routes/FoodOrderRoutes')
 app.use('/food-order', foodOrderRoute)
+
 
 const PORT = 5000;
 

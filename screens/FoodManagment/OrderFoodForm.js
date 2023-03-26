@@ -6,11 +6,13 @@ import {
 import React, { useEffect, useState } from "react";
 import AlertBox from "../../components/AlertBox";
 import { TextInput } from 'react-native';
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FoodOrderScreen = ({ navigation, route }) => {
     const { id, qty, foodImage } = route.params;
 
-    const [userid, setUserid] = useState("");
+    const [userId, setUserId] = useState("");
 
     const [phone, setPhone] = useState("");
     const [cusname, setCusname] = useState("");
@@ -21,6 +23,8 @@ const FoodOrderScreen = ({ navigation, route }) => {
     const [total, setTotal] = useState("");
 
     const toast = useToast();
+    const isFocused = useIsFocused();
+
 
     const [errorPhone, setErrorPhone] = useState(false);
     const [errorCusName, setErrorCusName] = useState(false);
@@ -31,6 +35,32 @@ const FoodOrderScreen = ({ navigation, route }) => {
         console.log(id);
         loadTabledata(id);
     }, []);
+
+    useEffect(() => {
+        if (isFocused) {
+          loadTabledata(id);
+    
+          AsyncStorage.getItem('userId').then((user) => {
+            if (user) {
+             
+              console.log(user)
+              setUserId(user)
+      
+            } else {
+              navigation.navigate("login")
+              
+            
+            }
+      
+          }
+          )
+    
+    
+    
+    
+        }
+        
+      }, []);
 
     const loadTabledata = (id) => {
         axios.get(`food/${id}`).then((res) => {
@@ -81,7 +111,7 @@ const FoodOrderScreen = ({ navigation, route }) => {
                 foodId:id,
                 quantity,
                 total,
-                userid: "111"
+                userid: userId
             };
             console.log(data);
             axios.post("food-order/add", data).then((res) => {

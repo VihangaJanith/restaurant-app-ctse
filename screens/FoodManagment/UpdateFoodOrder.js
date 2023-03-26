@@ -106,7 +106,7 @@ const FoodOrderUpadteScreen = ({ navigation, route }) => {
                         />
                     ),
                 });
-                navigation.navigate("Orders List");
+                navigation.navigate("Home");
             }
         } catch (error) {
             console.log(error);

@@ -4,8 +4,9 @@ import { Alert, RefreshControl, ScrollView, StyleSheet } from "react-native";
 import { useToast, Box,Thumbnail, Body,Heading, CardItem,View,Card, FormControl, AspectRatio, Image, Text, Center, HStack, Stack, NativeBaseProvider, Button, Icon, Input, WarningOutlineIcon, Divider, VStack, IconButton, CloseIcon, Spinner, PresenceTransition, Skeleton, Pressable, AlertDialog, Badge } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import LandscapeLoader from "../../components/LandscapeLoader";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import DetailsLoader from "../../components/DetailsLoader";
+import NoData from "../../components/NoData"
 
 const FoodOrderData = (props) => {
     const { orders, setOrders, navigation, ids } = props;
@@ -233,6 +234,10 @@ const FoodOrderData = (props) => {
 };
 
 const OrderFoods = ({ navigation }) => {
+
+    const route = useRoute()
+    const { userid } = route.params;
+
     const [order, setFoodOrder] = useState([]);
     const [food, setFood] = useState([]);
 
@@ -252,35 +257,55 @@ const OrderFoods = ({ navigation }) => {
 
     const onRefresh = React.useCallback(() => {
         setIsLoading(true);
-        axios
-            .get("food-order/")
-            .then((res) => {
-                setFoodOrder(res.data);
-                const orderIds = res.data.map((order) => order.foodId);
-                setId(orderIds);
 
-                console.log(res.data);
-                setIsLoading(false);
+        if(userid){
+            console.log(userid,'ccccccc')
+          axios
+            .get(`food-order/order/${userid}`)
+            .then((res) => {
+              
+              setFoodOrder(res.data);
+      
+              console.log(res.data);
+              setIsLoading(false);
             })
             .catch((err) => {
-                console.log(err);
+              console.log(err);
             });
+          }
+          else{
+            setIsLoading(false);
+            setTables([])
+            alert("No bookings")
+          }
+
+
+
     }, []);
 
     useEffect(() => {
         setIsLoading(true);
-        axios
-            .get("food-order/")
-            .then((res) => {
-                setFoodOrder(res.data);
-                const orderIds = res.data.map((order) => order.foodId);
-                setId(orderIds);
-                setIsLoading(false);
 
+        if(userid){
+            console.log(userid,'ccccccc')
+          axios
+            .get(`food-order/order/${userid}`)
+            .then((res) => {
+              
+              setFoodOrder(res.data);
+      
+              console.log(res.data);
+              setIsLoading(false);
             })
             .catch((err) => {
-                console.log(err);
+              console.log(err);
             });
+          }
+          else{
+            setIsLoading(false);
+            setTables([])
+            alert("No bookings")
+          }
     }, []);
 
     return (
@@ -296,8 +321,17 @@ const OrderFoods = ({ navigation }) => {
                     }
                 >
                       <Text fontSize="2xl" style={{marginLeft:'3%',fontWeight:'bold',marginTop:'4%',marginBottom:'5%'}}>
-                                    Kamindu's Food Orders
+                                    My Food Orders
                                 </Text>
+
+                                {order.length == 0 ? 
+          
+          <NoData
+            message="You Do not have any Food Orders"
+            onRefresh={onRefresh}
+            />
+            :
+            <>
                     {order &&
                         order.map((orders, index) => (
                             <View style={{marginBottom:'4%'}}>
@@ -310,6 +344,7 @@ const OrderFoods = ({ navigation }) => {
                             />
                             </View>
                         ))}
+                        </>}
                 </ScrollView>
             )}
         </>

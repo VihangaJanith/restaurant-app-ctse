@@ -90,7 +90,7 @@ const FoodAddScreen = ({ navigation, route }) => {
             </AspectRatio>
 
 
-            <View style={{ marginTop: '13%' }}>
+            <View style={{ marginTop: '2%' }}>
 
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>Food Name</Text>
 

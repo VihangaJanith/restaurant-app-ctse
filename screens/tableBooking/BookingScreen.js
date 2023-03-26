@@ -20,6 +20,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import AlertBox from "../../components/AlertBox";
 import { Text, View } from "native-base";
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BookingScreen = ({ navigation, route }) => {
   const id = route.params.id;
@@ -27,7 +29,8 @@ const BookingScreen = ({ navigation, route }) => {
   const [name, setName] = useState("");
 
   const [tabletype, setTabletype] = useState("");
-  const [userid, setUserid] = useState("");
+  const [userId, setUserId] = useState("");
+
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [phone, setPhone] = useState("");
@@ -43,6 +46,7 @@ const BookingScreen = ({ navigation, route }) => {
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const isFocused = useIsFocused();
 
   const showTimePicker = () => {
     setTimePickerVisibility(true);
@@ -114,8 +118,29 @@ const BookingScreen = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    console.log(id);
-    loadTabledata(id);
+    if (isFocused) {
+      loadTabledata(id);
+
+      AsyncStorage.getItem('userId').then((user) => {
+        if (user) {
+         
+          console.log(user)
+          setUserId(user)
+  
+        } else {
+          navigation.navigate("login")
+          
+        
+        }
+  
+      }
+      )
+
+
+
+
+    }
+    
   }, []);
 
   const loadTabledata = (id) => {
@@ -137,20 +162,27 @@ const BookingScreen = ({ navigation, route }) => {
   maximumTime.setHours(17, 0, 0, 0); // Set maximum time to 5:00 PM
 
   const bookTable = () => {
+    let hasError = false;
     if (date === "") {
       setErrorDate("Please Select a Date");
+      hasError = true;
     }
     if (time === "") {
       setErrorTime("Please Select a Time");
+      hasError = true;
     }
     if (phone === "" || phone.length < 10) {
       setErrorPhone("Please Enter a Valid Phone Number");
-    } else {
+      hasError = true;
+    } 
+    
+    if (!hasError) {
+  
       const data = {
         name,
         tableId: id,
         tabletype,
-        userid: "111",
+        userid: userId,
         date,
         time,
         phone,
@@ -206,7 +238,7 @@ const BookingScreen = ({ navigation, route }) => {
             w="2/6"
             h="full"
             onPress={showDatePicker}
-            colorScheme="amber"
+            colorScheme="orange"
           >
             <Ionicons name="calendar" size={24} color="white" />
           </Button>
@@ -263,7 +295,7 @@ const BookingScreen = ({ navigation, route }) => {
             w="2/6"
             h="full"
             onPress={showTimePicker}
-            colorScheme="amber"
+            colorScheme="orange"
           >
             <Ionicons name="time" size={24} color="white" />
           </Button>
